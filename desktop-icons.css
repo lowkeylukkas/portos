@@ -1,120 +1,13 @@
-/* STEP 6 — Clean Frutiger Aero desktop icons */
-.desktop-icon-field {
-  position:absolute;
-  top:34px;
-  left:30px;
-  z-index:7;
-  width:min(760px,58vw);
-  display:grid;
-  grid-template-columns:repeat(5,112px);
-  grid-auto-rows:112px;
-  gap:8px 12px;
-  align-content:start;
-}
-
-.desktop-icon {
-  position:relative;
-  width:112px;
-  height:112px;
-  padding:5px 3px;
-  border:0;
-  background:transparent;
-  color:#fff;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:flex-start;
-  gap:7px;
-  cursor:pointer;
-  border-radius:16px;
-  text-shadow:0 2px 4px rgba(0,48,76,.85),0 0 7px rgba(0,84,128,.5);
-  transition:transform .18s ease,filter .18s ease;
-}
-
-.desktop-icon::before {
-  content:"";
-  position:absolute;
-  inset:2px;
-  border-radius:16px;
-  background:radial-gradient(circle at 50% 38%,rgba(255,255,255,.28),transparent 47%),linear-gradient(180deg,rgba(255,255,255,.12),rgba(30,177,224,.08));
-  border:1px solid rgba(255,255,255,.18);
-  opacity:0;
-  box-shadow:inset 0 1px 2px rgba(255,255,255,.5),0 0 18px rgba(78,220,255,.2);
-  transition:opacity .18s ease;
-  pointer-events:none;
-}
-
-.desktop-icon:hover { transform:translateY(-3px) scale(1.045); filter:brightness(1.16) saturate(1.15); }
-.desktop-icon:hover::before { opacity:1; }
-.desktop-icon:active { transform:translateY(1px) scale(.99); }
-
-/* Use the original uploaded artwork directly. Screen blending hides the baked-in
-   black/dark rectangular canvas so the glowing artwork sits naturally on the wallpaper. */
-.icon-orb {
-  position:relative;
-  z-index:1;
-  width:78px;
-  height:66px;
-  flex:none;
-  display:block;
-  overflow:visible;
-  border:0;
-  border-radius:0;
-  background-color:transparent !important;
-  background-repeat:no-repeat !important;
-  background-position:center !important;
-  background-size:contain !important;
-  box-shadow:none !important;
-  transform:none;
-  mix-blend-mode:screen;
-  filter:drop-shadow(0 3px 5px rgba(0,38,75,.34)) drop-shadow(0 0 8px rgba(114,231,255,.18));
-}
-
-.icon-orb::before,
-.icon-orb::after { display:none; }
-.icon-symbol { display:none; }
-
-.icon-label {
-  position:relative;
-  z-index:2;
-  max-width:108px;
-  min-height:29px;
-  padding:2px 5px 3px;
-  border-radius:0;
-  font-size:12px;
-  line-height:14px;
-  font-weight:500;
-  text-align:center;
-  color:#fff;
-  background:transparent;
-  box-shadow:none;
-  text-shadow:0 2px 4px rgba(0,36,68,.95),0 0 5px rgba(0,65,105,.65);
-}
-
-.icon-mapeh .icon-orb { background-image:url("mapeh.png") !important; }
-.icon-tle .icon-orb { background-image:url("tle.png") !important; }
-.icon-values .icon-orb { background-image:url("values.png") !important; }
-.icon-english .icon-orb { background-image:url("english.png") !important; }
-.icon-ap .icon-orb { background-image:url("araling-panlipunan.png") !important; }
-.icon-gallery .icon-orb { background-image:url("galleries.png") !important; }
-.icon-integration .icon-orb { background-image:url("integration.png") !important; }
-.icon-reflection .icon-orb { background-image:url("reflection.png") !important; }
-.icon-sources .icon-orb { background-image:url("credits.png") !important; }
-.icon-music .icon-orb { background-image:url("music.png") !important; }
-.icon-about .icon-orb { background-image:url("about-me.png") !important; }
-.icon-science .icon-orb { background-image:url("science.png") !important; }
-.icon-filipino .icon-orb { background-image:url("filipino.png") !important; }
-.icon-math .icon-orb { background-image:url("math.png") !important; }
-
-@media (max-width:1100px) {
-  .desktop-icon-field { grid-template-columns:repeat(4,105px); grid-auto-rows:105px; width:450px; }
-  .desktop-icon { width:105px; height:105px; }
-  .icon-orb { width:70px; height:60px; }
-}
-
-@media (max-width:700px) {
-  .desktop-icon-field { top:18px; left:14px; grid-template-columns:repeat(3,88px); grid-auto-rows:92px; gap:4px; width:280px; }
-  .desktop-icon { width:88px; height:92px; gap:5px; }
-  .icon-orb { width:58px; height:50px; }
-  .icon-label { font-size:10px; line-height:12px; max-width:86px; }
-}
+/* PortOS desktop icons — clean transparent Frutiger Aero artwork */
+.desktop-icon-field{position:absolute;top:34px;left:30px;z-index:7;width:min(760px,58vw);display:grid;grid-template-columns:repeat(5,112px);grid-auto-rows:112px;gap:8px 12px;align-content:start}
+.desktop-icon{position:relative;width:112px;height:112px;padding:5px 3px;border:0;background:transparent;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:7px;cursor:pointer;border-radius:16px;text-shadow:0 2px 4px rgba(0,48,76,.85);transition:transform .18s ease,filter .18s ease}
+.desktop-icon::before{content:"";position:absolute;inset:2px;border-radius:16px;background:radial-gradient(circle at 50% 38%,rgba(255,255,255,.28),transparent 47%),linear-gradient(180deg,rgba(255,255,255,.12),rgba(30,177,224,.08));border:1px solid rgba(255,255,255,.18);opacity:0;box-shadow:inset 0 1px 2px rgba(255,255,255,.5),0 0 18px rgba(78,220,255,.2);transition:opacity .18s ease;pointer-events:none}
+.desktop-icon:hover{transform:translateY(-3px) scale(1.045);filter:brightness(1.16) saturate(1.15)}
+.desktop-icon:hover::before{opacity:1}.desktop-icon:active{transform:translateY(1px) scale(.99)}
+/* The uploaded PNGs are used as-is. No blend modes, image filters, or icon shadows are applied. */
+.icon-orb{position:relative;z-index:1;width:82px;height:70px;flex:none;display:block;overflow:visible;border:0;border-radius:0;background-color:transparent!important;background-repeat:no-repeat!important;background-position:center!important;background-size:contain!important;box-shadow:none!important;transform:none;mix-blend-mode:normal!important;filter:none!important}
+.icon-orb::before,.icon-orb::after{display:none}.icon-symbol{display:none}
+.icon-label{position:relative;z-index:2;max-width:108px;min-height:29px;padding:2px 5px 3px;border-radius:0;font-size:12px;line-height:14px;font-weight:500;text-align:center;color:#fff;background:transparent;box-shadow:none;text-shadow:0 2px 4px rgba(0,36,68,.95),0 0 5px rgba(0,65,105,.65)}
+.icon-mapeh .icon-orb{background-image:url("MAPEH.png")!important}.icon-tle .icon-orb{background-image:url("TLE.png")!important}.icon-values .icon-orb{background-image:url("Values Ed..png")!important}.icon-english .icon-orb{background-image:url("English.png")!important}.icon-ap .icon-orb{background-image:url("Araling Panlipunan.png")!important}.icon-music .icon-orb{background-image:url("Music.png")!important}.icon-science .icon-orb{background-image:url("Science.png")!important}.icon-filipino .icon-orb{background-image:url("Filipino.png")!important}.icon-math .icon-orb{background-image:url("Mathematics.png")!important}
+@media (max-width:1100px){.desktop-icon-field{grid-template-columns:repeat(4,105px);grid-auto-rows:105px;width:450px}.desktop-icon{width:105px;height:105px}.icon-orb{width:72px;height:62px}}
+@media (max-width:700px){.desktop-icon-field{top:18px;left:14px;grid-template-columns:repeat(3,88px);grid-auto-rows:92px;gap:4px;width:280px}.desktop-icon{width:88px;height:92px;gap:5px}.icon-orb{width:60px;height:52px}.icon-label{font-size:10px;line-height:12px;max-width:86px}}
