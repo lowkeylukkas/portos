@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="taskbar.css" />
   <link rel="stylesheet" href="desktop-icons.css" />
   <link rel="stylesheet" href="music-player.css" />
+  <link rel="stylesheet" href="start-menu.css" />
 </head>
 <body>
   <main id="boot-screen" class="boot-screen" aria-label="PortOS starting">
@@ -45,18 +46,37 @@
       <div class="music-gadget-shell">
         <div class="music-bubble one"></div><div class="music-bubble two"></div><div class="music-bubble three"></div>
         <div class="music-header"><span class="music-status-dot"></span><span>PORTOS MUSIC</span><span style="margin-left:auto;opacity:.7">♪ LIVE</span></div>
-        <div class="music-main">
-          <div class="album-jewel" aria-hidden="true"><div class="album-orb"></div><div class="album-note">♫</div></div>
-          <div class="track-info"><div class="track-title">Ocean Dreams</div><div class="track-artist">PortOS • Frutiger Mix</div><div class="visualizer" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
-        </div>
+        <div class="music-main"><div class="album-jewel" aria-hidden="true"><div class="album-orb"></div><div class="album-note">♫</div></div><div class="track-info"><div class="track-title">Ocean Dreams</div><div class="track-artist">PortOS • Frutiger Mix</div><div class="visualizer" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div></div>
         <div class="music-progress-wrap"><div class="music-progress" aria-label="Track progress"><div class="music-progress-fill"></div></div><div class="music-times"><span>1:24</span><span>3:47</span></div></div>
         <div class="music-controls"><button class="music-button" type="button" aria-label="Previous">◀</button><button class="music-button play" type="button" aria-label="Play">▶</button><button class="music-button" type="button" aria-label="Next">▶</button><button class="music-button" type="button" aria-label="Shuffle">⤨</button><button class="music-button" type="button" aria-label="Repeat">↻</button></div>
         <div class="volume-control"><span class="volume-icon">🔊</span><div class="volume-track"><div class="volume-fill"></div></div><span style="font-size:8px;font-weight:800;color:#eaffff;text-shadow:0 1px 2px #005083">72%</span></div>
       </div>
     </aside>
 
+    <aside id="start-menu" class="start-menu" aria-label="Start menu" aria-hidden="true">
+      <div class="start-menu-shell">
+        <div class="start-user"><div class="start-avatar">✦</div><div><div class="start-user-name">User</div><div class="start-user-sub">PORTOS PERSONAL DESKTOP</div></div></div>
+        <div class="start-columns">
+          <section class="start-column"><div class="start-section-title">Pinned portfolio</div>
+            <button class="start-item" type="button"><span class="start-item-icon">✦</span><span class="start-item-text"><strong>My Portfolio</strong><small>Explore the digital portfolio</small></span></button>
+            <button class="start-item" type="button"><span class="start-item-icon">▣</span><span class="start-item-text"><strong>My Galleries</strong><small>Photos, projects &amp; creations</small></span></button>
+            <button class="start-item" type="button"><span class="start-item-icon">♫</span><span class="start-item-text"><strong>Music</strong><small>Open the Frutiger Mix</small></span></button>
+            <button class="start-item" type="button"><span class="start-item-icon">◎</span><span class="start-item-text"><strong>Credits &amp; Sources</strong><small>References and acknowledgements</small></span></button>
+            <button class="start-item" type="button"><span class="start-item-icon">☻</span><span class="start-item-text"><strong>About Me</strong><small>Get to know the creator</small></span></button>
+          </section>
+          <section class="start-column start-right"><div class="start-section-title">PortOS</div>
+            <button class="start-item" type="button"><span class="start-item-icon">⌂</span><span class="start-item-text"><strong>Desktop</strong><small>Return to desktop</small></span></button>
+            <button class="start-item" type="button"><span class="start-item-icon">▰</span><span class="start-item-text"><strong>Files</strong><small>Portfolio documents</small></span></button>
+            <button class="start-item" type="button"><span class="start-item-icon">⚙</span><span class="start-item-text"><strong>Customize</strong><small>Personalize PortOS</small></span></button>
+            <button class="start-item" type="button"><span class="start-item-icon">?</span><span class="start-item-text"><strong>Help</strong><small>About this experience</small></span></button>
+          </section>
+        </div>
+        <div class="start-footer"><button class="start-footer-button" type="button">◉ Search</button><button class="start-footer-button" type="button">⏻ Shut Down</button></div>
+      </div>
+    </aside>
+
     <nav class="portos-taskbar" aria-label="PortOS taskbar">
-      <button class="start-orb" id="start-orb" type="button" aria-label="Start"><span>✦</span></button>
+      <button class="start-orb" id="start-orb" type="button" aria-label="Start" aria-expanded="false"><span>✦</span></button>
       <div class="taskbar-apps" aria-label="Open applications"><button class="task-app active" type="button" aria-label="Desktop"><span class="mini-icon">⌂</span></button><button class="task-app" type="button" aria-label="Files"><span class="mini-icon">▰</span></button><button class="task-app" type="button" aria-label="Gallery"><span class="mini-icon">✿</span></button></div>
       <div class="system-tray"><span class="tray-symbol" aria-label="Network">◉</span><span class="tray-symbol" aria-label="Volume">◖</span><span class="tray-symbol" aria-label="Battery">▣</span><div id="taskbar-clock" class="taskbar-clock">10:30<small>Friday</small></div></div>
     </nav>
