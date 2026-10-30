@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#061b3a" />
   <title>PortOS</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -15,6 +16,34 @@
       <div class="loading-track" aria-hidden="true"><div class="loading-shimmer"></div></div>
       <div class="boot-status">Starting PortOS</div>
     </div>
+  </main>
+
+  <main id="lock-screen" class="lock-screen" aria-hidden="true">
+    <div class="lock-wallpaper" aria-hidden="true"></div>
+    <div class="lock-vignette" aria-hidden="true"></div>
+    <div class="lock-content">
+      <div class="lock-clock-wrap">
+        <div id="lock-time" class="lock-time">10:30</div>
+        <div id="lock-date" class="lock-date">Friday, October 30</div>
+      </div>
+
+      <div class="user-card">
+        <div class="user-avatar" aria-hidden="true">
+          <div class="avatar-glass"></div>
+          <span>✦</span>
+        </div>
+        <div class="user-name">User</div>
+        <button id="login-button" class="login-button" type="button">Log In</button>
+      </div>
+    </div>
+
+    <div class="lock-corner lock-bottom-left">
+      <button class="corner-button" type="button" aria-label="Accessibility">◉</button>
+    </div>
+    <div class="lock-corner lock-bottom-right">
+      <button class="corner-button" type="button" aria-label="Power">⏻</button>
+    </div>
+    <div class="lock-shine" aria-hidden="true"></div>
   </main>
 
   <main id="desktop" class="desktop" aria-hidden="true">
