@@ -1,6 +1,6 @@
-/* PortOS Lock Screen — desktop Frutiger Aero reference layout */
+/* PortOS Lock Screen — Windows Vista HQ wallpaper */
 .lock-screen{background:#0876a8;pointer-events:auto}
-.lock-wallpaper{background:#0876a8 url("Dreamy Futuristic Skywater Terrace.png") center center / cover no-repeat;pointer-events:none}
+.lock-wallpaper{background:#0876a8 url("Windows Vista HQ Wallpaper_03.jpg") center center / cover no-repeat;pointer-events:none}
 .lock-wallpaper::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(0,78,118,.3),transparent 55%),linear-gradient(120deg,transparent 18%,rgba(255,255,255,.1) 38%,transparent 48%);animation:lockAeroSweep 9s ease-in-out infinite;pointer-events:none}
 .lock-vignette{background:radial-gradient(circle at center,transparent 15%,rgba(0,42,72,.08) 58%,rgba(0,19,45,.46) 100%);pointer-events:none}
 .lock-content{padding-bottom:3vh;pointer-events:auto}
@@ -25,10 +25,5 @@
 .lock-shine{background:linear-gradient(112deg,transparent 20%,rgba(255,255,255,.03) 29%,rgba(255,255,255,.2) 40%,rgba(255,255,255,.04) 47%,transparent 58%);animation:lockGlassSweep 8s ease-in-out infinite;pointer-events:none}
 @keyframes lockAeroSweep{0%,55%{transform:translateX(-8%)}100%{transform:translateX(8%)}}
 @keyframes lockGlassSweep{0%,45%{transform:translateX(-80%)}70%,100%{transform:translateX(80%)}}
-
-@media(max-width:900px){
-  .lock-clock-wrap{width:88vw;height:205px;padding-top:26px}.lock-time{font-size:clamp(70px,13vw,112px)}.lock-clock-wrap::after{right:8%;top:52px;font-size:58px}.lock-date{font-size:18px}.user-card{width:360px;height:370px;padding-top:30px}.user-avatar{width:145px;height:145px}.login-button{width:270px}
-}
-@media(max-width:600px){
-  .lock-clock-wrap{width:92vw;height:170px;margin-bottom:22px;padding-top:22px}.lock-time{font-size:68px}.lock-date{font-size:15px}.lock-clock-wrap::after{right:8%;top:45px;font-size:42px}.user-card{width:88vw;height:auto;min-height:330px;padding:24px 20px 28px}.user-avatar{width:118px;height:118px}.user-avatar span{font-size:44px}.login-button{width:80%;height:52px;font-size:19px}.corner-button{width:42px;height:42px}.lock-bottom-left{left:20px}.lock-bottom-right{right:20px}
-}
+@media(max-width:900px){.lock-clock-wrap{width:88vw;height:205px;padding-top:26px}.lock-time{font-size:clamp(70px,13vw,112px)}.lock-clock-wrap::after{right:8%;top:52px;font-size:58px}.lock-date{font-size:18px}.user-card{width:360px;height:370px;padding-top:30px}.user-avatar{width:145px;height:145px}.login-button{width:270px}}
+@media(max-width:600px){.lock-clock-wrap{width:92vw;height:170px;margin-bottom:22px;padding-top:22px}.lock-time{font-size:68px}.lock-date{font-size:15px}.lock-clock-wrap::after{right:8%;top:45px;font-size:42px}.user-card{width:88vw;height:auto;min-height:330px;padding:24px 20px 28px}.user-avatar{width:118px;height:118px}.user-avatar span{font-size:44px}.login-button{width:80%;height:52px;font-size:19px}.corner-button{width:42px;height:42px}.lock-bottom-left{left:20px}.lock-bottom-right{right:20px}}
