@@ -18,7 +18,7 @@
   height: min(500px, 68vh);
   min-width: 360px;
   min-height: 220px;
-  transform: translate(-50%, -50%) scale(.94);
+  transform: scale(.94);
   opacity: 0;
   pointer-events: none;
   z-index: 70;
@@ -31,7 +31,7 @@
   transition: opacity .26s cubic-bezier(.18,.82,.22,1), transform .34s cubic-bezier(.18,1.25,.25,1), border-radius .24s ease;
   will-change: transform, opacity;
 }
-.portos-app-window.open { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
+.portos-app-window.open { opacity: 1; pointer-events: auto; transform: scale(1); }
 .portos-app-window.minimized { opacity: 0; pointer-events: none; transform: scale(.82) translateY(32px); transition: opacity .22s ease, transform .24s cubic-bezier(.4,0,1,1); }
 .portos-app-window.closing { opacity: 0; pointer-events: none; transform: scale(.90) translateY(18px); transition: opacity .22s ease, transform .26s cubic-bezier(.4,0,1,1); }
 .portos-app-window.maximized { left:8px !important; top:8px !important; width:calc(100vw - 16px) !important; height:calc(100vh - 92px) !important; min-width:0; min-height:0; border-radius:10px; transform:none !important; }
@@ -40,7 +40,7 @@
 .portos-app-window::before { content:""; position:absolute; inset:0; pointer-events:none; z-index:1; background:linear-gradient(115deg,transparent 25%,rgba(255,255,255,.18) 47%,transparent 59%); }
 
 .portos-app-titlebar { position:relative; z-index:3; height:48px; display:flex; align-items:center; gap:10px; padding:0 8px 0 12px; color:#fff; cursor:move; user-select:none; touch-action:none; background:linear-gradient(180deg,#a9efff 0%,#53c7ef 22%,#188fcf 55%,#075ca7 100%); border-bottom:1px solid rgba(255,255,255,.72); box-shadow:inset 0 2px 4px rgba(255,255,255,.85),inset 0 -3px 7px rgba(0,57,110,.22),0 2px 8px rgba(0,51,96,.22); }
-.portos-app-icon { width:31px;height:31px;flex:0 0 31px;display:grid;place-items:center;border-radius:9px;color:#fff;font-weight:900;background:linear-gradient(145deg,#fff,#8deeff 30%,#168ed0 72%,#07528f);border:1px solid rgba(255,255,255,.9);box-shadow:inset 0 2px 4px rgba(255,255,255,.9),inset 0 -4px 7px rgba(0,54,108,.35),0 2px 5px rgba(0,42,85,.3); }
+.portos-app-icon { width:31px;height:31px;flex:0 0 31px;display:grid;place-items:center;border-radius:9px;color:transparent;font-size:0;font-weight:900;background-image:url("Iridescent Crystal Star Emblem.png");background-size:contain;background-position:center;background-repeat:no-repeat;background-color:transparent;border:0;box-shadow:none; }
 .portos-app-title { min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:15px;font-weight:800;text-shadow:0 1px 3px #07558b; }
 .portos-window-controls { margin-left:auto;display:flex;gap:4px;align-items:center;flex:0 0 auto; }
 .portos-window-button { width:31px;height:27px;display:grid;place-items:center;padding:0;border:1px solid rgba(255,255,255,.82);border-radius:5px;color:#fff;cursor:pointer;font-family:Arial,sans-serif;font-size:15px;font-weight:800;line-height:1;background:linear-gradient(180deg,#8fe7ff,#2a9fdb 48%,#075da6 100%);box-shadow:inset 0 1px 2px rgba(255,255,255,.9),0 1px 4px rgba(0,35,70,.3);text-shadow:0 1px 2px #00416d;transition:filter .14s ease,transform .14s ease,box-shadow .14s ease; }
@@ -63,6 +63,9 @@
 .portos-window-resizer.nw { top:-6px;left:-6px;width:18px;height:18px;cursor:nwse-resize; }
 .portos-window-resizer.se { right:-6px;bottom:-6px;width:20px;height:20px;cursor:nwse-resize; }
 .portos-window-resizer.sw { left:-6px;bottom:-6px;width:18px;height:18px;cursor:nesw-resize; }
+
+/* Keep the PortOS crystal emblem as the taskbar representation for every open app. */
+.task-app .mini-icon { display:block; width:24px; height:24px; font-size:0; background:url("Iridescent Crystal Star Emblem.png") center/contain no-repeat; }
 
 .music-gadget { display:block !important;visibility:visible !important;opacity:1 !important; }
 .music-gadget.music-hidden { display:none !important; }
