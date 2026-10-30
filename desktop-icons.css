@@ -31,6 +31,7 @@
   transition:transform .18s ease,filter .18s ease;
 }
 
+/* Clean Vista-style selection glow — no permanent box around the icon. */
 .desktop-icon::before {
   content:"";
   position:absolute;
@@ -47,61 +48,45 @@
 .desktop-icon:hover::before { opacity:1; }
 .desktop-icon:active { transform:translateY(1px) scale(.99); }
 
+/* The uploaded artwork is the icon itself. The old glossy cube/orb enclosure is intentionally removed. */
 .icon-orb {
   position:relative;
   z-index:1;
-  width:66px;
-  height:66px;
-  flex:none;
-  display:grid;
-  place-items:center;
-  border-radius:19px;
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,.9);
-  background:
-    radial-gradient(circle at 28% 18%,rgba(255,255,255,.98) 0 5%,rgba(255,255,255,.45) 10%,transparent 23%),
-    linear-gradient(145deg,rgba(255,255,255,.72),rgba(110,224,255,.38) 38%,rgba(0,117,192,.66) 100%);
-  box-shadow:
-    inset 5px 5px 9px rgba(255,255,255,.72),
-    inset -7px -8px 11px rgba(0,49,100,.42),
-    0 3px 8px rgba(0,39,72,.38),
-    0 0 12px rgba(91,225,255,.3);
-  transform:perspective(80px) rotateX(2deg);
-}
-
-.icon-orb::before {
-  content:"";
-  position:absolute;
   width:72px;
-  height:24px;
-  top:-2px;
-  left:-8px;
-  transform:rotate(-18deg);
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.72),transparent);
-  filter:blur(2px);
-  animation:iconSweep 5.8s ease-in-out infinite;
+  height:72px;
+  flex:none;
+  display:block;
+  border-radius:0;
+  overflow:visible;
+  border:0;
+  background-color:transparent !important;
+  box-shadow:none !important;
+  transform:none;
+  background-repeat:no-repeat !important;
+  background-size:contain !important;
+  background-position:center !important;
 }
 
-.icon-orb::after {
-  content:"";
-  position:absolute;
-  inset:5px;
-  border-radius:15px;
-  border-top:1px solid rgba(255,255,255,.82);
-  box-shadow:inset 0 1px 2px rgba(255,255,255,.6);
-  pointer-events:none;
-}
+.icon-orb::before,
+.icon-orb::after { display:none; }
 
-.icon-symbol {
-  position:relative;
-  z-index:2;
-  font-family:"Segoe UI Symbol","Segoe UI",sans-serif;
-  font-size:31px;
-  font-weight:500;
-  line-height:1;
-  color:#fff;
-  text-shadow:0 1px 2px rgba(0,55,91,.75),0 0 9px rgba(255,255,255,.48);
-}
+.icon-symbol { display:none; }
+
+/* Uploaded portfolio artwork — shown directly, without the cube container. */
+.icon-mapeh .icon-orb { background-image:url("mapeh.png") !important; }
+.icon-tle .icon-orb { background-image:url("tle.png") !important; }
+.icon-values .icon-orb { background-image:url("values.png") !important; }
+.icon-english .icon-orb { background-image:url("english.png") !important; }
+.icon-ap .icon-orb { background-image:url("araling-panlipunan.png") !important; }
+.icon-gallery .icon-orb { background-image:url("galleries.png") !important; }
+.icon-integration .icon-orb { background-image:url("integration.png") !important; }
+.icon-reflection .icon-orb { background-image:url("reflection.png") !important; }
+.icon-sources .icon-orb { background-image:url("credits.png") !important; }
+.icon-music .icon-orb { background-image:url("music.png") !important; }
+.icon-about .icon-orb { background-image:url("about-me.png") !important; }
+.icon-science .icon-orb { background-image:url("science.png") !important; }
+.icon-filipino .icon-orb { background-image:url("filipino.png") !important; }
+.icon-math .icon-orb { background-image:url("math.png") !important; }
 
 .icon-label {
   position:relative;
@@ -109,65 +94,26 @@
   max-width:108px;
   min-height:29px;
   padding:3px 6px 4px;
-  border-radius:7px;
+  border-radius:5px;
   font-size:12px;
   line-height:14px;
   font-weight:500;
   text-align:center;
   color:#fff;
-  background:linear-gradient(180deg,rgba(10,79,126,.08),rgba(0,34,72,.22));
-  box-shadow:inset 0 1px 2px rgba(255,255,255,.12);
-}
-
-/* Individual jewel colors, keeping the same glossy PortOS material. */
-.icon-mapeh .icon-orb { background:radial-gradient(circle at 28% 18%,#fff 0 5%,transparent 18%),linear-gradient(145deg,#a7f5ff,#35cce7 44%,#0574b9); }
-.icon-tle .icon-orb { background:radial-gradient(circle at 28% 18%,#fff 0 5%,transparent 18%),linear-gradient(145deg,#d4fbff,#71d9ff 42%,#1474c7); }
-.icon-values .icon-orb { background:radial-gradient(circle at 28% 18%,#fff 0 5%,transparent 18%),linear-gradient(145deg,#ffe7f7,#ff91d0 43%,#8d5ee8); }
-.icon-english .icon-orb { background:radial-gradient(circle at 28% 18%,#fff 0 5%,transparent 18%),linear-gradient(145deg,#f7ffff,#a9eaff 43%,#2c79d0); }
-.icon-ap .icon-orb { background:radial-gradient(circle at 28% 18%,#fff 0 5%,transparent 18%),linear-gradient(145deg,#dffff3,#6de2ba 43%,#087db4); }
-.icon-gallery .icon-orb { background:radial-gradient(circle at 28% 18%,#fff 0 5%,transparent 18%),linear-gradient(145deg,#fff7b9,#ffd25e 43%,#ef7d32); }
-.icon-integration .icon-orb { background:radial-gradient(circle at 28% 18%,#fff 0 5%,transparent 18%),linear-gradient(145deg,#c9ffff,#58e9e4 43%,#2478cb); }
-.icon-reflection .icon-orb { background:radial-gradient(circle at 28% 18%,#fff 0 5%,transparent 18%),linear-gradient(145deg,#e6e0ff,#9c8cff 43%,#4c5fc3); }
-.icon-sources .icon-orb { background:radial-gradient(circle at 28% 18%,#fff 0 5%,transparent 18%),linear-gradient(145deg,#f7ffff,#b9dfff 43%,#4e7bc9); }
-.icon-music .icon-orb { background:radial-gradient(circle at 28% 18%,#fff 0 5%,transparent 18%),linear-gradient(145deg,#dfffff,#69e1e8 43%,#1687bf); }
-.icon-about .icon-orb { background:radial-gradient(circle at 28% 18%,#fff 0 5%,transparent 18%),linear-gradient(145deg,#fff2ce,#ffbc70 43%,#d96a3b); }
-.icon-science .icon-orb { background:radial-gradient(circle at 28% 18%,#fff 0 5%,transparent 18%),linear-gradient(145deg,#e1ffd9,#86e68a 43%,#318bb4); }
-.icon-filipino .icon-orb { background:radial-gradient(circle at 28% 18%,#fff 0 5%,transparent 18%),linear-gradient(145deg,#fff6c8,#ffdd72 43%,#e06c4f); }
-.icon-math .icon-orb { background:radial-gradient(circle at 28% 18%,#fff 0 5%,transparent 18%),linear-gradient(145deg,#d9faff,#77d8ff 43%,#456bd0); }
-
-/* Uploaded portfolio artwork — use the actual PNG assets instead of text symbols. */
-.icon-symbol { display:none; }
-.icon-mapeh .icon-orb { background-image:url("mapeh.png"); background-size:cover; background-position:center; }
-.icon-tle .icon-orb { background-image:url("tle.png"); background-size:cover; background-position:center; }
-.icon-values .icon-orb { background-image:url("values.png"); background-size:cover; background-position:center; }
-.icon-english .icon-orb { background-image:url("english.png"); background-size:cover; background-position:center; }
-.icon-ap .icon-orb { background-image:url("araling-panlipunan.png"); background-size:cover; background-position:center; }
-.icon-gallery .icon-orb { background-image:url("galleries.png"); background-size:cover; background-position:center; }
-.icon-integration .icon-orb { background-image:url("integration.png"); background-size:cover; background-position:center; }
-.icon-reflection .icon-orb { background-image:url("reflection.png"); background-size:cover; background-position:center; }
-.icon-sources .icon-orb { background-image:url("credits.png"); background-size:cover; background-position:center; }
-.icon-music .icon-orb { background-image:url("music.png"); background-size:cover; background-position:center; }
-.icon-about .icon-orb { background-image:url("about-me.png"); background-size:cover; background-position:center; }
-.icon-science .icon-orb { background-image:url("science.png"); background-size:cover; background-position:center; }
-.icon-filipino .icon-orb { background-image:url("filipino.png"); background-size:cover; background-position:center; }
-.icon-math .icon-orb { background-image:url("math.png"); background-size:cover; background-position:center; }
-
-@keyframes iconSweep {
-  0%,55% { transform:translateX(-80%) rotate(-18deg); opacity:0; }
-  65% { opacity:.75; }
-  82%,100% { transform:translateX(150%) rotate(-18deg); opacity:0; }
+  background:transparent;
+  box-shadow:none;
+  text-shadow:0 2px 4px rgba(0,48,76,.95),0 0 6px rgba(0,64,110,.65);
 }
 
 @media (max-width:1100px) {
   .desktop-icon-field { grid-template-columns:repeat(4,105px); grid-auto-rows:105px; width:450px; }
   .desktop-icon { width:105px; height:105px; }
-  .icon-orb { width:60px; height:60px; }
+  .icon-orb { width:64px; height:64px; }
 }
 
 @media (max-width:700px) {
   .desktop-icon-field { top:18px; left:14px; grid-template-columns:repeat(3,88px); grid-auto-rows:92px; gap:4px; width:280px; }
   .desktop-icon { width:88px; height:92px; gap:5px; }
-  .icon-orb { width:50px; height:50px; border-radius:15px; }
-  .icon-symbol { font-size:24px; }
+  .icon-orb { width:50px; height:50px; }
   .icon-label { font-size:10px; line-height:12px; max-width:86px; }
 }
