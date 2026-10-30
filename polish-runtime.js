@@ -48,5 +48,20 @@
       requestAnimationFrame(() => music.classList.add('music-focus'));
       window.PortOSMusic?.start?.();
     });
+
+    /* script.js also had an older visual-only play handler. Capture the play
+       button here so the real audio controller always wins and the button
+       cannot accidentally toggle twice. */
+    const playButton = music.querySelector('.music-button.play');
+    playButton?.addEventListener('click', async (event) => {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      const player = window.PortOSMusic;
+      if (!player?.audio) return;
+      try {
+        if (player.audio.paused) await player.start?.();
+        else player.audio.pause();
+      } catch (_) {}
+    }, true);
   }
 })();
