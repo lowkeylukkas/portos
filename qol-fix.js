@@ -1,6 +1,6 @@
 /* PortOS QOL fixes: reliable Values Ed icon + easy volume slider. */
 (() => {
-  const iconSrc = 'Values Ed..png?v=4';
+  const iconSrc = 'Values Ed..png?v=5';
 
   function fixValuesIcon() {
     const icon = document.querySelector('.icon-values .icon-orb');
@@ -20,24 +20,47 @@
   function improveVolume() {
     const gadget = document.querySelector('.music-gadget');
     const track = gadget?.querySelector('.volume-track');
-    if (!gadget || !track || track.dataset.qolReady) return;
-    track.dataset.qolReady = 'true';
-    track.innerHTML = '<input class="portos-volume-slider" type="range" min="0" max="100" value="72" step="1" aria-label="Music volume">';
-    const slider = track.querySelector('.portos-volume-slider');
+    if (!gadget || !track) return;
+
+    let slider = track.querySelector('.portos-volume-slider');
+    if (!slider) {
+      track.innerHTML = '<input class="portos-volume-slider" type="range" min="0" max="100" value="72" step="1" aria-label="Music volume">';
+      slider = track.querySelector('.portos-volume-slider');
+    }
+
     const audio = gadget.querySelector('audio');
     const label = gadget.querySelector('.volume-control > span:last-child');
+    if (!slider || !audio || slider.dataset.qolReady) return;
+    slider.dataset.qolReady = 'true';
 
-    const sync = () => {
-      const value = Math.round((audio?.volume ?? 0.72) * 100);
-      slider.value = String(value);
-      if (label) label.textContent = `${value}%`;
+    const paint = (value) => {
+      const n = Math.max(0, Math.min(100, Math.round(value)));
+      slider.value = String(n);
+      slider.style.setProperty('--volume', `${n}%`);
+      if (label) label.textContent = `${n}%`;
     };
-    slider.addEventListener('input', () => {
-      if (audio) audio.volume = Number(slider.value) / 100;
-      if (label) label.textContent = `${slider.value}%`;
-    });
-    slider.addEventListener('pointerdown', e => e.stopPropagation());
-    slider.addEventListener('click', e => e.stopPropagation());
+
+    const sync = () => paint((audio.volume ?? 0.72) * 100);
+
+    const setVolume = () => {
+      audio.volume = Number(slider.value) / 100;
+      paint(slider.value);
+    };
+
+    slider.addEventListener('input', setVolume);
+    slider.addEventListener('change', setVolume);
+    slider.addEventListener('pointerdown', (event) => event.stopPropagation());
+    slider.addEventListener('pointermove', (event) => event.stopPropagation());
+    slider.addEventListener('click', (event) => event.stopPropagation());
+    slider.addEventListener('wheel', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const step = event.deltaY < 0 ? 5 : -5;
+      audio.volume = Math.max(0, Math.min(1, audio.volume + step / 100));
+      sync();
+    }, { passive: false });
+
+    audio.addEventListener('volumechange', sync);
     sync();
   }
 
@@ -45,12 +68,14 @@
   style.textContent = `
     .icon-values .icon-orb { background-image:none!important; }
     .values-ed-real-icon { width:100%!important; height:100%!important; object-fit:contain!important; display:block!important; background:transparent!important; border:0!important; filter:none!important; mix-blend-mode:normal!important; box-shadow:none!important; }
-    .volume-track { flex:1!important; height:18px!important; display:flex!important; align-items:center!important; background:transparent!important; border:0!important; box-shadow:none!important; overflow:visible!important; cursor:default!important; }
-    .portos-volume-slider { appearance:none!important; -webkit-appearance:none!important; width:100%!important; height:9px!important; margin:0!important; padding:0!important; border:1px solid rgba(255,255,255,.92)!important; border-radius:999px!important; outline:none!important; cursor:pointer!important; background:linear-gradient(90deg,#baffff 0%,#36dcff 72%,rgba(0,79,136,.25) 72%,rgba(0,79,136,.25) 100%)!important; box-shadow:inset 0 2px 3px rgba(0,50,100,.25),0 1px 0 rgba(255,255,255,.75)!important; }
-    .portos-volume-slider::-webkit-slider-thumb { -webkit-appearance:none!important; appearance:none!important; width:18px!important; height:18px!important; border:1px solid rgba(255,255,255,.95)!important; border-radius:50%!important; cursor:grab!important; background:radial-gradient(circle at 35% 28%,#fff 0 18%,#cfffff 30%,#48d9f7 68%,#087bc1 100%)!important; box-shadow:0 2px 5px rgba(0,55,110,.35),inset 0 1px 2px #fff!important; }
-    .portos-volume-slider::-moz-range-thumb { width:18px!important; height:18px!important; border:1px solid rgba(255,255,255,.95)!important; border-radius:50%!important; cursor:grab!important; background:radial-gradient(circle at 35% 28%,#fff 0 18%,#cfffff 30%,#48d9f7 68%,#087bc1 100%)!important; box-shadow:0 2px 5px rgba(0,55,110,.35),inset 0 1px 2px #fff!important; }
-    .portos-volume-slider:active::-webkit-slider-thumb { cursor:grabbing!important; transform:scale(1.08); }
-    .portos-volume-slider:active::-moz-range-thumb { transform:scale(1.08); }
+
+    .music-gadget .volume-control { position:relative!important; z-index:20!important; pointer-events:auto!important; }
+    .music-gadget .volume-track { flex:1!important; min-width:110px!important; height:28px!important; display:flex!important; align-items:center!important; background:transparent!important; border:0!important; box-shadow:none!important; overflow:visible!important; cursor:default!important; pointer-events:auto!important; touch-action:none!important; }
+    .music-gadget .portos-volume-slider { appearance:none!important; -webkit-appearance:none!important; width:100%!important; min-width:110px!important; height:10px!important; margin:0!important; padding:0!important; border:1px solid rgba(255,255,255,.95)!important; border-radius:999px!important; outline:none!important; cursor:pointer!important; pointer-events:auto!important; touch-action:none!important; background:linear-gradient(90deg,#baffff 0%,#36dcff var(--volume,72%),rgba(0,79,136,.25) var(--volume,72%),rgba(0,79,136,.25) 100%)!important; box-shadow:inset 0 2px 3px rgba(0,50,100,.25),0 1px 0 rgba(255,255,255,.75)!important; }
+    .music-gadget .portos-volume-slider::-webkit-slider-thumb { -webkit-appearance:none!important; appearance:none!important; width:22px!important; height:22px!important; border:1px solid rgba(255,255,255,.98)!important; border-radius:50%!important; cursor:grab!important; background:radial-gradient(circle at 35% 28%,#fff 0 18%,#cfffff 30%,#48d9f7 68%,#087bc1 100%)!important; box-shadow:0 2px 5px rgba(0,55,110,.35),inset 0 1px 2px #fff!important; }
+    .music-gadget .portos-volume-slider::-moz-range-thumb { width:22px!important; height:22px!important; border:1px solid rgba(255,255,255,.98)!important; border-radius:50%!important; cursor:grab!important; background:radial-gradient(circle at 35% 28%,#fff 0 18%,#cfffff 30%,#48d9f7 68%,#087bc1 100%)!important; box-shadow:0 2px 5px rgba(0,55,110,.35),inset 0 1px 2px #fff!important; }
+    .music-gadget .portos-volume-slider:active::-webkit-slider-thumb { cursor:grabbing!important; transform:scale(1.1); }
+    .music-gadget .portos-volume-slider:active::-moz-range-thumb { transform:scale(1.1); }
   `;
   document.head.appendChild(style);
 
