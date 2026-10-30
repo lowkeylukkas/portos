@@ -1,29 +1,30 @@
 /* PortOS functional app windows — movable, resizable, maximizable Longhorn-style panels */
 .portos-app-window {
-  position: fixed;
-  left: 50%; top: 50%;
+  position: fixed; left: 50%; top: 50%;
   width: min(760px, 78vw); height: min(500px, 68vh);
   min-width: 360px; min-height: 220px;
   transform: translate(-50%, -50%) scale(.94);
   opacity: 0; pointer-events: none; z-index: 70;
-  overflow: hidden; resize: both;
+  overflow: hidden;
   border: 1px solid rgba(255,255,255,.92); border-radius: 18px;
   background: linear-gradient(145deg,rgba(240,255,255,.92),rgba(98,197,232,.72) 43%,rgba(4,75,139,.88));
   box-shadow: inset 0 2px 4px rgba(255,255,255,.9),inset 0 -16px 28px rgba(0,44,88,.24),0 24px 55px rgba(0,22,55,.48),0 0 28px rgba(84,220,255,.24);
   backdrop-filter: blur(14px) saturate(140%);
-  transition: opacity .18s ease, transform .18s ease;
+  transition: opacity .24s cubic-bezier(.2,.8,.2,1), transform .24s cubic-bezier(.2,.8,.2,1), left .24s ease, top .24s ease, width .24s ease, height .24s ease, border-radius .24s ease;
 }
 .portos-app-window.open { opacity: 1; pointer-events: auto; transform: none; }
 .portos-app-window.minimized { opacity: 0; pointer-events: none; transform: scale(.82) translateY(35px); }
+.portos-app-window.closing { opacity: 0; pointer-events: none; transform: scale(.9) translateY(18px); }
 .portos-app-window.maximized {
   left: 8px !important; top: 8px !important;
   width: calc(100vw - 16px) !important; height: calc(100vh - 92px) !important;
-  min-width: 0; min-height: 0; border-radius: 10px; resize: none;
+  min-width: 0; min-height: 0; border-radius: 10px;
 }
+.portos-app-window.resizing { transition: none !important; }
 .portos-app-window::before { content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(115deg,transparent 25%,rgba(255,255,255,.22) 47%,transparent 59%); }
 .portos-app-titlebar {
   position:relative; z-index:3; height:48px; display:flex; align-items:center; gap:10px;
-  padding:0 8px 0 12px; color:#fff; cursor:move; user-select:none;
+  padding:0 8px 0 12px; color:#fff; cursor:move; user-select:none; touch-action:none;
   background:linear-gradient(180deg,rgba(255,255,255,.62),rgba(80,177,220,.3) 45%,rgba(0,74,137,.32));
   border-bottom:1px solid rgba(255,255,255,.5); box-shadow:inset 0 2px 3px rgba(255,255,255,.6),0 2px 8px rgba(0,51,96,.18);
 }
@@ -38,6 +39,18 @@
 .portos-app-body h2 { margin:0 0 10px;font-size:28px; }
 .portos-app-body p { margin:0;font-size:14px;line-height:1.6;max-width:620px; }
 .portos-app-hint { margin-top:22px;padding:15px 18px;border:1px solid rgba(255,255,255,.55);border-radius:14px;background:rgba(255,255,255,.16);box-shadow:inset 0 1px 3px rgba(255,255,255,.45); }
+
+/* Visible, oversized resize handles so resizing does not depend on the tiny browser corner. */
+.portos-window-resizer { position:absolute; z-index:20; touch-action:none; user-select:none; }
+.portos-window-resizer.n { top:-4px; left:14px; right:14px; height:9px; cursor:ns-resize; }
+.portos-window-resizer.s { bottom:-4px; left:14px; right:14px; height:9px; cursor:ns-resize; }
+.portos-window-resizer.e { top:14px; right:-4px; bottom:14px; width:9px; cursor:ew-resize; }
+.portos-window-resizer.w { top:14px; left:-4px; bottom:14px; width:9px; cursor:ew-resize; }
+.portos-window-resizer.ne { top:-5px; right:-5px; width:14px; height:14px; cursor:nesw-resize; }
+.portos-window-resizer.nw { top:-5px; left:-5px; width:14px; height:14px; cursor:nwse-resize; }
+.portos-window-resizer.se { right:-5px; bottom:-5px; width:16px; height:16px; cursor:nwse-resize; }
+.portos-window-resizer.sw { left:-5px; bottom:-5px; width:14px; height:14px; cursor:nesw-resize; }
+
 .music-gadget { display:block !important;visibility:visible !important;opacity:1 !important; }
 .music-gadget.music-hidden { display:none !important; }
 .music-gadget.is-playing .visualizer span { animation-duration:.55s; }
