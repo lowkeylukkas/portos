@@ -5,150 +5,67 @@
 .taskbar-clock { display:none !important; }
 .system-tray { display:none !important; }
 
-/* Real subject icons: remove the harsh black-looking shadow treatment. */
+/* Real subject icons: use the actual PNGs, with no black canvas/shadow filter. */
 .portos-app-icon,
 .task-app .mini-icon {
-  background-color:transparent !important;
-  background-repeat:no-repeat !important;
-  background-position:center !important;
-  background-size:contain !important;
+  background:transparent !important;
   border:0 !important;
   box-shadow:none !important;
   mix-blend-mode:normal !important;
-  filter:drop-shadow(0 2px 3px rgba(0,105,175,.30)) drop-shadow(0 0 7px rgba(116,232,255,.28)) !important;
+  filter:none !important;
+  overflow:visible !important;
 }
 .portos-app-icon { width:31px; height:31px; border-radius:8px; }
 .task-app .mini-icon { width:34px; height:34px; border-radius:9px; }
+.portos-real-app-icon {
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center !important;
+  background:transparent !important;
+  border:0 !important;
+  filter:drop-shadow(0 2px 3px rgba(0,105,175,.22)) drop-shadow(0 0 6px rgba(116,232,255,.18)) !important;
+  mix-blend-mode:normal !important;
+}
 
 /* Glassy Longhorn windows: more transparent surfaces, stronger refraction, softer depth. */
 .portos-app-window {
   border:1px solid rgba(255,255,255,.72) !important;
   border-radius:22px !important;
   background:linear-gradient(145deg,rgba(236,252,255,.68),rgba(111,205,238,.48) 46%,rgba(9,103,174,.58)) !important;
-  box-shadow:
-    inset 0 2px 5px rgba(255,255,255,.82),
-    inset 0 -14px 26px rgba(0,50,96,.14),
-    inset 1px 0 9px rgba(255,255,255,.34),
-    0 24px 58px rgba(0,22,55,.38),
-    0 0 30px rgba(84,220,255,.22) !important;
+  box-shadow:inset 0 2px 5px rgba(255,255,255,.82),inset 0 -14px 26px rgba(0,50,96,.14),inset 1px 0 9px rgba(255,255,255,.34),0 24px 58px rgba(0,22,55,.38),0 0 30px rgba(84,220,255,.22) !important;
   backdrop-filter:blur(18px) saturate(145%) !important;
   -webkit-backdrop-filter:blur(18px) saturate(145%) !important;
 }
-.portos-app-window::before {
-  background:
-    radial-gradient(circle at 12% 8%,rgba(255,255,255,.38),transparent 22%),
-    linear-gradient(115deg,transparent 23%,rgba(255,255,255,.22) 47%,transparent 60%) !important;
-}
-.portos-app-titlebar {
-  min-height:48px;
-  height:48px;
-  background:linear-gradient(180deg,rgba(190,244,255,.72) 0%,rgba(67,185,230,.58) 28%,rgba(15,119,185,.60) 62%,rgba(4,75,140,.64) 100%) !important;
-  border-bottom:1px solid rgba(255,255,255,.58) !important;
-  box-shadow:inset 0 2px 4px rgba(255,255,255,.78),inset 0 -3px 7px rgba(0,57,110,.16),0 2px 9px rgba(0,51,96,.18) !important;
-  backdrop-filter:blur(12px) saturate(140%);
-}
-.portos-window-button {
-  border-color:rgba(255,255,255,.68) !important;
-  background:linear-gradient(180deg,rgba(210,250,255,.72),rgba(42,160,214,.52) 52%,rgba(5,91,157,.68)) !important;
-  box-shadow:inset 0 1px 3px rgba(255,255,255,.82),0 2px 5px rgba(0,35,70,.22) !important;
-}
-.portos-app-body {
-  background:
-    radial-gradient(circle at 18% 0%,rgba(255,255,255,.50),transparent 30%),
-    linear-gradient(180deg,rgba(248,254,255,.76),rgba(222,246,255,.66) 54%,rgba(198,234,248,.68)) !important;
-  backdrop-filter:blur(12px) saturate(120%);
-  -webkit-backdrop-filter:blur(12px) saturate(120%);
-}
-.portos-app-hint {
-  background:linear-gradient(180deg,rgba(255,255,255,.62),rgba(213,243,255,.48)) !important;
-  border-color:rgba(255,255,255,.58) !important;
-  box-shadow:inset 0 1px 4px rgba(255,255,255,.88),0 5px 13px rgba(0,74,120,.11) !important;
-}
+.portos-app-window::before { background:radial-gradient(circle at 12% 8%,rgba(255,255,255,.38),transparent 22%),linear-gradient(115deg,transparent 23%,rgba(255,255,255,.22) 47%,transparent 60%) !important; }
+.portos-app-titlebar { min-height:48px;height:48px;background:linear-gradient(180deg,rgba(190,244,255,.72),rgba(67,185,230,.58) 28%,rgba(15,119,185,.60) 62%,rgba(4,75,140,.64)) !important;border-bottom:1px solid rgba(255,255,255,.58) !important;box-shadow:inset 0 2px 4px rgba(255,255,255,.78),inset 0 -3px 7px rgba(0,57,110,.16),0 2px 9px rgba(0,51,96,.18) !important;backdrop-filter:blur(12px) saturate(140%);}
+.portos-window-button { border-color:rgba(255,255,255,.68) !important;background:linear-gradient(180deg,rgba(210,250,255,.72),rgba(42,160,214,.52) 52%,rgba(5,91,157,.68)) !important;box-shadow:inset 0 1px 3px rgba(255,255,255,.82),0 2px 5px rgba(0,35,70,.22) !important; }
+.portos-app-body { background:radial-gradient(circle at 18% 0%,rgba(255,255,255,.50),transparent 30%),linear-gradient(180deg,rgba(248,254,255,.76),rgba(222,246,255,.66) 54%,rgba(198,234,248,.68)) !important;backdrop-filter:blur(12px) saturate(120%);-webkit-backdrop-filter:blur(12px) saturate(120%); }
+.portos-app-hint { background:linear-gradient(180deg,rgba(255,255,255,.62),rgba(213,243,255,.48)) !important;border-color:rgba(255,255,255,.58) !important;box-shadow:inset 0 1px 4px rgba(255,255,255,.88),0 5px 13px rgba(0,74,120,.11) !important; }
 
-/* Bubble-glass desktop icons. */
-.icon-orb {
-  background:transparent !important;
-  filter:drop-shadow(0 3px 5px rgba(0,95,160,.30)) drop-shadow(0 0 10px rgba(114,231,255,.24)) !important;
-}
-.desktop-icon:hover .icon-orb {
-  filter:brightness(1.10) saturate(1.10) drop-shadow(0 4px 7px rgba(0,95,160,.30)) drop-shadow(0 0 14px rgba(122,237,255,.34)) !important;
-}
+/* Desktop artwork icons: preserve the existing uploaded PNG treatment and avoid black filters. */
+.icon-orb { background-color:transparent !important;filter:drop-shadow(0 3px 5px rgba(0,95,160,.22)) drop-shadow(0 0 10px rgba(114,231,255,.22)) !important; }
+.desktop-icon:hover .icon-orb { filter:brightness(1.10) saturate(1.10) drop-shadow(0 4px 7px rgba(0,95,160,.22)) drop-shadow(0 0 14px rgba(122,237,255,.32)) !important; }
 
-/* More transparent, rounded Aero taskbar — still readable and substantial. */
-.portos-taskbar {
-  background:
-    linear-gradient(180deg,rgba(239,253,255,.40) 0%,rgba(126,211,240,.24) 10%,rgba(30,126,176,.30) 52%,rgba(3,56,105,.48) 100%),
-    linear-gradient(90deg,rgba(255,255,255,.08),rgba(40,170,220,.05)) !important;
-  border-top-color:rgba(255,255,255,.70) !important;
-  box-shadow:inset 0 1px 3px rgba(255,255,255,.70),inset 0 8px 18px rgba(255,255,255,.08),0 -12px 32px rgba(0,71,111,.14),0 -1px 0 rgba(0,44,81,.42) !important;
-  backdrop-filter:blur(22px) saturate(150%) !important;
-  -webkit-backdrop-filter:blur(22px) saturate(150%) !important;
-}
-.task-app {
-  background:linear-gradient(180deg,rgba(255,255,255,.20),rgba(39,139,183,.13)) !important;
-  border-color:rgba(255,255,255,.28) !important;
-  box-shadow:inset 0 1px 3px rgba(255,255,255,.48),0 3px 8px rgba(0,38,70,.14) !important;
-  backdrop-filter:blur(9px) saturate(135%);
-}
-.task-app:hover {
-  background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(64,181,220,.20)) !important;
-}
-.task-app.active {
-  background:linear-gradient(180deg,rgba(255,255,255,.42),rgba(42,161,210,.20) 52%,rgba(0,76,139,.16)) !important;
-  box-shadow:inset 0 1px 4px rgba(255,255,255,.82),0 0 14px rgba(101,229,255,.26),0 4px 9px rgba(0,38,73,.16) !important;
-}
+/* More transparent, rounded Aero taskbar. */
+.portos-taskbar { background:linear-gradient(180deg,rgba(239,253,255,.40),rgba(126,211,240,.24) 10%,rgba(30,126,176,.30) 52%,rgba(3,56,105,.48)),linear-gradient(90deg,rgba(255,255,255,.08),rgba(40,170,220,.05)) !important;border-top-color:rgba(255,255,255,.70) !important;box-shadow:inset 0 1px 3px rgba(255,255,255,.70),inset 0 8px 18px rgba(255,255,255,.08),0 -12px 32px rgba(0,71,111,.14),0 -1px 0 rgba(0,44,81,.42) !important;backdrop-filter:blur(22px) saturate(150%) !important;-webkit-backdrop-filter:blur(22px) saturate(150%) !important; }
+.task-app { background:linear-gradient(180deg,rgba(255,255,255,.20),rgba(39,139,183,.13)) !important;border-color:rgba(255,255,255,.28) !important;box-shadow:inset 0 1px 3px rgba(255,255,255,.48),0 3px 8px rgba(0,38,70,.14) !important;backdrop-filter:blur(9px) saturate(135%); }
+.task-app:hover { background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(64,181,220,.20)) !important; }
+.task-app.active { background:linear-gradient(180deg,rgba(255,255,255,.42),rgba(42,161,210,.20) 52%,rgba(0,76,139,.16)) !important;box-shadow:inset 0 1px 4px rgba(255,255,255,.82),0 0 14px rgba(101,229,255,.26),0 4px 9px rgba(0,38,73,.16) !important; }
 
 /* Start menu: lighter, more translucent, rounded glass. */
-.start-menu-shell {
-  border-color:rgba(255,255,255,.70) !important;
-  border-radius:26px 26px 18px 18px !important;
-  background:linear-gradient(145deg,rgba(238,253,255,.70),rgba(93,196,239,.52) 42%,rgba(6,93,171,.68)) !important;
-  box-shadow:0 22px 50px rgba(0,38,84,.34),0 0 0 2px rgba(68,220,255,.18) inset,0 2px 0 rgba(255,255,255,.82) inset,0 -12px 30px rgba(0,54,122,.22) inset !important;
-  backdrop-filter:blur(22px) saturate(145%) !important;
-  -webkit-backdrop-filter:blur(22px) saturate(145%) !important;
-}
+.start-menu-shell { border-color:rgba(255,255,255,.70) !important;border-radius:26px 26px 18px 18px !important;background:linear-gradient(145deg,rgba(238,253,255,.70),rgba(93,196,239,.52) 42%,rgba(6,93,171,.68)) !important;box-shadow:0 22px 50px rgba(0,38,84,.34),0 0 0 2px rgba(68,220,255,.18) inset,0 2px 0 rgba(255,255,255,.82) inset,0 -12px 30px rgba(0,54,122,.22) inset !important;backdrop-filter:blur(22px) saturate(145%) !important;-webkit-backdrop-filter:blur(22px) saturate(145%) !important; }
 .start-user { background:linear-gradient(180deg,rgba(255,255,255,.46),rgba(139,221,247,.18)) !important; }
-.start-item { background:linear-gradient(180deg,rgba(255,255,255,.20),rgba(73,183,229,.08)) !important; box-shadow:inset 0 1px rgba(255,255,255,.28) !important; }
+.start-item { background:linear-gradient(180deg,rgba(255,255,255,.20),rgba(73,183,229,.08)) !important;box-shadow:inset 0 1px rgba(255,255,255,.28) !important; }
 .start-item:hover { background:linear-gradient(180deg,rgba(255,255,255,.48),rgba(51,183,235,.24)) !important; }
 .start-footer { background:linear-gradient(180deg,rgba(0,82,151,.14),rgba(0,49,107,.38)) !important; }
 
-/* Keep the music app exactly as the fun focal gadget, but make its glass even softer. */
-.music-gadget-shell {
-  background:
-    radial-gradient(circle at 17% 8%,rgba(255,255,255,.88) 0 4%,transparent 16%),
-    radial-gradient(circle at 87% 100%,rgba(41,205,255,.26),transparent 38%),
-    linear-gradient(145deg,rgba(225,252,255,.72),rgba(84,196,241,.48) 47%,rgba(9,116,201,.54)) !important;
-  border-color:rgba(255,255,255,.78) !important;
-  box-shadow:
-    inset 0 2px 0 rgba(255,255,255,.90),
-    inset 0 -8px 18px rgba(0,69,132,.18),
-    inset 2px 0 10px rgba(255,255,255,.36),
-    0 3px 0 rgba(0,93,155,.30),
-    0 16px 30px rgba(0,74,140,.20) !important;
-  backdrop-filter:blur(18px) saturate(145%) !important;
-  -webkit-backdrop-filter:blur(18px) saturate(145%) !important;
-}
+/* Keep the music app as the fun focal gadget, with soft glass. */
+.music-gadget-shell { background:radial-gradient(circle at 17% 8%,rgba(255,255,255,.88) 0 4%,transparent 16%),radial-gradient(circle at 87% 100%,rgba(41,205,255,.26),transparent 38%),linear-gradient(145deg,rgba(225,252,255,.72),rgba(84,196,241,.48) 47%,rgba(9,116,201,.54)) !important;border-color:rgba(255,255,255,.78) !important;box-shadow:inset 0 2px 0 rgba(255,255,255,.90),inset 0 -8px 18px rgba(0,69,132,.18),inset 2px 0 10px rgba(255,255,255,.36),0 3px 0 rgba(0,93,155,.30),0 16px 30px rgba(0,74,140,.20) !important;backdrop-filter:blur(18px) saturate(145%) !important;-webkit-backdrop-filter:blur(18px) saturate(145%) !important; }
 
-/* Keep the nostalgic animation language: shimmer, bubbles, glow, and focus remain intact. */
-.music-gadget,
-.portos-app-window,
-.start-menu,
-.task-app,
-.desktop-icon,
-.start-orb { will-change:transform,filter,opacity; }
-
-/* Subtle environmental glass bloom without altering the approved wallpaper. */
-.desktop::after {
-  background:radial-gradient(circle at 50% 0%,rgba(255,255,255,.11),transparent 28%),linear-gradient(180deg,rgba(255,255,255,.025),transparent 35%,rgba(0,30,65,.06)) !important;
-}
-
-.portos-app-titlebar,
-.task-app,
-.start-orb,
-.desktop-icon,
-.music-button { user-select:none; -webkit-user-select:none; }
-
-@media(max-width:700px){
-  .music-gadget{max-width:calc(100vw - 20px);}
-  .task-app{width:52px;height:50px;}
-}
+/* Preserve the nostalgic animation language. */
+.music-gadget,.portos-app-window,.start-menu,.task-app,.desktop-icon,.start-orb { will-change:transform,filter,opacity; }
+.desktop::after { background:radial-gradient(circle at 50% 0%,rgba(255,255,255,.11),transparent 28%),linear-gradient(180deg,rgba(255,255,255,.025),transparent 35%,rgba(0,30,65,.06)) !important; }
+.portos-app-titlebar,.task-app,.start-orb,.desktop-icon,.music-button { user-select:none;-webkit-user-select:none; }
+@media(max-width:700px){.music-gadget{max-width:calc(100vw - 20px);}.task-app{width:52px;height:50px;}}
