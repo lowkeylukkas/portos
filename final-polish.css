@@ -74,6 +74,14 @@
 
 .desktop.fade-in{pointer-events:auto}
 
+/* New original PortOS identity — the uploaded crystalline star is used as the logo. */
+.portos-logo-image{display:block;width:100%;height:100%;object-fit:contain;object-position:center;filter:drop-shadow(0 4px 7px rgba(0,54,100,.34)) drop-shadow(0 0 11px rgba(93,225,255,.42));}
+.portos-orb .portos-logo-image{width:118px;height:118px;max-width:none;}
+.portos-lock-logo{position:relative;z-index:2;width:94px;height:94px;max-width:none;}
+.portos-start-logo{width:58px;height:58px;max-width:none;}
+.portos-taskbar-logo{width:58px;height:58px;max-width:none;}
+.start-orb .portos-taskbar-logo{filter:drop-shadow(0 2px 4px rgba(0,45,85,.4)) drop-shadow(0 0 9px rgba(120,235,255,.48));}
+
 @media(max-width:1100px){
   .desktop-icon-field{grid-template-columns:repeat(2,100px);width:220px}
   .desktop-icon{width:100px;height:105px}
