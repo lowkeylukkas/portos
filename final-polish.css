@@ -1,6 +1,5 @@
 /* STEP 10 — Final PortOS Frutiger Aero / Longhorn material pass */
 
-/* Shared material language */
 :root{
   --aero-hi:rgba(255,255,255,.92);
   --aero-soft:rgba(191,246,255,.48);
@@ -11,99 +10,83 @@
 
 /* Atmospheric desktop light — adds depth without touching the approved wallpaper */
 .desktop::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  z-index:1;
-  pointer-events:none;
-  background:
-    radial-gradient(ellipse at 78% 8%,rgba(255,255,255,.22),transparent 25%),
-    radial-gradient(ellipse at 8% 88%,rgba(66,223,255,.12),transparent 28%),
-    linear-gradient(180deg,rgba(255,255,255,.05),transparent 34%,rgba(0,43,84,.08));
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse at 78% 8%,rgba(255,255,255,.22),transparent 25%),radial-gradient(ellipse at 8% 88%,rgba(66,223,255,.12),transparent 28%),linear-gradient(180deg,rgba(255,255,255,.05),transparent 34%,rgba(0,43,84,.08));
   mix-blend-mode:screen;
 }
-.desktop > *{position:relative;z-index:2}
+/* IMPORTANT: do not override the absolute positioning of desktop widgets. */
+.desktop > *{z-index:2}
 
-/* Make the taskbar feel like molded translucent glass instead of a flat bar */
 .portos-taskbar{
-  height:64px;
-  padding-left:10px;
-  background:
-    linear-gradient(180deg,rgba(255,255,255,.66) 0,rgba(196,244,255,.38) 8%,rgba(55,163,207,.34) 34%,rgba(4,77,137,.68) 100%),
-    linear-gradient(90deg,rgba(0,160,220,.12),rgba(255,255,255,.06),rgba(0,73,145,.14));
+  height:76px;padding-left:10px;
+  background:linear-gradient(180deg,rgba(255,255,255,.66) 0,rgba(196,244,255,.38) 8%,rgba(55,163,207,.34) 34%,rgba(4,77,137,.68) 100%),linear-gradient(90deg,rgba(0,160,220,.12),rgba(255,255,255,.06),rgba(0,73,145,.14));
   border-top:1px solid rgba(255,255,255,.94);
-  box-shadow:
-    inset 0 2px 3px rgba(255,255,255,.76),
-    inset 0 9px 20px rgba(255,255,255,.12),
-    inset 0 -9px 20px rgba(0,31,75,.18),
-    0 -10px 32px rgba(0,61,101,.2);
+  box-shadow:inset 0 2px 3px rgba(255,255,255,.76),inset 0 9px 20px rgba(255,255,255,.12),inset 0 -9px 20px rgba(0,31,75,.18),0 -10px 32px rgba(0,61,101,.2);
 }
-.portos-taskbar::after{
-  content:"";
-  position:absolute;
-  left:0;right:0;top:0;height:1px;
-  background:rgba(255,255,255,.98);
-  box-shadow:0 0 12px rgba(189,247,255,.85);
-  pointer-events:none;
-}
-
+.portos-taskbar::after{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:rgba(255,255,255,.98);box-shadow:0 0 12px rgba(189,247,255,.85);pointer-events:none}
 .start-orb{
-  width:78px;height:78px;flex-basis:78px;margin-top:-15px;
-  background:
-    radial-gradient(circle at 29% 19%,#fff 0 4%,rgba(255,255,255,.95) 7%,transparent 15%),
-    radial-gradient(circle at 34% 31%,#dfffff 0 9%,#62e9ff 25%,#16a9e9 50%,#0872c1 72%,#043e82 100%);
-  box-shadow:
-    inset 7px 8px 13px rgba(255,255,255,.76),
-    inset -10px -13px 18px rgba(0,37,96,.58),
-    inset 0 0 0 1px rgba(255,255,255,.3),
-    0 0 0 2px rgba(117,232,255,.28),
-    0 0 26px rgba(66,216,255,.62),
-    0 7px 20px rgba(0,28,62,.55);
+  width:86px;height:86px;flex-basis:86px;margin-top:-17px;
+  background:radial-gradient(circle at 29% 19%,#fff 0 4%,rgba(255,255,255,.95) 7%,transparent 15%),radial-gradient(circle at 34% 31%,#dfffff 0 9%,#62e9ff 25%,#16a9e9 50%,#0872c1 72%,#043e82 100%);
+  box-shadow:inset 7px 8px 13px rgba(255,255,255,.76),inset -10px -13px 18px rgba(0,37,96,.58),inset 0 0 0 1px rgba(255,255,255,.3),0 0 0 2px rgba(117,232,255,.28),0 0 26px rgba(66,216,255,.62),0 7px 20px rgba(0,28,62,.55);
 }
-.start-orb span{font-size:35px;color:#f7ffff;text-shadow:0 1px 3px #004b83,0 0 10px rgba(255,255,255,.8)}
+.start-orb span{font-size:38px;color:#f7ffff;text-shadow:0 1px 3px #004b83,0 0 10px rgba(255,255,255,.8)}
 .start-orb::before{height:27px;top:7px;left:12px;right:11px;background:linear-gradient(180deg,rgba(255,255,255,.84),rgba(255,255,255,0));filter:blur(2px)}
 .start-orb::after{content:"";position:absolute;inset:7px;border-radius:50%;border:1px solid rgba(255,255,255,.2);box-shadow:inset 0 0 10px rgba(255,255,255,.18);pointer-events:none}
 
-/* Richer task buttons */
-.task-app{
-  width:50px;height:47px;border-radius:10px;
-  background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(22,122,174,.16) 48%,rgba(0,61,117,.12));
-  border-color:rgba(255,255,255,.48);
-  box-shadow:inset 0 1px 3px rgba(255,255,255,.65),inset 0 -4px 8px rgba(0,53,103,.13),0 2px 7px rgba(0,34,67,.22);
-}
+.taskbar-apps{gap:8px;margin-left:14px}
+.task-app{width:58px;height:54px;border-radius:11px;background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(22,122,174,.16) 48%,rgba(0,61,117,.12));border-color:rgba(255,255,255,.48);box-shadow:inset 0 1px 3px rgba(255,255,255,.65),inset 0 -4px 8px rgba(0,53,103,.13),0 2px 7px rgba(0,34,67,.22)}
 .task-app:hover{background:linear-gradient(180deg,rgba(255,255,255,.58),rgba(66,197,232,.3) 55%,rgba(0,95,159,.18));box-shadow:inset 0 1px 4px rgba(255,255,255,.9),0 0 15px rgba(107,231,255,.48),0 3px 8px rgba(0,39,73,.25)}
-.task-app .mini-icon{width:28px;height:28px;border-radius:8px;background:linear-gradient(145deg,#f5ffff 0,#8aeaff 22%,#2dbce9 53%,#0673bd 78%,#04528f 100%);box-shadow:inset 2px 2px 5px rgba(255,255,255,.85),inset -3px -4px 6px rgba(0,59,112,.4),0 2px 5px rgba(0,30,62,.34)}
-
-/* System tray as a little glass instrument panel */
-.system-tray{height:47px;border:1px solid rgba(255,255,255,.34);background:linear-gradient(180deg,rgba(255,255,255,.25),rgba(0,52,102,.27));box-shadow:inset 1px 1px 4px rgba(255,255,255,.34),inset -1px -3px 6px rgba(0,31,67,.2),0 2px 8px rgba(0,28,57,.15)}
+.task-app .mini-icon{width:34px;height:34px;border-radius:9px;background:linear-gradient(145deg,#f5ffff 0,#8aeaff 22%,#2dbce9 53%,#0673bd 78%,#04528f 100%);box-shadow:inset 2px 2px 5px rgba(255,255,255,.85),inset -3px -4px 6px rgba(0,59,112,.4),0 2px 5px rgba(0,30,62,.34)}
+.system-tray{height:54px;min-width:220px;border:1px solid rgba(255,255,255,.34);background:linear-gradient(180deg,rgba(255,255,255,.25),rgba(0,52,102,.27));box-shadow:inset 1px 1px 4px rgba(255,255,255,.34),inset -1px -3px 6px rgba(0,31,67,.2),0 2px 8px rgba(0,28,57,.15)}
 .tray-symbol{filter:drop-shadow(0 0 5px rgba(125,238,255,.65))}
 .taskbar-clock{text-shadow:0 1px 4px rgba(0,26,57,.8),0 0 7px rgba(170,246,255,.25)}
 
-/* Clock gets an extra jewel-like outer halo while preserving the approved analog design */
-.desktop-clock{filter:drop-shadow(0 14px 22px rgba(0,44,75,.28)) drop-shadow(0 0 13px rgba(79,220,255,.22))}
-.clock-glass{box-shadow:inset 0 2px 5px rgba(255,255,255,.82),inset 0 -11px 20px rgba(0,57,112,.24),0 0 0 2px rgba(177,248,255,.22),0 0 24px rgba(67,211,255,.22),0 10px 22px rgba(0,38,72,.28)}
-.clock-face::before{content:"";position:absolute;inset:5%;border-radius:50%;border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 0 18px rgba(255,255,255,.14);pointer-events:none}
+/* Desktop reference layout: two icon columns left, glass clock centered, music gadget right. */
+.desktop-icon-field{top:26px;left:28px;width:250px;grid-template-columns:repeat(2,112px);grid-auto-rows:112px;gap:4px 12px}
+.desktop-icon{width:112px;height:112px}
+.icon-orb{width:72px;height:72px;border-radius:21px}
+.icon-label{font-size:13px;line-height:15px;max-width:112px;text-shadow:0 2px 4px rgba(0,48,76,.9),0 0 7px rgba(0,84,128,.55)}
 
-/* Music gadget: make it feel like a real 2000s desktop widget */
-.music-gadget-shell{
-  border-color:rgba(255,255,255,.78)!important;
-  background:
-    linear-gradient(145deg,rgba(240,255,255,.72),rgba(82,193,230,.44) 42%,rgba(2,75,139,.64))!important;
-  box-shadow:
-    inset 0 2px 5px rgba(255,255,255,.75),
-    inset 0 -12px 22px rgba(0,45,92,.2),
-    0 16px 35px rgba(0,35,66,.34),
-    0 0 24px rgba(72,220,255,.24)!important;
+/* The reference desktop uses a large glass digital clock rather than the old small analog widget. */
+.desktop-clock{top:8.8vh;left:50%;right:auto;width:min(560px,38vw);height:222px;aspect-ratio:auto;transform:translateX(-50%);z-index:8;filter:drop-shadow(0 18px 28px rgba(0,43,76,.3)) drop-shadow(0 0 20px rgba(137,239,255,.35))}
+.desktop-clock .clock-glass{position:absolute;inset:0;padding:0;border-radius:115px;background:linear-gradient(145deg,rgba(255,255,255,.82),rgba(107,211,245,.48) 35%,rgba(17,120,190,.5) 70%,rgba(231,255,255,.8));border:1px solid rgba(255,255,255,.9);box-shadow:inset 0 3px 8px rgba(255,255,255,.95),inset 0 -12px 24px rgba(0,55,112,.24),0 0 0 2px rgba(177,248,255,.28),0 0 30px rgba(67,211,255,.3),0 12px 26px rgba(0,38,72,.28);backdrop-filter:blur(9px) saturate(145%)}
+.desktop-clock .clock-glass::before{content:"";position:absolute;inset:7px;border-radius:108px;border:1px solid rgba(255,255,255,.72);box-shadow:inset 0 0 18px rgba(255,255,255,.24);pointer-events:none}
+.desktop-clock .clock-face{position:absolute;inset:0;width:auto;height:auto;overflow:visible;border-radius:0;background:none;box-shadow:none}
+.desktop-clock .clock-face::before,.desktop-clock .clock-ticks,.desktop-clock .clock-hand,.desktop-clock .clock-center,.desktop-clock .clock-reflection,.desktop-clock .clock-water-glint{display:none}
+.desktop-digital-time{position:absolute;left:72px;top:22px;z-index:4;font-size:112px;line-height:.92;font-weight:200;letter-spacing:-.07em;color:#fff;text-shadow:0 2px 3px rgba(0,55,90,.4),0 0 24px rgba(255,255,255,.25);font-variant-numeric:tabular-nums}
+.desktop-digital-ampm{position:absolute;left:318px;top:124px;z-index:4;font-size:31px;font-weight:300;color:#fff;text-shadow:0 2px 5px rgba(0,55,90,.4)}
+.desktop-weather{position:absolute;right:42px;top:47px;z-index:4;width:88px;height:72px}
+.desktop-weather-sun{position:absolute;left:10px;top:2px;width:54px;height:54px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff9b7,#ffd52f 46%,#f4a900 78%);box-shadow:0 0 18px rgba(255,231,77,.75)}
+.desktop-weather-cloud{position:absolute;right:0;bottom:4px;width:63px;height:28px;border-radius:22px;background:linear-gradient(180deg,#fff,#d9f8ff 58%,#9ed7ed);box-shadow:0 5px 9px rgba(0,63,100,.2)}
+.desktop-weather-cloud::before,.desktop-weather-cloud::after{content:"";position:absolute;border-radius:50%;background:inherit}
+.desktop-weather-cloud::before{width:32px;height:32px;left:10px;top:-13px}.desktop-weather-cloud::after{width:25px;height:25px;right:9px;top:-8px}
+.desktop-digital-date{position:absolute;left:0;right:0;bottom:28px;z-index:4;text-align:center;font-size:24px;font-weight:300;color:#f4ffff;text-shadow:0 2px 7px rgba(0,55,90,.45)}
+
+/* Floating music widget stays outside the windows and returns to the reference top-right position. */
+.music-gadget{top:88px;right:26px;width:430px;min-height:270px;z-index:30;transform:none}
+.music-gadget-shell{min-height:270px;padding:14px 15px 13px;border-radius:27px}
+
+/* Keep the start menu above the desktop and clickable. */
+.start-menu{z-index:40}
+
+/* The boot layer must stop capturing clicks after it fades away. */
+.boot-screen.fade-out{pointer-events:none}
+
+.desktop.fade-in{pointer-events:auto}
+
+@media(max-width:1100px){
+  .desktop-icon-field{grid-template-columns:repeat(2,100px);width:220px}
+  .desktop-icon{width:100px;height:105px}
+  .icon-orb{width:64px;height:64px}
+  .desktop-clock{width:min(500px,46vw);height:195px}
+  .desktop-digital-time{left:58px;font-size:94px}.desktop-digital-ampm{left:270px;top:109px;font-size:27px}.desktop-digital-date{font-size:21px}
+  .music-gadget{width:360px;min-height:225px}.music-gadget-shell{min-height:225px}
 }
-.music-gadget-shell::before{content:"";position:absolute;inset:1px;border-radius:inherit;border:1px solid rgba(255,255,255,.22);pointer-events:none}
-.album-orb{box-shadow:inset 3px 4px 8px rgba(255,255,255,.78),inset -6px -8px 12px rgba(0,55,105,.38),0 0 12px rgba(92,227,255,.42)!important}
-.music-button:hover{filter:brightness(1.18) saturate(1.1);transform:translateY(-1px) scale(1.04)}
 
-/* Start menu cohesion */
-.start-menu-shell{box-shadow:0 22px 50px rgba(0,32,72,.5),0 0 0 2px rgba(89,226,255,.25) inset,0 2px 0 rgba(255,255,255,.98) inset,0 -14px 30px rgba(0,52,122,.34) inset}
-.start-menu-shell::before{background:radial-gradient(circle at 16% 4%,rgba(255,255,255,.98),transparent 24%),radial-gradient(circle at 87% 12%,rgba(255,255,255,.5),transparent 20%),linear-gradient(115deg,transparent 30%,rgba(255,255,255,.2) 47%,transparent 61%)}
-
-/* Tiny floating highlights, deliberately subtle so the approved wallpaper remains the star */
-.desktop::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(circle at 91% 31%,rgba(255,255,255,.5) 0 1px,transparent 2px),radial-gradient(circle at 87% 36%,rgba(168,250,255,.42) 0 2px,transparent 3px),radial-gradient(circle at 14% 18%,rgba(255,255,255,.4) 0 1px,transparent 2px);opacity:.6}
-
-@media(max-width:700px){.portos-taskbar{height:58px}.start-orb{width:66px;height:66px;flex-basis:66px;margin-top:-10px}.start-orb span{font-size:29px}}
+@media(max-width:700px){
+  .desktop-icon-field{top:18px;left:14px;grid-template-columns:repeat(2,88px);grid-auto-rows:92px;gap:4px;width:180px}
+  .desktop-icon{width:88px;height:92px;gap:5px}.icon-orb{width:50px;height:50px;border-radius:15px}.icon-label{font-size:10px;line-height:12px;max-width:86px}
+  .desktop-clock{top:7vh;width:92vw;height:150px}.desktop-digital-time{left:30px;top:22px;font-size:72px}.desktop-digital-ampm{left:220px;top:89px;font-size:22px}.desktop-digital-date{bottom:17px;font-size:15px}.desktop-weather{right:25px;top:31px;transform:scale(.72);transform-origin:top right}
+  .music-gadget{right:10px;top:70px;width:326px;transform:scale(.78);transform-origin:top right}
+  .portos-taskbar{height:58px}.start-orb{width:66px;height:66px;flex-basis:66px;margin-top:-10px}.start-orb span{font-size:29px}
+}
