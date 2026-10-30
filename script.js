@@ -53,6 +53,30 @@ function showDesktop() {
 
 let appWindowZ = 70;
 
+const appIconMap = {
+  'MAPEH': 'mapeh.png',
+  'TLE': 'tle.png',
+  'Values Ed.': 'values.png',
+  'English': 'english.png',
+  'Araling Panlipunan': 'araling-panlipunan.png',
+  'My Galleries': 'galleries.png',
+  'Integration': 'integration.png',
+  'Reflection': 'reflection.png',
+  'Credits & Sources': 'credits.png',
+  'About Me': 'about-me.png',
+  'Science': 'science.png',
+  'Filipino': 'filipino.png',
+  'Mathematics': 'math.png',
+  'Music': 'music.png',
+  'Customize': 'about-me.png',
+  'Files': 'credits.png',
+  'Help': 'reflection.png'
+};
+
+function getAppIcon(title) {
+  return appIconMap[title] || 'about-me.png';
+}
+
 function getLiveAppWindows() {
   return [...document.querySelectorAll('.portos-app-window')].filter((windowEl) => windowEl.dataset.closing !== 'true');
 }
@@ -75,13 +99,15 @@ function addWindowToTaskbar(windowEl, title, symbol) {
   const container = getTaskbarAppsContainer();
   if (!container) return;
   const task = document.createElement('button');
+  const icon = getAppIcon(title);
   task.type = 'button';
   task.className = 'task-app portos-window-task active';
   task.dataset.windowId = windowEl.dataset.windowId;
   task.setAttribute('aria-label', title);
   task.setAttribute('aria-pressed', 'true');
   task.title = title;
-  task.innerHTML = `<span class="mini-icon">${symbol || '✦'}</span>`;
+  task.innerHTML = `<span class="mini-icon" aria-hidden="true"></span>`;
+  task.querySelector('.mini-icon').style.backgroundImage = `url("${icon}")`;
   task.addEventListener('click', (event) => {
     event.stopPropagation();
     const target = getLiveAppWindows().find((item) => item.dataset.windowId === task.dataset.windowId);
@@ -195,7 +221,6 @@ function makeAppWindowInteractive(windowEl) {
     focusAppWindow(windowEl);
     if (windowEl.classList.contains('maximized')) return;
     const rect = windowEl.getBoundingClientRect();
-    // Convert the opening transform into fixed pixel coordinates before dragging.
     windowEl.style.transition = 'none';
     windowEl.style.left = `${rect.left}px`;
     windowEl.style.top = `${rect.top}px`;
@@ -345,13 +370,14 @@ const appDescriptions = {
 function openAppWindow(title, symbol, description) {
   setStartMenu(false);
   const windowEl = document.createElement('section');
+  const icon = getAppIcon(title);
   windowEl.className = 'portos-app-window';
   windowEl.dataset.windowId = `portos-window-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
   windowEl.setAttribute('role', 'dialog');
   windowEl.setAttribute('aria-label', title);
   windowEl.innerHTML = `
     <div class="portos-app-titlebar">
-      <span class="portos-app-icon">${symbol}</span><span class="portos-app-title">${title}</span>
+      <span class="portos-app-icon" aria-hidden="true"></span><span class="portos-app-title">${title}</span>
       <div class="portos-window-controls" aria-label="Window controls">
         <button class="portos-window-button" data-window-action="minimize" type="button" aria-label="Minimize window">—</button>
         <button class="portos-window-button" data-window-action="maximize" type="button" aria-label="Maximize window">□</button>
@@ -362,7 +388,7 @@ function openAppWindow(title, symbol, description) {
     <span class="portos-window-resizer n" data-resize="n"></span><span class="portos-window-resizer s" data-resize="s"></span><span class="portos-window-resizer e" data-resize="e"></span><span class="portos-window-resizer w" data-resize="w"></span>
     <span class="portos-window-resizer ne" data-resize="ne"></span><span class="portos-window-resizer nw" data-resize="nw"></span><span class="portos-window-resizer se" data-resize="se"></span><span class="portos-window-resizer sw" data-resize="sw"></span>`;
   document.body.appendChild(windowEl);
-  // Establish a real pixel position before the opening animation so dragging never has to switch coordinate systems.
+  windowEl.querySelector('.portos-app-icon').style.backgroundImage = `url("${icon}")`;
   const width = windowEl.offsetWidth;
   const height = windowEl.offsetHeight;
   const left = Math.max(8, (window.innerWidth - width) / 2);
