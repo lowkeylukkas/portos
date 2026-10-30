@@ -1,40 +1,44 @@
-/* PortOS functional app windows — glassy Longhorn-style panels */
+/* PortOS functional app windows — movable, resizable, maximizable Longhorn-style panels */
 .portos-app-window {
   position: fixed;
-  left: 50%;
-  top: 50%;
-  width: min(760px, 78vw);
-  height: min(500px, 68vh);
+  left: 50%; top: 50%;
+  width: min(760px, 78vw); height: min(500px, 68vh);
+  min-width: 360px; min-height: 220px;
   transform: translate(-50%, -50%) scale(.94);
-  opacity: 0;
-  pointer-events: none;
-  z-index: 70;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,.92);
-  border-radius: 18px;
-  background: linear-gradient(145deg, rgba(240,255,255,.92), rgba(98,197,232,.72) 43%, rgba(4,75,139,.88));
-  box-shadow: inset 0 2px 4px rgba(255,255,255,.9), inset 0 -16px 28px rgba(0,44,88,.24), 0 24px 55px rgba(0,22,55,.48), 0 0 28px rgba(84,220,255,.24);
+  opacity: 0; pointer-events: none; z-index: 70;
+  overflow: hidden; resize: both;
+  border: 1px solid rgba(255,255,255,.92); border-radius: 18px;
+  background: linear-gradient(145deg,rgba(240,255,255,.92),rgba(98,197,232,.72) 43%,rgba(4,75,139,.88));
+  box-shadow: inset 0 2px 4px rgba(255,255,255,.9),inset 0 -16px 28px rgba(0,44,88,.24),0 24px 55px rgba(0,22,55,.48),0 0 28px rgba(84,220,255,.24);
   backdrop-filter: blur(14px) saturate(140%);
   transition: opacity .18s ease, transform .18s ease;
 }
-.portos-app-window.open { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
-.portos-app-window::before { content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(115deg, transparent 25%, rgba(255,255,255,.22) 47%, transparent 59%); }
-.portos-app-titlebar { position:relative; z-index:2; height:48px; display:flex; align-items:center; gap:10px; padding:0 12px; color:#fff; background:linear-gradient(180deg,rgba(255,255,255,.62),rgba(80,177,220,.3) 45%,rgba(0,74,137,.32)); border-bottom:1px solid rgba(255,255,255,.5); box-shadow:inset 0 2px 3px rgba(255,255,255,.6),0 2px 8px rgba(0,51,96,.18); }
-.portos-app-icon { width:31px; height:31px; display:grid; place-items:center; border-radius:9px; color:#fff; font-weight:900; background:linear-gradient(145deg,#fff,#8deeff 30%,#168ed0 72%,#07528f); border:1px solid rgba(255,255,255,.9); box-shadow:inset 0 2px 4px rgba(255,255,255,.9),inset 0 -4px 7px rgba(0,54,108,.35),0 2px 5px rgba(0,42,85,.3); }
-.portos-app-title { font-size:15px; font-weight:800; text-shadow:0 1px 3px #07558b; }
-.portos-app-close { margin-left:auto; width:30px; height:30px; border:1px solid rgba(255,255,255,.82); border-radius:50%; color:#fff; cursor:pointer; background:linear-gradient(145deg,rgba(255,255,255,.65),rgba(18,115,180,.62)); box-shadow:inset 0 1px 3px rgba(255,255,255,.85),0 2px 6px rgba(0,38,77,.3); }
-.portos-app-close:hover { filter:brightness(1.15); transform:scale(1.05); }
-.portos-app-body { position:relative; z-index:2; height:calc(100% - 48px); overflow:auto; padding:28px; color:#fff; text-shadow:0 1px 2px rgba(0,45,82,.65); }
-.portos-app-body h2 { margin:0 0 10px; font-size:28px; }
-.portos-app-body p { margin:0; font-size:14px; line-height:1.6; max-width:620px; }
-.portos-app-hint { margin-top:22px; padding:15px 18px; border:1px solid rgba(255,255,255,.55); border-radius:14px; background:rgba(255,255,255,.16); box-shadow:inset 0 1px 3px rgba(255,255,255,.45); }
-
-/* Keep the floating music gadget present on the desktop unless the user explicitly hides it. */
-.music-gadget { display:block !important; visibility:visible !important; opacity:1 !important; }
+.portos-app-window.open { opacity: 1; pointer-events: auto; transform: none; }
+.portos-app-window.minimized { opacity: 0; pointer-events: none; transform: scale(.82) translateY(35px); }
+.portos-app-window.maximized {
+  left: 8px !important; top: 8px !important;
+  width: calc(100vw - 16px) !important; height: calc(100vh - 92px) !important;
+  min-width: 0; min-height: 0; border-radius: 10px; resize: none;
+}
+.portos-app-window::before { content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(115deg,transparent 25%,rgba(255,255,255,.22) 47%,transparent 59%); }
+.portos-app-titlebar {
+  position:relative; z-index:3; height:48px; display:flex; align-items:center; gap:10px;
+  padding:0 8px 0 12px; color:#fff; cursor:move; user-select:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.62),rgba(80,177,220,.3) 45%,rgba(0,74,137,.32));
+  border-bottom:1px solid rgba(255,255,255,.5); box-shadow:inset 0 2px 3px rgba(255,255,255,.6),0 2px 8px rgba(0,51,96,.18);
+}
+.portos-app-icon { width:31px;height:31px;flex:0 0 31px;display:grid;place-items:center;border-radius:9px;color:#fff;font-weight:900;background:linear-gradient(145deg,#fff,#8deeff 30%,#168ed0 72%,#07528f);border:1px solid rgba(255,255,255,.9);box-shadow:inset 0 2px 4px rgba(255,255,255,.9),inset 0 -4px 7px rgba(0,54,108,.35),0 2px 5px rgba(0,42,85,.3); }
+.portos-app-title { min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:15px;font-weight:800;text-shadow:0 1px 3px #07558b; }
+.portos-window-controls { margin-left:auto;display:flex;gap:4px;align-items:center;flex:0 0 auto; }
+.portos-window-button { width:31px;height:27px;display:grid;place-items:center;padding:0;border:1px solid rgba(255,255,255,.72);border-radius:5px;color:#fff;cursor:pointer;font-family:Arial,sans-serif;font-size:15px;font-weight:800;line-height:1;background:linear-gradient(180deg,rgba(255,255,255,.62),rgba(28,119,179,.58) 48%,rgba(0,60,120,.7));box-shadow:inset 0 1px 2px rgba(255,255,255,.82),0 1px 4px rgba(0,35,70,.3);text-shadow:0 1px 2px #00416d; }
+.portos-window-button:hover { filter:brightness(1.18);box-shadow:inset 0 1px 3px rgba(255,255,255,.95),0 0 8px rgba(119,232,255,.5); }
+.portos-window-button.close { background:linear-gradient(180deg,#ffb3a7,#e75c48 48%,#a51f18); }
+.portos-window-button.close:hover { background:linear-gradient(180deg,#ffd0c7,#f26b54 48%,#b52319); }
+.portos-app-body { position:relative;z-index:2;height:calc(100% - 48px);overflow:auto;padding:28px;color:#fff;text-shadow:0 1px 2px rgba(0,45,82,.65);cursor:default;user-select:text; }
+.portos-app-body h2 { margin:0 0 10px;font-size:28px; }
+.portos-app-body p { margin:0;font-size:14px;line-height:1.6;max-width:620px; }
+.portos-app-hint { margin-top:22px;padding:15px 18px;border:1px solid rgba(255,255,255,.55);border-radius:14px;background:rgba(255,255,255,.16);box-shadow:inset 0 1px 3px rgba(255,255,255,.45); }
+.music-gadget { display:block !important;visibility:visible !important;opacity:1 !important; }
 .music-gadget.music-hidden { display:none !important; }
 .music-gadget.is-playing .visualizer span { animation-duration:.55s; }
-
-@media(max-width:700px){
-  .portos-app-window { width:92vw; height:70vh; }
-  .portos-app-body { padding:20px; }
-}
+@media(max-width:700px){ .portos-app-window{width:92vw;height:70vh;min-width:280px}.portos-app-body{padding:20px}.portos-window-button{width:28px;height:25px} }
