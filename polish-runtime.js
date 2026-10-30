@@ -10,7 +10,7 @@
       const src = iconFor(title);
       const icon = win.querySelector('.portos-app-icon');
       if (icon && src) {
-        icon.style.backgroundImage = `url("${src}")`;
+        if (icon.dataset.appIcon !== src) icon.style.backgroundImage = `url("${src}")`;
         icon.dataset.appIcon = src;
         icon.setAttribute('aria-hidden','true');
       }
@@ -20,9 +20,9 @@
       const src = iconFor(title);
       const icon = task.querySelector('.mini-icon');
       if (icon && src) {
-        icon.style.backgroundImage = `url("${src}")`;
+        if (icon.dataset.appIcon !== src) icon.style.backgroundImage = `url("${src}")`;
         icon.dataset.appIcon = src;
-        icon.textContent = '';
+        if (icon.textContent.trim()) icon.textContent = '';
       }
     });
   }
