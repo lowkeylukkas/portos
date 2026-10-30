@@ -135,6 +135,23 @@
 .icon-filipino .icon-orb { background:radial-gradient(circle at 28% 18%,#fff 0 5%,transparent 18%),linear-gradient(145deg,#fff6c8,#ffdd72 43%,#e06c4f); }
 .icon-math .icon-orb { background:radial-gradient(circle at 28% 18%,#fff 0 5%,transparent 18%),linear-gradient(145deg,#d9faff,#77d8ff 43%,#456bd0); }
 
+/* Uploaded portfolio artwork — use the actual PNG assets instead of text symbols. */
+.icon-symbol { display:none; }
+.icon-mapeh .icon-orb { background-image:url("mapeh.png"); background-size:cover; background-position:center; }
+.icon-tle .icon-orb { background-image:url("tle.png"); background-size:cover; background-position:center; }
+.icon-values .icon-orb { background-image:url("values.png"); background-size:cover; background-position:center; }
+.icon-english .icon-orb { background-image:url("english.png"); background-size:cover; background-position:center; }
+.icon-ap .icon-orb { background-image:url("araling-panlipunan.png"); background-size:cover; background-position:center; }
+.icon-gallery .icon-orb { background-image:url("galleries.png"); background-size:cover; background-position:center; }
+.icon-integration .icon-orb { background-image:url("integration.png"); background-size:cover; background-position:center; }
+.icon-reflection .icon-orb { background-image:url("reflection.png"); background-size:cover; background-position:center; }
+.icon-sources .icon-orb { background-image:url("credits.png"); background-size:cover; background-position:center; }
+.icon-music .icon-orb { background-image:url("music.png"); background-size:cover; background-position:center; }
+.icon-about .icon-orb { background-image:url("about-me.png"); background-size:cover; background-position:center; }
+.icon-science .icon-orb { background-image:url("science.png"); background-size:cover; background-position:center; }
+.icon-filipino .icon-orb { background-image:url("filipino.png"); background-size:cover; background-position:center; }
+.icon-math .icon-orb { background-image:url("math.png"); background-size:cover; background-position:center; }
+
 @keyframes iconSweep {
   0%,55% { transform:translateX(-80%) rotate(-18deg); opacity:0; }
   65% { opacity:.75; }
