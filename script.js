@@ -4,16 +4,14 @@ const desktop = document.getElementById('desktop');
 const loginButton = document.getElementById('login-button');
 const lockTime = document.getElementById('lock-time');
 const lockDate = document.getElementById('lock-date');
-const clockTicks = document.querySelector('.clock-ticks');
-const clockHour = document.querySelector('.clock-hour');
-const clockMinute = document.querySelector('.clock-minute');
-const clockSecond = document.querySelector('.clock-second');
+const desktopTime = document.getElementById('desktop-time');
+const desktopAmPm = document.getElementById('desktop-ampm');
+const desktopDate = document.getElementById('desktop-date');
 const taskbarClock = document.getElementById('taskbar-clock');
 const startOrb = document.getElementById('start-orb');
 const startMenu = document.getElementById('start-menu');
 const musicGadget = document.querySelector('.music-gadget');
 
-// Load the app-window styling without touching the approved desktop design.
 if (!document.querySelector('link[data-portos-app-windows]')) {
   const appStyles = document.createElement('link');
   appStyles.rel = 'stylesheet';
@@ -22,33 +20,20 @@ if (!document.querySelector('link[data-portos-app-windows]')) {
   document.head.appendChild(appStyles);
 }
 
-function updateLockClock() {
+function updateClocks() {
   const now = new Date();
-  if (lockTime) lockTime.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-  if (lockDate) lockDate.textContent = now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' });
-  if (taskbarClock) taskbarClock.innerHTML = `${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}<small>${now.toLocaleDateString([], { weekday: 'long' })}</small>`;
-}
+  const time24 = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+  const time12 = now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+  const [desktopClockTime, desktopClockAmPm = ''] = time12.split(' ');
+  const date = now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' });
+  const fullDate = now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
 
-function buildClockTicks() {
-  if (!clockTicks) return;
-  clockTicks.innerHTML = '';
-  for (let i = 0; i < 12; i += 1) {
-    const tick = document.createElement('span');
-    tick.className = 'clock-tick';
-    tick.style.transform = `rotate(${i * 30}deg)`;
-    clockTicks.appendChild(tick);
-  }
-}
-
-function updateAnalogClock() {
-  if (!clockHour || !clockMinute || !clockSecond) return;
-  const now = new Date();
-  const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
-  const minutes = now.getMinutes() + seconds / 60;
-  const hours = (now.getHours() % 12) + minutes / 60;
-  clockSecond.style.transform = `rotate(${seconds * 6}deg)`;
-  clockMinute.style.transform = `rotate(${minutes * 6}deg)`;
-  clockHour.style.transform = `rotate(${hours * 30}deg)`;
+  if (lockTime) lockTime.textContent = time24;
+  if (lockDate) lockDate.textContent = date;
+  if (desktopTime) desktopTime.textContent = desktopClockTime;
+  if (desktopAmPm) desktopAmPm.textContent = desktopClockAmPm;
+  if (desktopDate) desktopDate.textContent = fullDate;
+  if (taskbarClock) taskbarClock.innerHTML = `${time12}<small>${now.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' })}</small>`;
 }
 
 function setStartMenu(open) {
@@ -190,15 +175,12 @@ function wireTaskbarApps() {
 }
 
 window.addEventListener('load', () => {
-  buildClockTicks();
-  updateLockClock();
-  updateAnalogClock();
+  updateClocks();
   wireDesktopIcons();
   wireMusicControls();
   wireStartMenu();
   wireTaskbarApps();
-  window.setInterval(updateLockClock, 1000);
-  window.setInterval(updateAnalogClock, 50);
+  window.setInterval(updateClocks, 1000);
   window.setTimeout(() => {
     if (bootScreen) bootScreen.classList.add('fade-out');
     if (lockScreen) {
