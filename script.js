@@ -53,14 +53,60 @@ function showDesktop() {
 
 let appWindowZ = 70;
 
+function getLiveAppWindows() {
+  return [...document.querySelectorAll('.portos-app-window')].filter((windowEl) => windowEl.dataset.closing !== 'true');
+}
+
+function getTaskbarAppsContainer() {
+  return document.querySelector('.taskbar-apps');
+}
+
+function updateTaskbarState() {
+  const windows = getLiveAppWindows();
+  document.querySelectorAll('.portos-window-task').forEach((task) => {
+    const id = task.dataset.windowId;
+    const windowEl = windows.find((item) => item.dataset.windowId === id);
+    task.classList.toggle('active', !!windowEl && !windowEl.classList.contains('minimized'));
+    task.setAttribute('aria-pressed', String(!!windowEl && !windowEl.classList.contains('minimized')));
+  });
+}
+
+function addWindowToTaskbar(windowEl, title, symbol) {
+  const container = getTaskbarAppsContainer();
+  if (!container) return;
+  const task = document.createElement('button');
+  task.type = 'button';
+  task.className = 'task-app portos-window-task active';
+  task.dataset.windowId = windowEl.dataset.windowId;
+  task.setAttribute('aria-label', title);
+  task.setAttribute('aria-pressed', 'true');
+  task.title = title;
+  task.innerHTML = `<span class="mini-icon">${symbol || '✦'}</span>`;
+  task.addEventListener('click', (event) => {
+    event.stopPropagation();
+    const target = getLiveAppWindows().find((item) => item.dataset.windowId === task.dataset.windowId);
+    if (!target) { task.remove(); return; }
+    if (target.classList.contains('minimized')) {
+      target.classList.remove('minimized');
+      target.classList.add('open');
+    }
+    focusAppWindow(target);
+    updateWindowDimmer();
+    updateTaskbarState();
+  });
+  container.appendChild(task);
+}
+
+function removeWindowFromTaskbar(windowEl) {
+  document.querySelector(`.portos-window-task[data-window-id="${windowEl.dataset.windowId}"]`)?.remove();
+  updateTaskbarState();
+}
+
 function focusAppWindow(windowEl) {
   if (!windowEl) return;
   appWindowZ += 1;
   windowEl.style.zIndex = String(appWindowZ);
-}
-
-function getLiveAppWindows() {
-  return [...document.querySelectorAll('.portos-app-window')].filter((windowEl) => windowEl.dataset.closing !== 'true');
+  updateTaskbarState();
 }
 
 function updateWindowDimmer() {
@@ -91,14 +137,17 @@ function closeAppWindow(windowEl) {
   windowEl.classList.add('closing');
   updateWindowDimmer();
   window.setTimeout(() => {
+    removeWindowFromTaskbar(windowEl);
     windowEl.remove();
     updateWindowDimmer();
+    updateTaskbarState();
   }, 260);
 }
 
 function hideAppWindow() {
   getLiveAppWindows().forEach((windowEl) => windowEl.classList.add('minimized'));
   updateWindowDimmer();
+  updateTaskbarState();
 }
 
 function closeFocusedAppWindow() {
@@ -131,12 +180,12 @@ function makeAppWindowInteractive(windowEl) {
     const maxTop = Math.max(8, window.innerHeight - windowEl.offsetHeight - 84);
     windowEl.style.left = `${Math.min(Math.max(8, left), maxLeft)}px`;
     windowEl.style.top = `${Math.min(Math.max(8, top), maxTop)}px`;
-    windowEl.style.transform = 'none';
   }
 
   function stopDragging(event) {
     if (!dragging) return;
     dragging = false;
+    windowEl.classList.remove('dragging');
     titlebar.style.cursor = 'move';
     try { titlebar.releasePointerCapture?.(event.pointerId); } catch (_) {}
   }
@@ -146,9 +195,16 @@ function makeAppWindowInteractive(windowEl) {
     focusAppWindow(windowEl);
     if (windowEl.classList.contains('maximized')) return;
     const rect = windowEl.getBoundingClientRect();
+    // Convert the opening transform into fixed pixel coordinates before dragging.
+    windowEl.style.transition = 'none';
+    windowEl.style.left = `${rect.left}px`;
+    windowEl.style.top = `${rect.top}px`;
+    windowEl.style.transform = 'none';
+    requestAnimationFrame(() => { windowEl.style.transition = ''; });
     dragging = true;
     dragOffsetX = event.clientX - rect.left;
     dragOffsetY = event.clientY - rect.top;
+    windowEl.classList.add('dragging');
     titlebar.setPointerCapture?.(event.pointerId);
     titlebar.style.cursor = 'grabbing';
   });
@@ -169,6 +225,7 @@ function makeAppWindowInteractive(windowEl) {
     document.body.style.userSelect = '';
     document.body.style.cursor = '';
     try { event?.currentTarget?.releasePointerCapture?.(event.pointerId); } catch (_) {}
+    updateTaskbarState();
   }
 
   function resizeWindow(event) {
@@ -221,6 +278,10 @@ function makeAppWindowInteractive(windowEl) {
       resizeStartTop = rect.top;
       resizeStartWidth = rect.width;
       resizeStartHeight = rect.height;
+      windowEl.style.transition = 'none';
+      windowEl.style.left = `${rect.left}px`;
+      windowEl.style.top = `${rect.top}px`;
+      windowEl.style.transform = 'none';
       windowEl.classList.add('resizing');
       document.body.style.userSelect = 'none';
       document.body.style.cursor = getComputedStyle(handle).cursor;
@@ -243,6 +304,7 @@ function makeAppWindowInteractive(windowEl) {
       windowEl.classList.add('minimized');
       updateWindowDimmer();
     }
+    updateTaskbarState();
   }
 
   function toggleMaximize() {
@@ -284,6 +346,7 @@ function openAppWindow(title, symbol, description) {
   setStartMenu(false);
   const windowEl = document.createElement('section');
   windowEl.className = 'portos-app-window';
+  windowEl.dataset.windowId = `portos-window-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
   windowEl.setAttribute('role', 'dialog');
   windowEl.setAttribute('aria-label', title);
   windowEl.innerHTML = `
@@ -299,7 +362,15 @@ function openAppWindow(title, symbol, description) {
     <span class="portos-window-resizer n" data-resize="n"></span><span class="portos-window-resizer s" data-resize="s"></span><span class="portos-window-resizer e" data-resize="e"></span><span class="portos-window-resizer w" data-resize="w"></span>
     <span class="portos-window-resizer ne" data-resize="ne"></span><span class="portos-window-resizer nw" data-resize="nw"></span><span class="portos-window-resizer se" data-resize="se"></span><span class="portos-window-resizer sw" data-resize="sw"></span>`;
   document.body.appendChild(windowEl);
+  // Establish a real pixel position before the opening animation so dragging never has to switch coordinate systems.
+  const width = windowEl.offsetWidth;
+  const height = windowEl.offsetHeight;
+  const left = Math.max(8, (window.innerWidth - width) / 2);
+  const top = Math.max(8, (window.innerHeight - height - 76) / 2);
+  windowEl.style.left = `${left}px`;
+  windowEl.style.top = `${top}px`;
   makeAppWindowInteractive(windowEl);
+  addWindowToTaskbar(windowEl, title, symbol);
   focusAppWindow(windowEl);
   updateWindowDimmer();
   requestAnimationFrame(() => windowEl.classList.add('open'));
@@ -347,7 +418,7 @@ function wireStartMenu() {
 }
 
 function wireTaskbarApps() {
-  document.querySelectorAll('.task-app').forEach((button) => button.addEventListener('click', () => {
+  document.querySelectorAll('.task-app:not(.portos-window-task)').forEach((button) => button.addEventListener('click', () => {
     const label = button.getAttribute('aria-label');
     if (label === 'Desktop') { hideAppWindow(); setStartMenu(false); }
     else if (label === 'Files') openAppWindow('Files','▰','Portfolio documents and project files.');
