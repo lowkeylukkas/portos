@@ -1,12 +1,12 @@
 /* PortOS runtime polish — raster subject icons + reliable music app. */
 (() => {
   const iconMap = {
-    'MAPEH':'mapeh.png','TLE':'tle.png','Values Ed.':'values.png','Values Education':'values.png',
-    'English':'english.png','Araling Panlipunan':'araling-panlipunan.png','My Galleries':'galleries.png',
-    'Integration':'integration.png','Reflection':'reflection.png','Credits & Sources':'credits.png',
-    'Credits and Sources':'credits.png','About Me':'about-me.png','Science':'science.png',
-    'Filipino':'filipino.png','Mathematics':'math.png','Music':'music.png',
-    'Customize':'about-me.png','Files':'credits.png','Help':'reflection.png'
+    'MAPEH':'mapeh.png','TLE':'tle.png','Values Ed.':'values-ed.png','Values Education':'values-ed.png',
+    'English':'english.png','Araling Panlipunan':'araling-panlipunan.png','My Galleries':'my-galleries.png',
+    'Integration':'integration.png','Reflection':'reflection.png','Credits & Sources':'credits-sources.png',
+    'Credits and Sources':'credits-sources.png','About Me':'about-me.png','Science':'science.png',
+    'Filipino':'filipino.png','Mathematics':'mathematics.png','Music':'music.png',
+    'Customize':'about-me.png','Files':'credits-sources.png','Help':'reflection.png'
   };
   const iconFor = (title) => iconMap[title] || 'about-me.png';
 
@@ -39,22 +39,21 @@
   const style = document.createElement('style');
   style.id = 'portos-final-icon-fix';
   style.textContent = `
-    /* Raster subject artwork — no SVG, no screen blending, no icon containers. */
     .icon-orb { background-color:transparent !important; background-repeat:no-repeat !important; background-position:center !important; background-size:contain !important; mix-blend-mode:normal !important; box-shadow:none !important; }
     .icon-mapeh .icon-orb { background-image:url("mapeh.png") !important; }
     .icon-tle .icon-orb { background-image:url("tle.png") !important; }
-    .icon-values .icon-orb { background-image:url("values.png") !important; }
+    .icon-values .icon-orb { background-image:url("values-ed.png") !important; }
     .icon-english .icon-orb { background-image:url("english.png") !important; }
     .icon-ap .icon-orb { background-image:url("araling-panlipunan.png") !important; }
-    .icon-gallery .icon-orb { background-image:url("galleries.png") !important; }
+    .icon-gallery .icon-orb { background-image:url("my-galleries.png") !important; }
     .icon-integration .icon-orb { background-image:url("integration.png") !important; }
     .icon-reflection .icon-orb { background-image:url("reflection.png") !important; }
-    .icon-sources .icon-orb { background-image:url("credits.png") !important; }
+    .icon-sources .icon-orb { background-image:url("credits-sources.png") !important; }
     .icon-music .icon-orb { background-image:url("music.png") !important; }
     .icon-about .icon-orb { background-image:url("about-me.png") !important; }
     .icon-science .icon-orb { background-image:url("science.png") !important; }
     .icon-filipino .icon-orb { background-image:url("filipino.png") !important; }
-    .icon-math .icon-orb { background-image:url("math.png") !important; }
+    .icon-math .icon-orb { background-image:url("mathematics.png") !important; }
     .portos-real-app-icon { width:100% !important; height:100% !important; object-fit:contain !important; background:transparent !important; border:0 !important; filter:none !important; mix-blend-mode:normal !important; }
     .lock-clock-wrap, .lock-time, .lock-date { display:none !important; }
     .lock-content { gap:0 !important; }
@@ -96,7 +95,7 @@
       musicApp.querySelector('[data-music="play"]').addEventListener('click',async()=>{
         const p=window.PortOSMusic; if(!p?.audio) return; if(p.audio.paused) await p.start?.(); else p.audio.pause(); syncMusicApp();
       });
-      musicApp.querySelector('[data-music="prev"]').addEventListener('click',()=>{ window.PortOSMusic?.setTrack?.((window.PortOSMusic.tracks.indexOf(window.PortOSMusic.currentTrack)-1),true); syncMusicApp(); });
+      musicApp.querySelector('[data-music="prev"]').addEventListener('click',()=>{ const p=window.PortOSMusic; if(!p) return; const i=p.tracks.indexOf(p.currentTrack); p.setTrack?.(i-1,true); syncMusicApp(); });
       musicApp.querySelector('[data-music="next"]').addEventListener('click',()=>{ window.PortOSMusic?.nextTrack?.(true); syncMusicApp(); });
     }
     musicApp.classList.remove('open');
