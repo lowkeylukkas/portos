@@ -1,11 +1,9 @@
 /* PortOS glass/bubble polish — preserve the approved artwork and existing animations. */
 
-/* No desktop/taskbar clock obstruction. The lock-screen clock remains. */
 .desktop-clock,
 .taskbar-clock { display:none !important; }
 .system-tray { display:none !important; }
 
-/* Real subject icons: use the actual PNGs, with no black canvas/shadow filter. */
 .portos-app-icon,
 .task-app .mini-icon {
   background:transparent !important;
@@ -29,7 +27,6 @@
   mix-blend-mode:normal !important;
 }
 
-/* Glassy Longhorn windows: more transparent surfaces, stronger refraction, softer depth. */
 .portos-app-window {
   border:1px solid rgba(255,255,255,.72) !important;
   border-radius:22px !important;
@@ -44,27 +41,30 @@
 .portos-app-body { background:radial-gradient(circle at 18% 0%,rgba(255,255,255,.50),transparent 30%),linear-gradient(180deg,rgba(248,254,255,.76),rgba(222,246,255,.66) 54%,rgba(198,234,248,.68)) !important;backdrop-filter:blur(12px) saturate(120%);-webkit-backdrop-filter:blur(12px) saturate(120%); }
 .portos-app-hint { background:linear-gradient(180deg,rgba(255,255,255,.62),rgba(213,243,255,.48)) !important;border-color:rgba(255,255,255,.58) !important;box-shadow:inset 0 1px 4px rgba(255,255,255,.88),0 5px 13px rgba(0,74,120,.11) !important; }
 
-/* Desktop artwork icons: preserve the existing uploaded PNG treatment and avoid black filters. */
-.icon-orb { background-color:transparent !important;filter:drop-shadow(0 3px 5px rgba(0,95,160,.22)) drop-shadow(0 0 10px rgba(114,231,255,.22)) !important; }
-.desktop-icon:hover .icon-orb { filter:brightness(1.10) saturate(1.10) drop-shadow(0 4px 7px rgba(0,95,160,.22)) drop-shadow(0 0 14px rgba(122,237,255,.32)) !important; }
+.icon-orb {
+  background-color:transparent !important;
+  background-repeat:no-repeat !important;
+  background-position:center !important;
+  background-size:contain !important;
+  mix-blend-mode:normal !important;
+  box-shadow:none !important;
+  filter:drop-shadow(0 3px 5px rgba(0,95,160,.22)) drop-shadow(0 0 10px rgba(114,231,255,.22)) !important;
+}
+.desktop-icon:hover .icon-orb { filter:brightness(1.06) saturate(1.08) drop-shadow(0 4px 7px rgba(0,95,160,.22)) drop-shadow(0 0 14px rgba(122,237,255,.32)) !important; }
 
-/* More transparent, rounded Aero taskbar. */
 .portos-taskbar { background:linear-gradient(180deg,rgba(239,253,255,.40),rgba(126,211,240,.24) 10%,rgba(30,126,176,.30) 52%,rgba(3,56,105,.48)),linear-gradient(90deg,rgba(255,255,255,.08),rgba(40,170,220,.05)) !important;border-top-color:rgba(255,255,255,.70) !important;box-shadow:inset 0 1px 3px rgba(255,255,255,.70),inset 0 8px 18px rgba(255,255,255,.08),0 -12px 32px rgba(0,71,111,.14),0 -1px 0 rgba(0,44,81,.42) !important;backdrop-filter:blur(22px) saturate(150%) !important;-webkit-backdrop-filter:blur(22px) saturate(150%) !important; }
 .task-app { background:linear-gradient(180deg,rgba(255,255,255,.20),rgba(39,139,183,.13)) !important;border-color:rgba(255,255,255,.28) !important;box-shadow:inset 0 1px 3px rgba(255,255,255,.48),0 3px 8px rgba(0,38,70,.14) !important;backdrop-filter:blur(9px) saturate(135%); }
 .task-app:hover { background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(64,181,220,.20)) !important; }
 .task-app.active { background:linear-gradient(180deg,rgba(255,255,255,.42),rgba(42,161,210,.20) 52%,rgba(0,76,139,.16)) !important;box-shadow:inset 0 1px 4px rgba(255,255,255,.82),0 0 14px rgba(101,229,255,.26),0 4px 9px rgba(0,38,73,.16) !important; }
 
-/* Start menu: lighter, more translucent, rounded glass. */
 .start-menu-shell { border-color:rgba(255,255,255,.70) !important;border-radius:26px 26px 18px 18px !important;background:linear-gradient(145deg,rgba(238,253,255,.70),rgba(93,196,239,.52) 42%,rgba(6,93,171,.68)) !important;box-shadow:0 22px 50px rgba(0,38,84,.34),0 0 0 2px rgba(68,220,255,.18) inset,0 2px 0 rgba(255,255,255,.82) inset,0 -12px 30px rgba(0,54,122,.22) inset !important;backdrop-filter:blur(22px) saturate(145%) !important;-webkit-backdrop-filter:blur(22px) saturate(145%) !important; }
 .start-user { background:linear-gradient(180deg,rgba(255,255,255,.46),rgba(139,221,247,.18)) !important; }
 .start-item { background:linear-gradient(180deg,rgba(255,255,255,.20),rgba(73,183,229,.08)) !important;box-shadow:inset 0 1px rgba(255,255,255,.28) !important; }
 .start-item:hover { background:linear-gradient(180deg,rgba(255,255,255,.48),rgba(51,183,235,.24)) !important; }
 .start-footer { background:linear-gradient(180deg,rgba(0,82,151,.14),rgba(0,49,107,.38)) !important; }
 
-/* Keep the music app as the fun focal gadget, with soft glass. */
+.music-gadget { display:block !important;visibility:visible !important;opacity:1 !important;pointer-events:auto !important;z-index:90 !important; }
 .music-gadget-shell { background:radial-gradient(circle at 17% 8%,rgba(255,255,255,.88) 0 4%,transparent 16%),radial-gradient(circle at 87% 100%,rgba(41,205,255,.26),transparent 38%),linear-gradient(145deg,rgba(225,252,255,.72),rgba(84,196,241,.48) 47%,rgba(9,116,201,.54)) !important;border-color:rgba(255,255,255,.78) !important;box-shadow:inset 0 2px 0 rgba(255,255,255,.90),inset 0 -8px 18px rgba(0,69,132,.18),inset 2px 0 10px rgba(255,255,255,.36),0 3px 0 rgba(0,93,155,.30),0 16px 30px rgba(0,74,140,.20) !important;backdrop-filter:blur(18px) saturate(145%) !important;-webkit-backdrop-filter:blur(18px) saturate(145%) !important; }
-
-/* Preserve the nostalgic animation language. */
 .music-gadget,.portos-app-window,.start-menu,.task-app,.desktop-icon,.start-orb { will-change:transform,filter,opacity; }
 .desktop::after { background:radial-gradient(circle at 50% 0%,rgba(255,255,255,.11),transparent 28%),linear-gradient(180deg,rgba(255,255,255,.025),transparent 35%,rgba(0,30,65,.06)) !important; }
 .portos-app-titlebar,.task-app,.start-orb,.desktop-icon,.music-button { user-select:none;-webkit-user-select:none; }
