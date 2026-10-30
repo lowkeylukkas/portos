@@ -1,7 +1,7 @@
 /* PortOS Lock Screen — Frutiger Aero / Longhorn glass polish */
 .lock-screen{background:#0876a8}
-.lock-wallpaper{background:radial-gradient(ellipse at 50% 12%,rgba(255,255,255,.95) 0 3%,transparent 18%),radial-gradient(circle at 15% 35%,rgba(127,239,255,.8) 0 2px,transparent 3px),radial-gradient(circle at 82% 28%,rgba(255,255,255,.85) 0 2px,transparent 3px),linear-gradient(145deg,#045487,#19b9df 40%,#a1f4f0 68%,#0873a5);}
-.lock-wallpaper::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(0,78,118,.45),transparent 55%),linear-gradient(120deg,transparent 18%,rgba(255,255,255,.15) 38%,transparent 48%);animation:lockAeroSweep 9s ease-in-out infinite}
+.lock-wallpaper{background:#0876a8 url("portos-lockscreen-wallpaper.jpg") center center / cover no-repeat}
+.lock-wallpaper::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(0,78,118,.35),transparent 55%),linear-gradient(120deg,transparent 18%,rgba(255,255,255,.12) 38%,transparent 48%);animation:lockAeroSweep 9s ease-in-out infinite}
 .lock-vignette{background:radial-gradient(circle at center,transparent 15%,rgba(0,42,72,.08) 58%,rgba(0,19,45,.52) 100%)}
 .lock-content{padding-bottom:5vh}
 .lock-clock-wrap{margin-bottom:38px}
