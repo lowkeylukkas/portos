@@ -7,35 +7,17 @@
   <title>PortOS</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="taskbar.css" />
+  <link rel="stylesheet" href="desktop-icons.css" />
 </head>
 <body>
   <main id="boot-screen" class="boot-screen" aria-label="PortOS starting">
-    <div class="boot-glow"></div>
-    <div class="boot-center">
-      <div class="portos-orb" aria-hidden="true"><span class="orb-star">✦</span></div>
-      <div class="boot-wordmark">PortOS</div>
-      <div class="loading-track" aria-hidden="true"><div class="loading-shimmer"></div></div>
-      <div class="boot-status">Starting PortOS</div>
-    </div>
+    <div class="boot-glow"></div><div class="boot-center"><div class="portos-orb" aria-hidden="true"><span class="orb-star">✦</span></div><div class="boot-wordmark">PortOS</div><div class="loading-track" aria-hidden="true"><div class="loading-shimmer"></div></div><div class="boot-status">Starting PortOS</div></div>
   </main>
 
   <main id="lock-screen" class="lock-screen" aria-hidden="true">
-    <div class="lock-wallpaper" aria-hidden="true"></div>
-    <div class="lock-vignette" aria-hidden="true"></div>
-    <div class="lock-content">
-      <div class="lock-clock-wrap">
-        <div id="lock-time" class="lock-time">10:30</div>
-        <div id="lock-date" class="lock-date">Friday, October 30</div>
-      </div>
-      <div class="user-card">
-        <div class="user-avatar" aria-hidden="true"><div class="avatar-glass"></div><span>✦</span></div>
-        <div class="user-name">User</div>
-        <button id="login-button" class="login-button" type="button">Log In</button>
-      </div>
-    </div>
-    <div class="lock-corner lock-bottom-left"><button class="corner-button" type="button" aria-label="Accessibility">◉</button></div>
-    <div class="lock-corner lock-bottom-right"><button class="corner-button" type="button" aria-label="Power">⏻</button></div>
-    <div class="lock-shine" aria-hidden="true"></div>
+    <div class="lock-wallpaper" aria-hidden="true"></div><div class="lock-vignette" aria-hidden="true"></div>
+    <div class="lock-content"><div class="lock-clock-wrap"><div id="lock-time" class="lock-time">10:30</div><div id="lock-date" class="lock-date">Friday, October 30</div></div><div class="user-card"><div class="user-avatar" aria-hidden="true"><div class="avatar-glass"></div><span>✦</span></div><div class="user-name">User</div><button id="login-button" class="login-button" type="button">Log In</button></div></div>
+    <div class="lock-corner lock-bottom-left"><button class="corner-button" type="button" aria-label="Accessibility">◉</button></div><div class="lock-corner lock-bottom-right"><button class="corner-button" type="button" aria-label="Power">⏻</button></div><div class="lock-shine" aria-hidden="true"></div>
   </main>
 
   <main id="desktop" class="desktop" aria-hidden="true">
@@ -56,23 +38,13 @@
       <button class="desktop-icon icon-math" type="button" aria-label="Mathematics"><span class="icon-orb"><span class="icon-symbol">∑</span></span><span class="icon-label">Mathematics</span></button>
     </section>
 
-    <div class="desktop-clock" aria-label="Analog clock">
-      <div class="clock-glass"><div class="clock-face"><div class="clock-reflection"></div><div class="clock-ticks" aria-hidden="true"></div><div class="clock-hand clock-hour"></div><div class="clock-hand clock-minute"></div><div class="clock-hand clock-second"></div><div class="clock-center"></div><div class="clock-water-glint"></div></div></div>
-    </div>
-
+    <div class="desktop-clock" aria-label="Analog clock"><div class="clock-glass"><div class="clock-face"><div class="clock-reflection"></div><div class="clock-ticks" aria-hidden="true"></div><div class="clock-hand clock-hour"></div><div class="clock-hand clock-minute"></div><div class="clock-hand clock-second"></div><div class="clock-center"></div><div class="clock-water-glint"></div></div></div></div>
     <div class="desktop-placeholder"></div>
 
     <nav class="portos-taskbar" aria-label="PortOS taskbar">
       <button class="start-orb" id="start-orb" type="button" aria-label="Start"><span>✦</span></button>
-      <div class="taskbar-apps" aria-label="Open applications">
-        <button class="task-app active" type="button" aria-label="Desktop"><span class="mini-icon">⌂</span></button>
-        <button class="task-app" type="button" aria-label="Files"><span class="mini-icon">▰</span></button>
-        <button class="task-app" type="button" aria-label="Gallery"><span class="mini-icon">✿</span></button>
-      </div>
-      <div class="system-tray">
-        <span class="tray-symbol" aria-label="Network">◉</span><span class="tray-symbol" aria-label="Volume">◖</span><span class="tray-symbol" aria-label="Battery">▣</span>
-        <div id="taskbar-clock" class="taskbar-clock">10:30<small>Friday</small></div>
-      </div>
+      <div class="taskbar-apps" aria-label="Open applications"><button class="task-app active" type="button" aria-label="Desktop"><span class="mini-icon">⌂</span></button><button class="task-app" type="button" aria-label="Files"><span class="mini-icon">▰</span></button><button class="task-app" type="button" aria-label="Gallery"><span class="mini-icon">✿</span></button></div>
+      <div class="system-tray"><span class="tray-symbol" aria-label="Network">◉</span><span class="tray-symbol" aria-label="Volume">◖</span><span class="tray-symbol" aria-label="Battery">▣</span><div id="taskbar-clock" class="taskbar-clock">10:30<small>Friday</small></div></div>
     </nav>
   </main>
   <script src="script.js"></script>
