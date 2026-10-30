@@ -1,77 +1,61 @@
 :root {
   --white: #f7fdff;
+  --aqua: #63dcff;
+  --blue: #1677c8;
 }
 
 * { box-sizing: border-box; }
 html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
 body { font-family: "Segoe UI", Tahoma, Arial, sans-serif; background: #000; }
+button { font: inherit; }
 
 .boot-screen {
-  position: fixed;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  background:
-    radial-gradient(circle at 50% 45%, rgba(26, 109, 169, .18), transparent 28%),
-    radial-gradient(circle at 50% 60%, rgba(0, 181, 255, .08), transparent 42%),
-    #000;
-  color: var(--white);
-  opacity: 1;
-  z-index: 100;
+  position: fixed; inset: 0; display: grid; place-items: center;
+  background: radial-gradient(circle at 50% 45%, rgba(26,109,169,.18), transparent 28%), radial-gradient(circle at 50% 60%, rgba(0,181,255,.08), transparent 42%), #000;
+  color: var(--white); opacity: 1; z-index: 100;
 }
-
-.boot-glow {
-  position: absolute;
-  width: min(55vw, 800px);
-  height: min(55vw, 800px);
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(56, 192, 255, .075), transparent 68%);
-  filter: blur(30px);
-  pointer-events: none;
-}
-
-.boot-center {
-  position: relative;
-  z-index: 2;
-  width: min(360px, 70vw);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.portos-orb, .placeholder-orb {
-  width: 76px;
-  height: 76px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background:
-    radial-gradient(circle at 30% 25%, rgba(255,255,255,.95) 0 4%, transparent 13%),
-    radial-gradient(circle at 35% 28%, #b9f7ff 0 9%, #55d9ff 26%, #168fe0 62%, #07539d 100%);
-  border: 1px solid rgba(255,255,255,.65);
-  box-shadow:
-    inset 8px 7px 14px rgba(255,255,255,.42),
-    inset -10px -12px 18px rgba(0,32,93,.5),
-    0 0 28px rgba(73, 207, 255, .35),
-    0 8px 30px rgba(0,0,0,.55);
-}
-
+.boot-glow { position: absolute; width: min(55vw,800px); height: min(55vw,800px); border-radius: 50%; background: radial-gradient(circle,rgba(56,192,255,.075),transparent 68%); filter: blur(30px); pointer-events: none; }
+.boot-center { position: relative; z-index: 2; width: min(360px,70vw); display: flex; flex-direction: column; align-items: center; }
+.portos-orb,.placeholder-orb { width: 76px; height: 76px; border-radius: 50%; display: grid; place-items: center; background: radial-gradient(circle at 30% 25%,rgba(255,255,255,.95) 0 4%,transparent 13%),radial-gradient(circle at 35% 28%,#b9f7ff 0 9%,#55d9ff 26%,#168fe0 62%,#07539d 100%); border: 1px solid rgba(255,255,255,.65); box-shadow: inset 8px 7px 14px rgba(255,255,255,.42),inset -10px -12px 18px rgba(0,32,93,.5),0 0 28px rgba(73,207,255,.35),0 8px 30px rgba(0,0,0,.55); }
 .orb-star { color: white; font-size: 34px; line-height: 1; text-shadow: 0 0 10px rgba(255,255,255,.8); }
 .boot-wordmark { margin-top: 18px; font-size: 29px; font-weight: 300; letter-spacing: .03em; text-shadow: 0 1px 12px rgba(101,211,255,.25); }
-.loading-track { position: relative; width: 230px; height: 4px; margin-top: 28px; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.13); box-shadow: inset 0 1px 2px rgba(0,0,0,.8), 0 0 10px rgba(56,187,255,.08); }
-.loading-shimmer { position: absolute; top: 0; left: -35%; width: 35%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, transparent, #dffaff 45%, #5ad8ff 70%, transparent); box-shadow: 0 0 12px rgba(76,211,255,.9); animation: loading 1.45s ease-in-out infinite; }
-.boot-status { margin-top: 12px; color: rgba(225,246,255,.56); font-size: 11px; letter-spacing: .08em; }
+.loading-track { position: relative; width: 230px; height: 4px; margin-top: 28px; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.13); box-shadow: inset 0 1px 2px rgba(0,0,0,.8),0 0 10px rgba(56,187,255,.08); }
+.loading-shimmer { position:absolute; top:0; left:-35%; width:35%; height:100%; border-radius:inherit; background:linear-gradient(90deg,transparent,#dffaff 45%,#5ad8ff 70%,transparent); box-shadow:0 0 12px rgba(76,211,255,.9); animation:loading 1.45s ease-in-out infinite; }
+.boot-status { margin-top:12px; color:rgba(225,246,255,.56); font-size:11px; letter-spacing:.08em; }
 
-.desktop { position: fixed; inset: 0; display: grid; place-items: center; background: #078fd1; opacity: 0; pointer-events: none; }
-.desktop-placeholder { text-align: center; color: rgba(255,255,255,.9); opacity: .8; }
-.placeholder-orb { width: 62px; height: 62px; margin: 0 auto 16px; }
-.placeholder-orb span { color: #fff; font-size: 27px; }
-.placeholder-title { font-size: 24px; font-weight: 300; }
-.placeholder-subtitle { margin-top: 6px; font-size: 12px; opacity: .7; }
+/* Lock screen — separate from the desktop and intentionally uses its own visual layer. */
+.lock-screen { position:fixed; inset:0; z-index:90; display:grid; place-items:center; overflow:hidden; color:#fff; opacity:0; pointer-events:none; background:#0a4770; }
+.lock-wallpaper { position:absolute; inset:0; background:radial-gradient(circle at 18% 18%,rgba(255,255,255,.9) 0 1px,transparent 2px),radial-gradient(circle at 76% 30%,rgba(255,255,255,.7) 0 1px,transparent 2px),linear-gradient(135deg,#0b5d91 0%,#1ba7cf 38%,#78e1ed 65%,#12659b 100%); background-size:auto,auto,cover; transform:scale(1.04); }
+.lock-wallpaper::before { content:""; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 20%,rgba(255,255,255,.6),transparent 35%),linear-gradient(180deg,rgba(0,45,91,.08),rgba(0,23,55,.48)); }
+.lock-vignette { position:absolute; inset:0; background:radial-gradient(circle at center,transparent 20%,rgba(0,18,42,.2) 65%,rgba(0,10,25,.58) 100%); }
+.lock-content { position:relative; z-index:3; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; padding-bottom:7vh; }
+.lock-clock-wrap { text-align:center; margin-bottom:48px; text-shadow:0 3px 18px rgba(0,30,60,.42); }
+.lock-time { font-size:clamp(72px,10vw,132px); line-height:.92; font-weight:200; letter-spacing:-.055em; text-shadow:0 2px 3px rgba(0,35,70,.32),0 0 30px rgba(255,255,255,.14); }
+.lock-date { margin-top:16px; font-size:clamp(15px,1.4vw,21px); font-weight:300; letter-spacing:.04em; color:rgba(255,255,255,.9); }
+.user-card { display:flex; flex-direction:column; align-items:center; }
+.user-avatar { position:relative; width:108px; height:108px; border-radius:50%; display:grid; place-items:center; background:linear-gradient(145deg,rgba(255,255,255,.62),rgba(108,221,255,.2)); border:1px solid rgba(255,255,255,.78); box-shadow:inset 7px 8px 16px rgba(255,255,255,.55),inset -10px -12px 20px rgba(0,54,110,.4),0 0 0 5px rgba(110,220,255,.17),0 0 28px rgba(91,218,255,.42),0 14px 34px rgba(0,25,60,.34); overflow:hidden; }
+.user-avatar::before { content:""; position:absolute; inset:8px; border-radius:50%; background:radial-gradient(circle at 35% 25%,rgba(255,255,255,.96),rgba(151,235,255,.5) 17%,rgba(37,139,205,.82) 62%,rgba(4,61,119,.95)); }
+.user-avatar::after { content:""; position:absolute; width:80px; height:28px; top:7px; left:10px; border-radius:50%; transform:rotate(-25deg); background:linear-gradient(90deg,transparent,rgba(255,255,255,.7),transparent); filter:blur(3px); }
+.user-avatar span { position:relative; z-index:2; font-size:42px; color:#fff; text-shadow:0 1px 8px rgba(0,50,100,.45); }
+.avatar-glass { position:absolute; inset:0; z-index:3; border-radius:50%; box-shadow:inset 0 1px 1px rgba(255,255,255,.9); pointer-events:none; }
+.user-name { margin-top:17px; font-size:22px; font-weight:300; text-shadow:0 2px 10px rgba(0,25,55,.5); }
+.login-button { margin-top:17px; min-width:128px; height:40px; padding:0 25px; border-radius:8px; border:1px solid rgba(255,255,255,.75); color:#fff; cursor:pointer; background:linear-gradient(180deg,rgba(255,255,255,.38),rgba(86,188,235,.24) 48%,rgba(5,82,145,.48)); box-shadow:inset 0 1px 2px rgba(255,255,255,.72),inset 0 -6px 12px rgba(0,40,90,.2),0 5px 16px rgba(0,28,62,.28),0 0 12px rgba(104,222,255,.2); text-shadow:0 1px 3px rgba(0,40,80,.65); transition:transform .16s ease,filter .16s ease,box-shadow .16s ease; }
+.login-button:hover { filter:brightness(1.15); transform:translateY(-1px); box-shadow:inset 0 1px 2px rgba(255,255,255,.82),0 6px 20px rgba(0,35,75,.35),0 0 18px rgba(112,228,255,.42); }
+.login-button:active { transform:translateY(1px); }
+.lock-corner { position:absolute; z-index:4; bottom:24px; }
+.lock-bottom-left { left:26px; }.lock-bottom-right { right:26px; }
+.corner-button { width:42px; height:42px; border-radius:50%; border:1px solid rgba(255,255,255,.5); color:#fff; background:linear-gradient(145deg,rgba(255,255,255,.28),rgba(20,93,145,.42)); box-shadow:inset 0 1px 3px rgba(255,255,255,.5),0 4px 14px rgba(0,25,55,.3); cursor:pointer; text-shadow:0 1px 4px #034; }
+.lock-shine { position:absolute; inset:0; z-index:2; pointer-events:none; background:linear-gradient(115deg,transparent 22%,rgba(255,255,255,.09) 36%,transparent 49%); transform:translateX(-70%); animation:glassSweep 7s ease-in-out infinite; }
 
-.boot-screen.fade-out { animation: bootFade .9s ease forwards; }
-.desktop.fade-in { animation: desktopFade .9s ease forwards; }
+.desktop { position:fixed; inset:0; display:grid; place-items:center; background:#078fd1; opacity:0; pointer-events:none; }
+.desktop-placeholder { text-align:center; color:rgba(255,255,255,.9); opacity:.8; }.placeholder-orb { width:62px;height:62px;margin:0 auto 16px; }.placeholder-orb span{color:#fff;font-size:27px;}.placeholder-title{font-size:24px;font-weight:300;}.placeholder-subtitle{margin-top:6px;font-size:12px;opacity:.7;}
+.boot-screen.fade-out { animation:bootFade .9s ease forwards; }.lock-screen.fade-in { animation:lockFadeIn .9s ease forwards; }.lock-screen.unlocking { animation:lockFadeOut .65s ease forwards; }.desktop.fade-in { animation:desktopFade .8s ease forwards; }
 
-@keyframes loading { 0% { transform: translateX(0); } 100% { transform: translateX(390%); } }
-@keyframes bootFade { from { opacity: 1; } to { opacity: 0; visibility: hidden; } }
-@keyframes desktopFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes loading { 0%{transform:translateX(0)} 100%{transform:translateX(390%)} }
+@keyframes bootFade { from{opacity:1} to{opacity:0;visibility:hidden} }
+@keyframes lockFadeIn { from{opacity:0} to{opacity:1} }
+@keyframes lockFadeOut { from{opacity:1} to{opacity:0;visibility:hidden} }
+@keyframes desktopFade { from{opacity:0} to{opacity:1} }
+@keyframes glassSweep { 0%,55%{transform:translateX(-75%)} 75%,100%{transform:translateX(75%)} }
+
+@media (max-width:600px){ .lock-clock-wrap{margin-bottom:36px}.lock-time{font-size:74px}.user-avatar{width:94px;height:94px}.user-avatar span{font-size:36px}.lock-date{font-size:15px}.corner-button{width:38px;height:38px} }
