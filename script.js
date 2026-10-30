@@ -59,17 +59,53 @@ function focusAppWindow(windowEl) {
   windowEl.style.zIndex = String(appWindowZ);
 }
 
+function getLiveAppWindows() {
+  return [...document.querySelectorAll('.portos-app-window')].filter((windowEl) => windowEl.dataset.closing !== 'true');
+}
+
+function updateWindowDimmer() {
+  let dimmer = document.getElementById('portos-window-dimmer');
+  const visibleWindows = getLiveAppWindows().filter((windowEl) => !windowEl.classList.contains('minimized'));
+  if (!visibleWindows.length) {
+    if (dimmer) {
+      dimmer.classList.remove('active');
+      window.setTimeout(() => {
+        if (dimmer && !dimmer.classList.contains('active') && !getLiveAppWindows().some((windowEl) => !windowEl.classList.contains('minimized'))) dimmer.remove();
+      }, 220);
+    }
+    return;
+  }
+  if (!dimmer) {
+    dimmer = document.createElement('div');
+    dimmer.id = 'portos-window-dimmer';
+    dimmer.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(dimmer);
+  }
+  requestAnimationFrame(() => dimmer.classList.add('active'));
+}
+
 function closeAppWindow(windowEl) {
   if (!windowEl || windowEl.dataset.closing === 'true') return;
   windowEl.dataset.closing = 'true';
   windowEl.classList.remove('open', 'minimized');
   windowEl.classList.add('closing');
-  window.setTimeout(() => windowEl.remove(), 260);
+  updateWindowDimmer();
+  window.setTimeout(() => {
+    windowEl.remove();
+    updateWindowDimmer();
+  }, 260);
 }
 
 function hideAppWindow() {
-  const existing = document.querySelector('.portos-app-window');
-  if (existing) closeAppWindow(existing);
+  getLiveAppWindows().forEach((windowEl) => windowEl.classList.add('minimized'));
+  updateWindowDimmer();
+}
+
+function closeFocusedAppWindow() {
+  const windows = getLiveAppWindows().filter((windowEl) => !windowEl.classList.contains('minimized'));
+  if (!windows.length) return;
+  const focused = windows.sort((a, b) => Number(getComputedStyle(b).zIndex || 0) - Number(getComputedStyle(a).zIndex || 0))[0];
+  closeAppWindow(focused);
 }
 
 function makeAppWindowInteractive(windowEl) {
@@ -126,12 +162,13 @@ function makeAppWindowInteractive(windowEl) {
     if (!event.target.closest('.portos-window-button')) toggleMaximize();
   });
 
-  function stopResize() {
+  function stopResize(event) {
     if (!resizing) return;
     resizing = false;
     windowEl.classList.remove('resizing');
     document.body.style.userSelect = '';
     document.body.style.cursor = '';
+    try { event?.currentTarget?.releasePointerCapture?.(event.pointerId); } catch (_) {}
   }
 
   function resizeWindow(event) {
@@ -156,10 +193,12 @@ function makeAppWindowInteractive(windowEl) {
       top = resizeStartTop + (resizeStartHeight - height);
     }
 
+    const maxRight = window.innerWidth - 8;
+    const maxBottom = window.innerHeight - 84;
     if (left < 8) { width -= 8 - left; left = 8; }
     if (top < 8) { height -= 8 - top; top = 8; }
-    width = Math.min(width, window.innerWidth - left - 8);
-    height = Math.min(height, window.innerHeight - top - 84);
+    width = Math.min(width, maxRight - left);
+    height = Math.min(height, maxBottom - top);
 
     windowEl.style.left = `${left}px`;
     windowEl.style.top = `${top}px`;
@@ -199,8 +238,10 @@ function makeAppWindowInteractive(windowEl) {
       windowEl.classList.remove('minimized');
       windowEl.classList.add('open');
       focusAppWindow(windowEl);
+      updateWindowDimmer();
     } else {
       windowEl.classList.add('minimized');
+      updateWindowDimmer();
     }
   }
 
@@ -213,8 +254,10 @@ function makeAppWindowInteractive(windowEl) {
         windowEl.style.width = restoreBounds.width;
         windowEl.style.height = restoreBounds.height;
       }
+      windowEl.style.transform = 'none';
       maximizeButton.textContent = '□';
       maximizeButton.setAttribute('aria-label', 'Maximize window');
+      focusAppWindow(windowEl);
       return;
     }
     const rect = windowEl.getBoundingClientRect();
@@ -238,7 +281,6 @@ const appDescriptions = {
 };
 
 function openAppWindow(title, symbol, description) {
-  hideAppWindow();
   setStartMenu(false);
   const windowEl = document.createElement('section');
   windowEl.className = 'portos-app-window';
@@ -257,13 +299,9 @@ function openAppWindow(title, symbol, description) {
     <span class="portos-window-resizer n" data-resize="n"></span><span class="portos-window-resizer s" data-resize="s"></span><span class="portos-window-resizer e" data-resize="e"></span><span class="portos-window-resizer w" data-resize="w"></span>
     <span class="portos-window-resizer ne" data-resize="ne"></span><span class="portos-window-resizer nw" data-resize="nw"></span><span class="portos-window-resizer se" data-resize="se"></span><span class="portos-window-resizer sw" data-resize="sw"></span>`;
   document.body.appendChild(windowEl);
-  const width = windowEl.offsetWidth;
-  const height = windowEl.offsetHeight;
-  windowEl.style.left = `${Math.max(8,(window.innerWidth-width)/2)}px`;
-  windowEl.style.top = `${Math.max(8,(window.innerHeight-height-76)/2)}px`;
-  windowEl.style.transform = 'translate(-50%, -50%) scale(.94)';
   makeAppWindowInteractive(windowEl);
   focusAppWindow(windowEl);
+  updateWindowDimmer();
   requestAnimationFrame(() => windowEl.classList.add('open'));
 }
 
@@ -329,4 +367,4 @@ window.addEventListener('load', () => {
 if (loginButton) loginButton.addEventListener('click',showDesktop);
 if (startOrb) startOrb.addEventListener('click',(event) => { event.stopPropagation(); setStartMenu(!startMenu.classList.contains('open')); });
 document.addEventListener('click',(event) => { if (startMenu && startMenu.classList.contains('open') && !startMenu.contains(event.target) && event.target !== startOrb) setStartMenu(false); });
-document.addEventListener('keydown',(event) => { if (event.key === 'Escape') { setStartMenu(false); hideAppWindow(); } });
+document.addEventListener('keydown',(event) => { if (event.key === 'Escape') { setStartMenu(false); closeFocusedAppWindow(); } });
