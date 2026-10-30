@@ -1,0 +1,168 @@
+/* PortOS Music Library — user-supplied audio sources + official artwork lookup */
+(() => {
+  const gadget = document.querySelector('.music-gadget');
+  if (!gadget) return;
+
+  const tracks = [
+    { title: '404 (New Era)', artist: 'KiiiKiii', src: 'https://file.garden/aqtBi-Lyx_Xl-djC/KiiiKiii-404-SnapYT.App.mp4', search: 'KiiiKiii 404 New Era' },
+    { title: 'BANG BANG', artist: 'IVE', src: 'https://file.garden/aqtBi-Lyx_Xl-djC/IVE-BANG-SnapYT.App.mp4', search: 'IVE BANG BANG' },
+    { title: 'Crescendo', artist: 'NMIXX', src: 'https://file.garden/aqtBi-Lyx_Xl-djC/NMIXX-Crescendo-SnapYT.App.mp4', search: 'NMIXX Crescendo' },
+    { title: 'NOT CUTE ANYMORE', artist: 'ILLIT', src: 'https://file.garden/aqtBi-Lyx_Xl-djC/ILLIT-%EC%95%84%EC%9D%BC%EB%A6%BF-NOT-SnapYT.App.mp4', search: 'ILLIT NOT CUTE ANYMORE' },
+    { title: 'FIRESTARTER', artist: 'K/DA', src: 'https://file.garden/aqtBi-Lyx_Xl-djC/KDA-FIRESTARTER-SnapYT.App.mp4', search: 'KDA FIRESTARTER' },
+    { title: 'Looks Can Kill', artist: 'IVE', src: 'https://file.garden/aqtBi-Lyx_Xl-djC/IVE-Looks-SnapYT.App.mp4', search: 'IVE Looks Can Kill' },
+    { title: 'RUDE!', artist: 'Hearts2Hearts', src: 'https://file.garden/aqtBi-Lyx_Xl-djC/Hearts2Hearts-RUDE-SnapYT.App.mp4', search: 'Hearts2Hearts RUDE' },
+    { title: "It's Me", artist: 'ILLIT', src: 'https://file.garden/aqtBi-Lyx_Xl-djC/ILLIT-Its-SnapYT.App.mp4', search: "ILLIT It's Me" },
+    { title: 'Whiplash (Instrumental)', artist: 'aespa', src: "https://file.garden/aqtBi-Lyx_Xl-djC/aespa%20%EC%97%90%EC%8A%A4%ED%8C%8C%20'Whiplash'%20(Official%20Instrumental)%20%5BtBf8eZVTPRU%5D.mp3", search: 'aespa Whiplash' },
+    { title: 'LEMONADE (Instrumental)', artist: 'aespa', src: 'https://file.garden/aqtBi-Lyx_Xl-djC/LEMONADE%20(Instrumental)%20%5BoVv0k1txQLQ%5D.mp3', search: 'aespa LEMONADE' },
+    { title: 'Armageddon (Instrumental)', artist: 'aespa', src: "https://file.garden/aqtBi-Lyx_Xl-djC/aespa%20%EC%97%90%EC%8A%A4%ED%8C%8C%20'Armageddon'%20(Official%20Instrumental)%20%5BoljFUwjeXdI%5D.mp3", search: 'aespa Armageddon' },
+    { title: 'Supernova (Instrumental)', artist: 'aespa', src: "https://file.garden/aqtBi-Lyx_Xl-djC/aespa%20%EC%97%90%EC%8A%A4%ED%8C%8C%20'Supernova'%20(Official%20Instrumental).mp3", search: 'aespa Supernova' }
+  ];
+
+  const shell = gadget.querySelector('.music-gadget-shell');
+  const albumJewel = gadget.querySelector('.album-jewel');
+  const titleEl = gadget.querySelector('.track-title');
+  const artistEl = gadget.querySelector('.track-artist');
+  const progress = gadget.querySelector('.music-progress');
+  const progressFill = gadget.querySelector('.music-progress-fill');
+  const timeEls = gadget.querySelectorAll('.music-times span');
+  const volumeTrack = gadget.querySelector('.volume-track');
+  const volumeFill = gadget.querySelector('.volume-fill');
+  const controls = gadget.querySelectorAll('.music-button');
+  const visualizer = gadget.querySelector('.visualizer');
+
+  let audio = gadget.querySelector('audio');
+  if (!audio) {
+    audio = document.createElement('audio');
+    audio.preload = 'metadata';
+    audio.crossOrigin = 'anonymous';
+    audio.style.display = 'none';
+    shell.appendChild(audio);
+  }
+
+  if (!albumJewel.querySelector('.album-cover')) {
+    const img = document.createElement('img');
+    img.className = 'album-cover';
+    img.alt = '';
+    img.loading = 'eager';
+    albumJewel.prepend(img);
+  }
+  const cover = albumJewel.querySelector('.album-cover');
+
+  let index = 0;
+  let shuffle = false;
+  let repeat = false;
+
+  const fallbackCover = 'Iridescent Crystal Star Emblem.png';
+
+  function formatTime(seconds) {
+    if (!Number.isFinite(seconds)) return '0:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
+    return `${mins}:${secs}`;
+  }
+
+  async function loadCover(track) {
+    cover.src = fallbackCover;
+    try {
+      const response = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(track.search)}&entity=song&limit=5`);
+      if (!response.ok) return;
+      const data = await response.json();
+      const match = data.results?.find((item) =>
+        String(item.trackName || '').toLowerCase().includes(track.title.toLowerCase().replace(' (instrumental)', '')) ||
+        String(item.collectionName || '').toLowerCase().includes(track.title.toLowerCase().replace(' (instrumental)', ''))
+      ) || data.results?.[0];
+      if (match?.artworkUrl100) cover.src = match.artworkUrl100.replace('100x100', '600x600');
+    } catch (_) {
+      // Keep the PortOS crystal fallback when an artwork service is unavailable.
+    }
+  }
+
+  function setTrack(nextIndex, autoplay = false) {
+    index = (nextIndex + tracks.length) % tracks.length;
+    const track = tracks[index];
+    audio.pause();
+    audio.src = track.src;
+    audio.load();
+    titleEl.textContent = track.title;
+    artistEl.textContent = `${track.artist} • PortOS Music`;
+    progressFill.style.width = '0%';
+    if (timeEls[0]) timeEls[0].textContent = '0:00';
+    if (timeEls[1]) timeEls[1].textContent = '0:00';
+    cover.alt = `${track.title} by ${track.artist}`;
+    loadCover(track);
+    if (autoplay) audio.play().catch(() => {});
+  }
+
+  function nextTrack(autoplay = true) {
+    if (shuffle && tracks.length > 1) {
+      let next = index;
+      while (next === index) next = Math.floor(Math.random() * tracks.length);
+      setTrack(next, autoplay);
+    } else {
+      setTrack(index + 1, autoplay);
+    }
+  }
+
+  audio.addEventListener('loadedmetadata', () => {
+    if (timeEls[1]) timeEls[1].textContent = formatTime(audio.duration);
+  });
+  audio.addEventListener('timeupdate', () => {
+    const ratio = audio.duration ? audio.currentTime / audio.duration : 0;
+    progressFill.style.width = `${Math.min(100, Math.max(0, ratio * 100))}%`;
+    if (timeEls[0]) timeEls[0].textContent = formatTime(audio.currentTime);
+  });
+  audio.addEventListener('play', () => {
+    gadget.classList.add('is-playing');
+    const play = controls[1];
+    if (play) { play.textContent = '❚❚'; play.setAttribute('aria-label', 'Pause'); }
+    visualizer?.setAttribute('aria-hidden', 'false');
+  });
+  audio.addEventListener('pause', () => {
+    gadget.classList.remove('is-playing');
+    const play = controls[1];
+    if (play) { play.textContent = '▶'; play.setAttribute('aria-label', 'Play'); }
+  });
+  audio.addEventListener('ended', () => {
+    if (repeat) setTrack(index, true);
+    else nextTrack(true);
+  });
+  audio.addEventListener('error', () => {
+    titleEl.textContent = tracks[index].title;
+    artistEl.textContent = `${tracks[index].artist} • source unavailable`;
+  });
+
+  controls[0]?.addEventListener('click', () => setTrack(index - 1, !audio.paused));
+  controls[1]?.addEventListener('click', () => {
+    if (audio.paused) audio.play().catch(() => {});
+    else audio.pause();
+  });
+  controls[2]?.addEventListener('click', () => nextTrack(true));
+  controls[3]?.addEventListener('click', () => {
+    shuffle = !shuffle;
+    controls[3].classList.toggle('active', shuffle);
+    controls[3].setAttribute('aria-pressed', String(shuffle));
+  });
+  controls[4]?.addEventListener('click', () => {
+    repeat = !repeat;
+    controls[4].classList.toggle('active', repeat);
+    controls[4].setAttribute('aria-pressed', String(repeat));
+  });
+
+  progress?.addEventListener('click', (event) => {
+    if (!audio.duration) return;
+    const rect = progress.getBoundingClientRect();
+    audio.currentTime = ((event.clientX - rect.left) / rect.width) * audio.duration;
+  });
+  volumeTrack?.addEventListener('click', (event) => {
+    const rect = volumeTrack.getBoundingClientRect();
+    const value = Math.min(1, Math.max(0, (event.clientX - rect.left) / rect.width));
+    audio.volume = value;
+    volumeFill.style.width = `${value * 100}%`;
+  });
+  audio.volume = .72;
+
+  setTrack(0, false);
+
+  // Expose the library for the PortOS UI and future playlist controls.
+  window.PortOSMusic = { tracks, audio, get currentTrack() { return tracks[index]; }, setTrack, nextTrack };
+})();
