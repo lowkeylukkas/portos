@@ -1,0 +1,77 @@
+:root {
+  --white: #f7fdff;
+}
+
+* { box-sizing: border-box; }
+html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+body { font-family: "Segoe UI", Tahoma, Arial, sans-serif; background: #000; }
+
+.boot-screen {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(26, 109, 169, .18), transparent 28%),
+    radial-gradient(circle at 50% 60%, rgba(0, 181, 255, .08), transparent 42%),
+    #000;
+  color: var(--white);
+  opacity: 1;
+  z-index: 100;
+}
+
+.boot-glow {
+  position: absolute;
+  width: min(55vw, 800px);
+  height: min(55vw, 800px);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(56, 192, 255, .075), transparent 68%);
+  filter: blur(30px);
+  pointer-events: none;
+}
+
+.boot-center {
+  position: relative;
+  z-index: 2;
+  width: min(360px, 70vw);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.portos-orb, .placeholder-orb {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255,255,255,.95) 0 4%, transparent 13%),
+    radial-gradient(circle at 35% 28%, #b9f7ff 0 9%, #55d9ff 26%, #168fe0 62%, #07539d 100%);
+  border: 1px solid rgba(255,255,255,.65);
+  box-shadow:
+    inset 8px 7px 14px rgba(255,255,255,.42),
+    inset -10px -12px 18px rgba(0,32,93,.5),
+    0 0 28px rgba(73, 207, 255, .35),
+    0 8px 30px rgba(0,0,0,.55);
+}
+
+.orb-star { color: white; font-size: 34px; line-height: 1; text-shadow: 0 0 10px rgba(255,255,255,.8); }
+.boot-wordmark { margin-top: 18px; font-size: 29px; font-weight: 300; letter-spacing: .03em; text-shadow: 0 1px 12px rgba(101,211,255,.25); }
+.loading-track { position: relative; width: 230px; height: 4px; margin-top: 28px; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.13); box-shadow: inset 0 1px 2px rgba(0,0,0,.8), 0 0 10px rgba(56,187,255,.08); }
+.loading-shimmer { position: absolute; top: 0; left: -35%; width: 35%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, transparent, #dffaff 45%, #5ad8ff 70%, transparent); box-shadow: 0 0 12px rgba(76,211,255,.9); animation: loading 1.45s ease-in-out infinite; }
+.boot-status { margin-top: 12px; color: rgba(225,246,255,.56); font-size: 11px; letter-spacing: .08em; }
+
+.desktop { position: fixed; inset: 0; display: grid; place-items: center; background: #078fd1; opacity: 0; pointer-events: none; }
+.desktop-placeholder { text-align: center; color: rgba(255,255,255,.9); opacity: .8; }
+.placeholder-orb { width: 62px; height: 62px; margin: 0 auto 16px; }
+.placeholder-orb span { color: #fff; font-size: 27px; }
+.placeholder-title { font-size: 24px; font-weight: 300; }
+.placeholder-subtitle { margin-top: 6px; font-size: 12px; opacity: .7; }
+
+.boot-screen.fade-out { animation: bootFade .9s ease forwards; }
+.desktop.fade-in { animation: desktopFade .9s ease forwards; }
+
+@keyframes loading { 0% { transform: translateX(0); } 100% { transform: translateX(390%); } }
+@keyframes bootFade { from { opacity: 1; } to { opacity: 0; visibility: hidden; } }
+@keyframes desktopFade { from { opacity: 0; } to { opacity: 1; } }
