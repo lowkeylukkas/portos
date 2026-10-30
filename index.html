@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="taskbar.css" />
   <link rel="stylesheet" href="desktop-icons.css" />
+  <link rel="stylesheet" href="music-player.css" />
 </head>
 <body>
   <main id="boot-screen" class="boot-screen" aria-label="PortOS starting">
@@ -39,7 +40,20 @@
     </section>
 
     <div class="desktop-clock" aria-label="Analog clock"><div class="clock-glass"><div class="clock-face"><div class="clock-reflection"></div><div class="clock-ticks" aria-hidden="true"></div><div class="clock-hand clock-hour"></div><div class="clock-hand clock-minute"></div><div class="clock-hand clock-second"></div><div class="clock-center"></div><div class="clock-water-glint"></div></div></div></div>
-    <div class="desktop-placeholder"></div>
+
+    <aside class="music-gadget" aria-label="Music player">
+      <div class="music-gadget-shell">
+        <div class="music-bubble one"></div><div class="music-bubble two"></div><div class="music-bubble three"></div>
+        <div class="music-header"><span class="music-status-dot"></span><span>PORTOS MUSIC</span><span style="margin-left:auto;opacity:.7">♪ LIVE</span></div>
+        <div class="music-main">
+          <div class="album-jewel" aria-hidden="true"><div class="album-orb"></div><div class="album-note">♫</div></div>
+          <div class="track-info"><div class="track-title">Ocean Dreams</div><div class="track-artist">PortOS • Frutiger Mix</div><div class="visualizer" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
+        </div>
+        <div class="music-progress-wrap"><div class="music-progress" aria-label="Track progress"><div class="music-progress-fill"></div></div><div class="music-times"><span>1:24</span><span>3:47</span></div></div>
+        <div class="music-controls"><button class="music-button" type="button" aria-label="Previous">◀</button><button class="music-button play" type="button" aria-label="Play">▶</button><button class="music-button" type="button" aria-label="Next">▶</button><button class="music-button" type="button" aria-label="Shuffle">⤨</button><button class="music-button" type="button" aria-label="Repeat">↻</button></div>
+        <div class="volume-control"><span class="volume-icon">🔊</span><div class="volume-track"><div class="volume-fill"></div></div><span style="font-size:8px;font-weight:800;color:#eaffff;text-shadow:0 1px 2px #005083">72%</span></div>
+      </div>
+    </aside>
 
     <nav class="portos-taskbar" aria-label="PortOS taskbar">
       <button class="start-orb" id="start-orb" type="button" aria-label="Start"><span>✦</span></button>
