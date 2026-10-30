@@ -57,6 +57,115 @@ function hideAppWindow() {
   if (existing) existing.remove();
 }
 
+let appWindowZ = 70;
+
+function focusAppWindow(windowEl) {
+  if (!windowEl) return;
+  appWindowZ += 1;
+  windowEl.style.zIndex = String(appWindowZ);
+}
+
+function makeAppWindowInteractive(windowEl) {
+  const titlebar = windowEl.querySelector('.portos-app-titlebar');
+  const minimizeButton = windowEl.querySelector('[data-window-action="minimize"]');
+  const maximizeButton = windowEl.querySelector('[data-window-action="maximize"]');
+  const closeButton = windowEl.querySelector('[data-window-action="close"]');
+
+  let dragging = false;
+  let dragOffsetX = 0;
+  let dragOffsetY = 0;
+  let restoreBounds = null;
+
+  function setWindowPosition(left, top) {
+    const maxLeft = Math.max(8, window.innerWidth - windowEl.offsetWidth - 8);
+    const maxTop = Math.max(8, window.innerHeight - windowEl.offsetHeight - 84);
+    windowEl.style.left = `${Math.min(Math.max(8, left), maxLeft)}px`;
+    windowEl.style.top = `${Math.min(Math.max(8, top), maxTop)}px`;
+    windowEl.style.transform = 'none';
+  }
+
+  titlebar?.addEventListener('pointerdown', (event) => {
+    if (event.button !== 0 || event.target.closest('.portos-window-button')) return;
+    focusAppWindow(windowEl);
+    if (windowEl.classList.contains('maximized')) return;
+    const rect = windowEl.getBoundingClientRect();
+    dragging = true;
+    dragOffsetX = event.clientX - rect.left;
+    dragOffsetY = event.clientY - rect.top;
+    titlebar.setPointerCapture?.(event.pointerId);
+    titlebar.style.cursor = 'grabbing';
+  });
+
+  titlebar?.addEventListener('pointermove', (event) => {
+    if (!dragging) return;
+    setWindowPosition(event.clientX - dragOffsetX, event.clientY - dragOffsetY);
+  });
+
+  function stopDragging(event) {
+    if (!dragging) return;
+    dragging = false;
+    titlebar.style.cursor = 'move';
+    try { titlebar.releasePointerCapture?.(event.pointerId); } catch (_) {}
+  }
+
+  titlebar?.addEventListener('pointerup', stopDragging);
+  titlebar?.addEventListener('pointercancel', stopDragging);
+  titlebar?.addEventListener('dblclick', (event) => {
+    if (!event.target.closest('.portos-window-button')) toggleMaximize();
+  });
+
+  windowEl.addEventListener('pointerdown', () => focusAppWindow(windowEl));
+
+  function toggleMinimize() {
+    windowEl.classList.toggle('minimized');
+    if (!windowEl.classList.contains('minimized')) focusAppWindow(windowEl);
+  }
+
+  function toggleMaximize() {
+    if (windowEl.classList.contains('maximized')) {
+      windowEl.classList.remove('maximized');
+      if (restoreBounds) {
+        windowEl.style.left = restoreBounds.left;
+        windowEl.style.top = restoreBounds.top;
+        windowEl.style.width = restoreBounds.width;
+        windowEl.style.height = restoreBounds.height;
+      }
+      maximizeButton.textContent = '□';
+      maximizeButton.setAttribute('aria-label', 'Maximize window');
+      return;
+    }
+
+    const rect = windowEl.getBoundingClientRect();
+    restoreBounds = {
+      left: `${rect.left}px`,
+      top: `${rect.top}px`,
+      width: `${rect.width}px`,
+      height: `${rect.height}px`
+    };
+    windowEl.classList.remove('minimized');
+    windowEl.classList.add('maximized');
+    windowEl.style.transform = 'none';
+    maximizeButton.textContent = '❐';
+    maximizeButton.setAttribute('aria-label', 'Restore window');
+    focusAppWindow(windowEl);
+  }
+
+  minimizeButton?.addEventListener('click', (event) => {
+    event.stopPropagation();
+    toggleMinimize();
+  });
+  maximizeButton?.addEventListener('click', (event) => {
+    event.stopPropagation();
+    toggleMaximize();
+  });
+  closeButton?.addEventListener('click', (event) => {
+    event.stopPropagation();
+    windowEl.remove();
+  });
+
+  return { toggleMaximize };
+}
+
 const appDescriptions = {
   'MAPEH': 'Music, Arts, Physical Education, and Health portfolio work.',
   'TLE': 'Technology and Livelihood Education projects and activities.',
@@ -76,6 +185,7 @@ const appDescriptions = {
 function openAppWindow(title, symbol, description) {
   hideAppWindow();
   setStartMenu(false);
+
   const windowEl = document.createElement('section');
   windowEl.className = 'portos-app-window open';
   windowEl.setAttribute('role', 'dialog');
@@ -84,21 +194,33 @@ function openAppWindow(title, symbol, description) {
     <div class="portos-app-titlebar">
       <span class="portos-app-icon">${symbol}</span>
       <span class="portos-app-title">${title}</span>
-      <button class="portos-app-close" type="button" aria-label="Close ${title}">×</button>
+      <div class="portos-window-controls" aria-label="Window controls">
+        <button class="portos-window-button" data-window-action="minimize" type="button" aria-label="Minimize window">—</button>
+        <button class="portos-window-button" data-window-action="maximize" type="button" aria-label="Maximize window">□</button>
+        <button class="portos-window-button close" data-window-action="close" type="button" aria-label="Close window">×</button>
+      </div>
     </div>
     <div class="portos-app-body">
       <h2>${title}</h2>
       <p>${description}</p>
-      <div class="portos-app-hint">This PortOS window is now interactive. Your portfolio content can be placed here without changing the desktop wallpaper, clock, taskbar, or Aero interface.</div>
+      <div class="portos-app-hint">This PortOS window is interactive — drag the glossy title bar to move it, pull the lower-right corner to resize it, or use the window controls to minimize, maximize, restore, and close it.</div>
     </div>`;
+
   document.body.appendChild(windowEl);
-  windowEl.querySelector('.portos-app-close').addEventListener('click', hideAppWindow);
+
+  const width = windowEl.offsetWidth;
+  const height = windowEl.offsetHeight;
+  windowEl.style.left = `${Math.max(8, (window.innerWidth - width) / 2)}px`;
+  windowEl.style.top = `${Math.max(8, (window.innerHeight - height - 76) / 2)}px`;
+  windowEl.style.transform = 'none';
+
+  makeAppWindowInteractive(windowEl);
+  focusAppWindow(windowEl);
 }
 
 function toggleMusic() {
   if (!musicGadget) return;
   musicGadget.classList.remove('music-hidden');
-  musicGadget.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
   setStartMenu(false);
 }
 
