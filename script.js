@@ -9,14 +9,14 @@ const clockHour = document.querySelector('.clock-hour');
 const clockMinute = document.querySelector('.clock-minute');
 const clockSecond = document.querySelector('.clock-second');
 const taskbarClock = document.getElementById('taskbar-clock');
+const startOrb = document.getElementById('start-orb');
+const startMenu = document.getElementById('start-menu');
 
 function updateLockClock() {
   const now = new Date();
   lockTime.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
   lockDate.textContent = now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' });
-  if (taskbarClock) {
-    taskbarClock.innerHTML = `${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}<small>${now.toLocaleDateString([], { weekday: 'long' })}</small>`;
-  }
+  if (taskbarClock) taskbarClock.innerHTML = `${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}<small>${now.toLocaleDateString([], { weekday: 'long' })}</small>`;
 }
 
 function buildClockTicks() {
@@ -41,14 +41,19 @@ function updateAnalogClock() {
   clockHour.style.transform = `rotate(${hours * 30}deg)`;
 }
 
+function setStartMenu(open) {
+  if (!startMenu || !startOrb) return;
+  startMenu.classList.toggle('open', open);
+  startMenu.setAttribute('aria-hidden', String(!open));
+  startOrb.setAttribute('aria-expanded', String(open));
+}
+
 function showDesktop() {
   lockScreen.classList.add('unlocking');
   desktop.classList.add('fade-in');
   desktop.setAttribute('aria-hidden', 'false');
   lockScreen.setAttribute('aria-hidden', 'true');
-  window.setTimeout(() => {
-    lockScreen.style.display = 'none';
-  }, 700);
+  window.setTimeout(() => { lockScreen.style.display = 'none'; }, 700);
 }
 
 window.addEventListener('load', () => {
@@ -57,7 +62,6 @@ window.addEventListener('load', () => {
   updateAnalogClock();
   window.setInterval(updateLockClock, 1000);
   window.setInterval(updateAnalogClock, 50);
-
   window.setTimeout(() => {
     bootScreen.classList.add('fade-out');
     lockScreen.classList.add('fade-in');
@@ -65,4 +69,16 @@ window.addEventListener('load', () => {
   }, 2600);
 });
 
-loginButton.addEventListener('click', showDesktop);
+if (loginButton) loginButton.addEventListener('click', showDesktop);
+if (startOrb) startOrb.addEventListener('click', (event) => {
+  event.stopPropagation();
+  setStartMenu(!startMenu.classList.contains('open'));
+});
+
+document.addEventListener('click', (event) => {
+  if (startMenu && startMenu.classList.contains('open') && !startMenu.contains(event.target) && event.target !== startOrb) setStartMenu(false);
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') setStartMenu(false);
+});
