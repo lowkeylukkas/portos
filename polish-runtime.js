@@ -1,13 +1,14 @@
-/* PortOS runtime polish — reliable real app icons + music focus. */
+/* PortOS runtime polish — reliable subject icons + music focus. */
 (() => {
   const iconMap = {
-    'MAPEH':'mapeh.png','TLE':'tle.png','Values Ed.':'values.png','Values Education':'values.png',
-    'English':'english.png','Araling Panlipunan':'araling-panlipunan.png','My Galleries':'galleries.png',
-    'Integration':'integration.png','Reflection':'reflection.png','Credits & Sources':'credits.png',
-    'Credits and Sources':'credits.png','About Me':'about-me.png','Science':'science.png',
-    'Filipino':'filipino.png','Mathematics':'math.png','Customize':'tle.png','Files':'credits.png','Help':'about-me.png'
+    'MAPEH':'mapeh.svg','TLE':'tle.svg','Values Ed.':'values-ed.svg','Values Education':'values-ed.svg',
+    'English':'english.svg','Araling Panlipunan':'araling-panlipunan.svg','My Galleries':'my-galleries.svg',
+    'Integration':'integration.svg','Reflection':'reflection.svg','Credits & Sources':'credits-sources.svg',
+    'Credits and Sources':'credits-sources.svg','About Me':'about-me.svg','Science':'science.svg',
+    'Filipino':'filipino.svg','Mathematics':'mathematics.svg','Music':'music.svg',
+    'Customize':'about-me.svg','Files':'credits-sources.svg','Help':'reflection.svg'
   };
-  const iconFor = (title) => iconMap[title] || 'about-me.png';
+  const iconFor = (title) => iconMap[title] || 'about-me.svg';
 
   function putRealIcon(container, src) {
     if (!container) return;
@@ -35,6 +36,31 @@
     });
   }
 
+  const style = document.createElement('style');
+  style.id = 'portos-final-icon-fix';
+  style.textContent = `
+    /* New clean transparent subject icons — no baked canvas, no screen blend. */
+    .icon-orb { background-color:transparent !important; background-repeat:no-repeat !important; background-position:center !important; background-size:contain !important; mix-blend-mode:normal !important; box-shadow:none !important; }
+    .icon-mapeh .icon-orb { background-image:url("mapeh.svg") !important; }
+    .icon-tle .icon-orb { background-image:url("tle.svg") !important; }
+    .icon-values .icon-orb { background-image:url("values-ed.svg") !important; }
+    .icon-english .icon-orb { background-image:url("english.svg") !important; }
+    .icon-ap .icon-orb { background-image:url("araling-panlipunan.svg") !important; }
+    .icon-gallery .icon-orb { background-image:url("my-galleries.svg") !important; }
+    .icon-integration .icon-orb { background-image:url("integration.svg") !important; }
+    .icon-reflection .icon-orb { background-image:url("reflection.svg") !important; }
+    .icon-sources .icon-orb { background-image:url("credits-sources.svg") !important; }
+    .icon-music .icon-orb { background-image:url("music.svg") !important; }
+    .icon-about .icon-orb { background-image:url("about-me.svg") !important; }
+    .icon-science .icon-orb { background-image:url("science.svg") !important; }
+    .icon-filipino .icon-orb { background-image:url("filipino.svg") !important; }
+    .icon-math .icon-orb { background-image:url("mathematics.svg") !important; }
+    /* The lock screen should be clean now — no clock/date panel. */
+    .lock-clock-wrap, .lock-time, .lock-date { display:none !important; }
+    .lock-content { gap:0 !important; }
+  `;
+  document.head.appendChild(style);
+
   const observer = new MutationObserver(() => polishAppIdentity(document));
   observer.observe(document.body, { childList:true, subtree:true });
   polishAppIdentity(document);
@@ -49,9 +75,6 @@
       window.PortOSMusic?.start?.();
     });
 
-    /* script.js also had an older visual-only play handler. Capture the play
-       button here so the real audio controller always wins and the button
-       cannot accidentally toggle twice. */
     const playButton = music.querySelector('.music-button.play');
     playButton?.addEventListener('click', async (event) => {
       event.preventDefault();
