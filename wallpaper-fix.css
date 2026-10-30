@@ -1,4 +1,4 @@
-/* Wallpaper asset rename fix */
+/* Approved desktop wallpaper — keep the uploaded Frutiger Aero landscape exactly as-is. */
 .desktop {
-  background-image: url("portos-frutiger-aero-wallpaper.jpg");
+  background: url("portos-frutiger-aero-wallpaper.jpg") center center / cover no-repeat !important;
 }
