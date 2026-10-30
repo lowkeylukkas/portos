@@ -8,11 +8,15 @@ const clockTicks = document.querySelector('.clock-ticks');
 const clockHour = document.querySelector('.clock-hour');
 const clockMinute = document.querySelector('.clock-minute');
 const clockSecond = document.querySelector('.clock-second');
+const taskbarClock = document.getElementById('taskbar-clock');
 
 function updateLockClock() {
   const now = new Date();
   lockTime.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
   lockDate.textContent = now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' });
+  if (taskbarClock) {
+    taskbarClock.innerHTML = `${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}<small>${now.toLocaleDateString([], { weekday: 'long' })}</small>`;
+  }
 }
 
 function buildClockTicks() {
@@ -32,7 +36,6 @@ function updateAnalogClock() {
   const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
   const minutes = now.getMinutes() + seconds / 60;
   const hours = (now.getHours() % 12) + minutes / 60;
-
   clockSecond.style.transform = `rotate(${seconds * 6}deg)`;
   clockMinute.style.transform = `rotate(${minutes * 6}deg)`;
   clockHour.style.transform = `rotate(${hours * 30}deg)`;
