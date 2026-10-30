@@ -1,0 +1,109 @@
+/* STEP 10 — Final PortOS Frutiger Aero / Longhorn material pass */
+
+/* Shared material language */
+:root{
+  --aero-hi:rgba(255,255,255,.92);
+  --aero-soft:rgba(191,246,255,.48);
+  --aero-cyan:rgba(57,218,255,.62);
+  --aero-blue:rgba(0,103,184,.62);
+  --aero-shadow:rgba(0,35,74,.42);
+}
+
+/* Atmospheric desktop light — adds depth without touching the approved wallpaper */
+.desktop::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse at 78% 8%,rgba(255,255,255,.22),transparent 25%),
+    radial-gradient(ellipse at 8% 88%,rgba(66,223,255,.12),transparent 28%),
+    linear-gradient(180deg,rgba(255,255,255,.05),transparent 34%,rgba(0,43,84,.08));
+  mix-blend-mode:screen;
+}
+.desktop > *{position:relative;z-index:2}
+
+/* Make the taskbar feel like molded translucent glass instead of a flat bar */
+.portos-taskbar{
+  height:64px;
+  padding-left:10px;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.66) 0,rgba(196,244,255,.38) 8%,rgba(55,163,207,.34) 34%,rgba(4,77,137,.68) 100%),
+    linear-gradient(90deg,rgba(0,160,220,.12),rgba(255,255,255,.06),rgba(0,73,145,.14));
+  border-top:1px solid rgba(255,255,255,.94);
+  box-shadow:
+    inset 0 2px 3px rgba(255,255,255,.76),
+    inset 0 9px 20px rgba(255,255,255,.12),
+    inset 0 -9px 20px rgba(0,31,75,.18),
+    0 -10px 32px rgba(0,61,101,.2);
+}
+.portos-taskbar::after{
+  content:"";
+  position:absolute;
+  left:0;right:0;top:0;height:1px;
+  background:rgba(255,255,255,.98);
+  box-shadow:0 0 12px rgba(189,247,255,.85);
+  pointer-events:none;
+}
+
+.start-orb{
+  width:78px;height:78px;flex-basis:78px;margin-top:-15px;
+  background:
+    radial-gradient(circle at 29% 19%,#fff 0 4%,rgba(255,255,255,.95) 7%,transparent 15%),
+    radial-gradient(circle at 34% 31%,#dfffff 0 9%,#62e9ff 25%,#16a9e9 50%,#0872c1 72%,#043e82 100%);
+  box-shadow:
+    inset 7px 8px 13px rgba(255,255,255,.76),
+    inset -10px -13px 18px rgba(0,37,96,.58),
+    inset 0 0 0 1px rgba(255,255,255,.3),
+    0 0 0 2px rgba(117,232,255,.28),
+    0 0 26px rgba(66,216,255,.62),
+    0 7px 20px rgba(0,28,62,.55);
+}
+.start-orb span{font-size:35px;color:#f7ffff;text-shadow:0 1px 3px #004b83,0 0 10px rgba(255,255,255,.8)}
+.start-orb::before{height:27px;top:7px;left:12px;right:11px;background:linear-gradient(180deg,rgba(255,255,255,.84),rgba(255,255,255,0));filter:blur(2px)}
+.start-orb::after{content:"";position:absolute;inset:7px;border-radius:50%;border:1px solid rgba(255,255,255,.2);box-shadow:inset 0 0 10px rgba(255,255,255,.18);pointer-events:none}
+
+/* Richer task buttons */
+.task-app{
+  width:50px;height:47px;border-radius:10px;
+  background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(22,122,174,.16) 48%,rgba(0,61,117,.12));
+  border-color:rgba(255,255,255,.48);
+  box-shadow:inset 0 1px 3px rgba(255,255,255,.65),inset 0 -4px 8px rgba(0,53,103,.13),0 2px 7px rgba(0,34,67,.22);
+}
+.task-app:hover{background:linear-gradient(180deg,rgba(255,255,255,.58),rgba(66,197,232,.3) 55%,rgba(0,95,159,.18));box-shadow:inset 0 1px 4px rgba(255,255,255,.9),0 0 15px rgba(107,231,255,.48),0 3px 8px rgba(0,39,73,.25)}
+.task-app .mini-icon{width:28px;height:28px;border-radius:8px;background:linear-gradient(145deg,#f5ffff 0,#8aeaff 22%,#2dbce9 53%,#0673bd 78%,#04528f 100%);box-shadow:inset 2px 2px 5px rgba(255,255,255,.85),inset -3px -4px 6px rgba(0,59,112,.4),0 2px 5px rgba(0,30,62,.34)}
+
+/* System tray as a little glass instrument panel */
+.system-tray{height:47px;border:1px solid rgba(255,255,255,.34);background:linear-gradient(180deg,rgba(255,255,255,.25),rgba(0,52,102,.27));box-shadow:inset 1px 1px 4px rgba(255,255,255,.34),inset -1px -3px 6px rgba(0,31,67,.2),0 2px 8px rgba(0,28,57,.15)}
+.tray-symbol{filter:drop-shadow(0 0 5px rgba(125,238,255,.65))}
+.taskbar-clock{text-shadow:0 1px 4px rgba(0,26,57,.8),0 0 7px rgba(170,246,255,.25)}
+
+/* Clock gets an extra jewel-like outer halo while preserving the approved analog design */
+.desktop-clock{filter:drop-shadow(0 14px 22px rgba(0,44,75,.28)) drop-shadow(0 0 13px rgba(79,220,255,.22))}
+.clock-glass{box-shadow:inset 0 2px 5px rgba(255,255,255,.82),inset 0 -11px 20px rgba(0,57,112,.24),0 0 0 2px rgba(177,248,255,.22),0 0 24px rgba(67,211,255,.22),0 10px 22px rgba(0,38,72,.28)}
+.clock-face::before{content:"";position:absolute;inset:5%;border-radius:50%;border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 0 18px rgba(255,255,255,.14);pointer-events:none}
+
+/* Music gadget: make it feel like a real 2000s desktop widget */
+.music-gadget-shell{
+  border-color:rgba(255,255,255,.78)!important;
+  background:
+    linear-gradient(145deg,rgba(240,255,255,.72),rgba(82,193,230,.44) 42%,rgba(2,75,139,.64))!important;
+  box-shadow:
+    inset 0 2px 5px rgba(255,255,255,.75),
+    inset 0 -12px 22px rgba(0,45,92,.2),
+    0 16px 35px rgba(0,35,66,.34),
+    0 0 24px rgba(72,220,255,.24)!important;
+}
+.music-gadget-shell::before{content:"";position:absolute;inset:1px;border-radius:inherit;border:1px solid rgba(255,255,255,.22);pointer-events:none}
+.album-orb{box-shadow:inset 3px 4px 8px rgba(255,255,255,.78),inset -6px -8px 12px rgba(0,55,105,.38),0 0 12px rgba(92,227,255,.42)!important}
+.music-button:hover{filter:brightness(1.18) saturate(1.1);transform:translateY(-1px) scale(1.04)}
+
+/* Start menu cohesion */
+.start-menu-shell{box-shadow:0 22px 50px rgba(0,32,72,.5),0 0 0 2px rgba(89,226,255,.25) inset,0 2px 0 rgba(255,255,255,.98) inset,0 -14px 30px rgba(0,52,122,.34) inset}
+.start-menu-shell::before{background:radial-gradient(circle at 16% 4%,rgba(255,255,255,.98),transparent 24%),radial-gradient(circle at 87% 12%,rgba(255,255,255,.5),transparent 20%),linear-gradient(115deg,transparent 30%,rgba(255,255,255,.2) 47%,transparent 61%)}
+
+/* Tiny floating highlights, deliberately subtle so the approved wallpaper remains the star */
+.desktop::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(circle at 91% 31%,rgba(255,255,255,.5) 0 1px,transparent 2px),radial-gradient(circle at 87% 36%,rgba(168,250,255,.42) 0 2px,transparent 3px),radial-gradient(circle at 14% 18%,rgba(255,255,255,.4) 0 1px,transparent 2px);opacity:.6}
+
+@media(max-width:700px){.portos-taskbar{height:58px}.start-orb{width:66px;height:66px;flex-basis:66px;margin-top:-10px}.start-orb span{font-size:29px}}
