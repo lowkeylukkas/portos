@@ -1,0 +1,26 @@
+/* PortOS crystal emblem — transparent presentation */
+.boot-screen .portos-orb {
+  width: auto;
+  height: auto;
+  min-width: 0;
+  min-height: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  display: grid;
+  place-items: center;
+}
+
+.boot-screen .portos-logo-image {
+  display: block;
+  width: 132px;
+  height: 132px;
+  max-width: 30vw;
+  max-height: 30vh;
+  object-fit: contain;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
