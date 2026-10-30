@@ -23,7 +23,6 @@ button { font: inherit; }
 .loading-shimmer { position:absolute; top:0; left:-35%; width:35%; height:100%; border-radius:inherit; background:linear-gradient(90deg,transparent,#dffaff 45%,#5ad8ff 70%,transparent); box-shadow:0 0 12px rgba(76,211,255,.9); animation:loading 1.45s ease-in-out infinite; }
 .boot-status { margin-top:12px; color:rgba(225,246,255,.56); font-size:11px; letter-spacing:.08em; }
 
-/* Lock screen — separate from the desktop and intentionally uses its own visual layer. */
 .lock-screen { position:fixed; inset:0; z-index:90; display:grid; place-items:center; overflow:hidden; color:#fff; opacity:0; pointer-events:none; background:#0a4770; }
 .lock-wallpaper { position:absolute; inset:0; background:radial-gradient(circle at 18% 18%,rgba(255,255,255,.9) 0 1px,transparent 2px),radial-gradient(circle at 76% 30%,rgba(255,255,255,.7) 0 1px,transparent 2px),linear-gradient(135deg,#0b5d91 0%,#1ba7cf 38%,#78e1ed 65%,#12659b 100%); background-size:auto,auto,cover; transform:scale(1.04); }
 .lock-wallpaper::before { content:""; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 20%,rgba(255,255,255,.6),transparent 35%),linear-gradient(180deg,rgba(0,45,91,.08),rgba(0,23,55,.48)); }
@@ -47,7 +46,6 @@ button { font: inherit; }
 .corner-button { width:42px; height:42px; border-radius:50%; border:1px solid rgba(255,255,255,.5); color:#fff; background:linear-gradient(145deg,rgba(255,255,255,.28),rgba(20,93,145,.42)); box-shadow:inset 0 1px 3px rgba(255,255,255,.5),0 4px 14px rgba(0,25,55,.3); cursor:pointer; text-shadow:0 1px 4px #034; }
 .lock-shine { position:absolute; inset:0; z-index:2; pointer-events:none; background:linear-gradient(115deg,transparent 22%,rgba(255,255,255,.09) 36%,transparent 49%); transform:translateX(-70%); animation:glassSweep 7s ease-in-out infinite; }
 
-/* Desktop wallpaper — uses the exact approved Frutiger Aero artwork uploaded to the repo. */
 .desktop {
   position:fixed;
   inset:0;
@@ -71,82 +69,22 @@ button { font: inherit; }
 
 @media (max-width:600px){ .lock-clock-wrap{margin-bottom:36px}.lock-time{font-size:74px}.user-avatar{width:94px;height:94px}.user-avatar span{font-size:36px}.lock-date{font-size:15px}.corner-button{width:38px;height:38px} }
 
-/* STEP 4 — replacement Longhorn/Frutiger Aero glass clock. */
-.lock-clock-wrap {
-  position: relative;
-  min-width: min(520px, 78vw);
-  padding: 28px 48px 24px;
-  margin-bottom: 42px;
-  border: 1px solid rgba(255,255,255,.68);
-  border-radius: 22px;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.30), rgba(190,239,255,.13) 46%, rgba(12,92,153,.20)),
-    linear-gradient(135deg, rgba(255,255,255,.18), rgba(44,167,220,.08));
-  box-shadow:
-    inset 0 1px 2px rgba(255,255,255,.85),
-    inset 0 -14px 28px rgba(0,54,105,.16),
-    0 12px 35px rgba(0,30,65,.28),
-    0 0 30px rgba(112,225,255,.16);
-  backdrop-filter: blur(14px) saturate(125%);
-  -webkit-backdrop-filter: blur(14px) saturate(125%);
-  overflow: hidden;
-}
-.lock-clock-wrap::before {
-  content:"";
-  position:absolute;
-  inset:1px 8% auto;
-  height:45%;
-  border-radius:999px;
-  background:linear-gradient(180deg, rgba(255,255,255,.58), rgba(255,255,255,0));
-  filter:blur(3px);
-  opacity:.72;
-  pointer-events:none;
-}
-.lock-clock-wrap::after {
-  content:"";
-  position:absolute;
-  width:70%;
-  height:90px;
-  left:-30%;
-  top:-35px;
-  transform:rotate(-18deg);
-  background:linear-gradient(90deg, transparent, rgba(255,255,255,.38), transparent);
-  filter:blur(7px);
-  animation:clockSweep 6.5s ease-in-out infinite;
-  pointer-events:none;
-}
-.lock-time {
-  position:relative;
-  z-index:1;
-  font-size:clamp(70px, 9vw, 118px);
-  line-height:.9;
-  font-weight:300;
-  letter-spacing:-.065em;
-  font-variant-numeric: tabular-nums;
-  color:rgba(255,255,255,.97);
-  text-shadow:
-    0 2px 2px rgba(0,39,76,.36),
-    0 0 10px rgba(255,255,255,.35),
-    0 0 28px rgba(102,220,255,.25);
-}
-.lock-date {
-  position:relative;
-  z-index:1;
-  margin-top:15px;
-  font-size:clamp(14px,1.25vw,19px);
-  font-weight:400;
-  letter-spacing:.065em;
-  color:rgba(242,252,255,.94);
-  text-shadow:0 1px 7px rgba(0,37,72,.45);
-}
-@keyframes clockSweep {
-  0%, 48% { transform:translateX(0) rotate(-18deg); opacity:0; }
-  58% { opacity:.65; }
-  78%, 100% { transform:translateX(190%) rotate(-18deg); opacity:0; }
-}
+/* Analog Longhorn clock — glass, water, sky, and jewel-like shading. */
+.desktop-clock { position:absolute; top:6.5vh; right:4vw; width:clamp(150px,14vw,220px); aspect-ratio:1; z-index:8; filter:drop-shadow(0 16px 24px rgba(0,43,76,.3)) drop-shadow(0 0 16px rgba(137,239,255,.32)); }
+.clock-glass { position:absolute; inset:0; border-radius:50%; padding:7px; background:linear-gradient(145deg,rgba(255,255,255,.9),rgba(151,225,239,.68) 28%,rgba(30,125,163,.68) 62%,rgba(225,255,255,.88)); box-shadow:inset 2px 2px 4px rgba(255,255,255,.95),inset -5px -6px 9px rgba(0,71,104,.4),0 0 0 1px rgba(255,255,255,.75),0 0 22px rgba(102,226,255,.45); }
+.clock-glass::before { content:""; position:absolute; inset:3px; border-radius:50%; border:2px solid rgba(255,255,255,.82); box-shadow:inset 0 0 0 2px rgba(47,145,178,.35),inset 0 2px 5px rgba(255,255,255,.9); pointer-events:none; }
+.clock-face { position:relative; width:100%; height:100%; overflow:hidden; border-radius:50%; background:radial-gradient(circle at 36% 25%,rgba(255,255,255,.98),rgba(226,250,255,.8) 26%,rgba(143,220,237,.55) 58%,rgba(57,163,192,.55) 100%); box-shadow:inset 8px 10px 20px rgba(255,255,255,.75),inset -10px -13px 22px rgba(0,73,109,.3); }
+.clock-face::before { content:""; position:absolute; inset:9%; border-radius:50%; background:radial-gradient(circle at 30% 26%,rgba(255,255,255,.75),transparent 26%),radial-gradient(circle at 65% 75%,rgba(43,202,222,.16),transparent 38%); box-shadow:inset 0 0 18px rgba(255,255,255,.65); }
+.clock-ticks { position:absolute; inset:0; z-index:2; }
+.clock-tick { position:absolute; left:50%; top:6%; width:2.5%; height:8%; min-width:2px; border-radius:999px; transform-origin:50% 550%; background:linear-gradient(90deg,#174c67,#78a6b6); box-shadow:0 1px 1px rgba(255,255,255,.8),0 1px 2px rgba(0,51,76,.4); }
+.clock-hand { position:absolute; left:50%; top:50%; z-index:4; transform-origin:50% 100%; border-radius:999px; }
+.clock-hour { width:4%; height:28%; margin-left:-2%; margin-top:-28%; background:linear-gradient(90deg,#083b5a,#1e6688 48%,#082e48); box-shadow:0 1px 2px rgba(255,255,255,.65),0 2px 3px rgba(0,31,52,.45); }
+.clock-minute { width:3%; height:38%; margin-left:-1.5%; margin-top:-38%; background:linear-gradient(90deg,#073b59,#266f8e 48%,#082d48); box-shadow:0 1px 2px rgba(255,255,255,.65),0 2px 3px rgba(0,31,52,.45); }
+.clock-second { width:1.2%; min-width:2px; height:43%; margin-left:-.6%; margin-top:-43%; background:linear-gradient(90deg,#f04c59,#ff3447 55%,#bd1628); box-shadow:0 1px 2px rgba(255,255,255,.55),0 1px 2px rgba(86,0,8,.35); }
+.clock-center { position:absolute; left:50%; top:50%; z-index:6; width:10%; aspect-ratio:1; transform:translate(-50%,-50%); border-radius:50%; background:radial-gradient(circle at 35% 25%,#ffffff,#7edff4 32%,#1a87b2 72%,#07516f); border:1px solid rgba(255,255,255,.85); box-shadow:inset 1px 1px 2px rgba(255,255,255,.95),0 1px 3px rgba(0,43,63,.55); }
+.clock-reflection { position:absolute; inset:-20%; z-index:7; pointer-events:none; background:linear-gradient(126deg,transparent 31%,rgba(255,255,255,.5) 42%,rgba(255,255,255,.16) 47%,transparent 55%); transform:rotate(-8deg); animation:clockShine 8s ease-in-out infinite; }
+.clock-water-glint { position:absolute; width:28%; height:11%; left:13%; bottom:18%; z-index:3; border-radius:50%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.42),transparent); filter:blur(2px); transform:rotate(-22deg); opacity:.75; }
 
-@media (max-width:600px){
-  .lock-clock-wrap { min-width:0; width:88vw; padding:23px 24px 20px; border-radius:18px; }
-  .lock-time { font-size:68px; }
-  .lock-date { font-size:14px; }
-}
+@keyframes clockShine { 0%,60%{transform:translateX(-24%) rotate(-8deg);opacity:.15} 75%,90%{transform:translateX(24%) rotate(-8deg);opacity:.58} 100%{transform:translateX(34%) rotate(-8deg);opacity:.15} }
+
+@media (max-width:600px){ .lock-clock-wrap{margin-bottom:36px}.lock-time{font-size:74px}.user-avatar{width:94px;height:94px}.user-avatar span{font-size:36px}.lock-date{font-size:15px}.corner-button{width:38px;height:38px}.desktop-clock{top:4.5vh;right:4vw;width:135px;} }
