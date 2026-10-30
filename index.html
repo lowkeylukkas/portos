@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#061b3a" />
   <title>PortOS</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="taskbar.css" />
 </head>
 <body>
   <main id="boot-screen" class="boot-screen" aria-label="PortOS starting">
@@ -60,11 +61,27 @@
         </div>
       </div>
     </div>
+
     <div class="desktop-placeholder">
       <div class="placeholder-orb"><span>✦</span></div>
       <div class="placeholder-title">PortOS</div>
       <div class="placeholder-subtitle">Desktop coming next</div>
     </div>
+
+    <nav class="portos-taskbar" aria-label="PortOS taskbar">
+      <button class="start-orb" id="start-orb" type="button" aria-label="Start"><span>✦</span></button>
+      <div class="taskbar-apps" aria-label="Open applications">
+        <button class="task-app active" type="button" aria-label="Desktop"><span class="mini-icon">⌂</span></button>
+        <button class="task-app" type="button" aria-label="Files"><span class="mini-icon">▰</span></button>
+        <button class="task-app" type="button" aria-label="Gallery"><span class="mini-icon">✿</span></button>
+      </div>
+      <div class="system-tray">
+        <span class="tray-symbol" aria-label="Network">◉</span>
+        <span class="tray-symbol" aria-label="Volume">◖</span>
+        <span class="tray-symbol" aria-label="Battery">▣</span>
+        <div id="taskbar-clock" class="taskbar-clock">10:30<small>Friday</small></div>
+      </div>
+    </nav>
   </main>
 
   <script src="script.js"></script>
