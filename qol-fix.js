@@ -1,4 +1,4 @@
-/* PortOS QOL fixes: reliable Values Ed icon + isolated volume slider. */
+/* PortOS QOL fixes: reliable Values Ed icon + isolated volume slider + centered Start profile. */
 (() => {
   const iconSrc = 'Values Ed..png?v=12';
 
@@ -74,6 +74,15 @@
     .portos-volume-native::-webkit-slider-thumb { -webkit-appearance:none!important;appearance:none!important;width:18px!important;height:18px!important;border-radius:50%!important;border:1px solid rgba(255,255,255,.98)!important;background:radial-gradient(circle at 35% 28%,#fff 0 18%,#d5ffff 31%,#5bdff8 68%,#087bc1 100%)!important;box-shadow:0 2px 5px rgba(0,55,110,.38),inset 0 1px 2px #fff!important;cursor:pointer!important; }
     .portos-volume-native::-moz-range-thumb { width:18px!important;height:18px!important;border-radius:50%!important;border:1px solid rgba(255,255,255,.98)!important;background:radial-gradient(circle at 35% 28%,#fff 0 18%,#d5ffff 31%,#5bdff8 68%,#087bc1 100%)!important;box-shadow:0 2px 5px rgba(0,55,110,.38),inset 0 1px 2px #fff!important;cursor:pointer!important; }
     .portos-volume-native::-moz-range-track { height:18px!important;border:0!important;background:transparent!important; }
+
+    /* Center the Start-menu identity as one cohesive profile group. */
+    .start-user {
+      justify-content:center!important;
+      text-align:left!important;
+    }
+    .start-user > div:last-child {
+      flex:0 0 auto!important;
+    }
   `;
   document.head.appendChild(style);
 
