@@ -1,6 +1,6 @@
-/* PortOS QOL fixes: reliable Values Ed icon + working custom volume slider. */
+/* PortOS QOL fixes: reliable Values Ed icon + actually movable custom volume slider. */
 (() => {
-  const iconSrc = 'Values Ed..png?v=10';
+  const iconSrc = 'Values Ed..png?v=11';
 
   function fixValuesIcon() {
     const icon = document.querySelector('.icon-values .icon-orb');
@@ -34,38 +34,37 @@
     const knob = slider.querySelector('.portos-volume-knob');
     const label = gadget.querySelector('.volume-control > span:last-child');
     let dragging = false;
-    let pointerId = null;
 
     function paint(value) {
       const n = Math.max(0, Math.min(100, Number(value) || 0));
+      const pct = `${n}%`;
       audio.volume = n / 100;
-      fill.style.width = n + '%';
-      knob.style.left = n + '%';
+      slider.style.setProperty('--volume', pct);
+      fill.style.setProperty('width', pct, 'important');
+      knob.style.setProperty('left', pct, 'important');
       slider.setAttribute('aria-valuenow', String(Math.round(n)));
-      if (label) label.textContent = Math.round(n) + '%';
+      if (label) label.textContent = `${Math.round(n)}%`;
     }
 
     function valueFromEvent(e) {
       const r = slider.getBoundingClientRect();
       if (!r.width) return audio.volume * 100;
-      return ((e.clientX - r.left) / r.width) * 100;
+      return Math.max(0, Math.min(100, ((e.clientX - r.left) / r.width) * 100));
     }
 
     function begin(e) {
       if (e.button !== undefined && e.button !== 0) return;
-      const hit = e.target.closest?.('.portos-volume-slider');
-      if (hit !== slider) return;
+      if (!e.target.closest?.('.portos-volume-slider')) return;
       e.preventDefault();
       e.stopPropagation();
       dragging = true;
-      pointerId = e.pointerId;
       slider.classList.add('dragging');
       paint(valueFromEvent(e));
       try { slider.setPointerCapture(e.pointerId); } catch (_) {}
     }
 
     function move(e) {
-      if (!dragging || (pointerId !== null && e.pointerId !== pointerId)) return;
+      if (!dragging) return;
       e.preventDefault();
       e.stopPropagation();
       paint(valueFromEvent(e));
@@ -74,7 +73,6 @@
     function end(e) {
       if (!dragging) return;
       dragging = false;
-      pointerId = null;
       slider.classList.remove('dragging');
       try { slider.releasePointerCapture(e.pointerId); } catch (_) {}
     }
@@ -104,14 +102,7 @@
       paint(v);
     });
 
-    audio.addEventListener('volumechange', () => {
-      const v = audio.volume * 100;
-      fill.style.width = v + '%';
-      knob.style.left = v + '%';
-      slider.setAttribute('aria-valuenow', String(Math.round(v)));
-      if (label) label.textContent = Math.round(v) + '%';
-    });
-
+    audio.addEventListener('volumechange', () => paint(audio.volume * 100));
     paint(audio.volume * 100 || 72);
   }
 
@@ -123,8 +114,8 @@
     .music-gadget .volume-track { flex:1!important;min-width:110px!important;height:30px!important;display:block!important;background:transparent!important;border:0!important;box-shadow:none!important;overflow:visible!important;pointer-events:auto!important; }
     .music-gadget .portos-volume-slider { position:relative!important;width:100%!important;height:30px!important;cursor:pointer!important;touch-action:none!important;user-select:none!important;outline:none!important;background:transparent!important;border:0!important;box-shadow:none!important;pointer-events:auto!important; }
     .music-gadget .portos-volume-slider::before { content:"";position:absolute!important;left:0!important;right:0!important;top:50%!important;height:6px!important;transform:translateY(-50%)!important;border-radius:999px!important;background:rgba(0,78,140,.28)!important;box-shadow:inset 0 1px 2px rgba(0,40,90,.28)!important;pointer-events:none!important; }
-    .music-gadget .portos-volume-fill { position:absolute!important;left:0!important;top:50%!important;width:72%!important;height:6px!important;transform:translateY(-50%)!important;border-radius:999px!important;background:linear-gradient(90deg,#d9ffff,#5ee7ff 58%,#20bce9)!important;box-shadow:0 0 6px rgba(132,245,255,.7),inset 0 1px 2px rgba(255,255,255,.9)!important;pointer-events:none!important; }
-    .music-gadget .portos-volume-knob { position:absolute!important;top:50%!important;left:72%!important;width:22px!important;height:22px!important;transform:translate(-50%,-50%)!important;border:1px solid rgba(255,255,255,.98)!important;border-radius:50%!important;background:radial-gradient(circle at 35% 28%,#fff 0 18%,#d5ffff 31%,#5bdff8 68%,#087bc1 100%)!important;box-shadow:0 2px 5px rgba(0,55,110,.38),inset 0 1px 2px #fff!important;pointer-events:none!important;transition:none!important; }
+    .music-gadget .portos-volume-fill { position:absolute!important;left:0!important;top:50%!important;width:var(--volume,72%)!important;height:6px!important;transform:translateY(-50%)!important;border-radius:999px!important;background:linear-gradient(90deg,#d9ffff,#5ee7ff 58%,#20bce9)!important;box-shadow:0 0 6px rgba(132,245,255,.7),inset 0 1px 2px rgba(255,255,255,.9)!important;pointer-events:none!important; }
+    .music-gadget .portos-volume-knob { position:absolute!important;top:50%!important;left:var(--volume,72%)!important;width:22px!important;height:22px!important;transform:translate(-50%,-50%)!important;border:1px solid rgba(255,255,255,.98)!important;border-radius:50%!important;background:radial-gradient(circle at 35% 28%,#fff 0 18%,#d5ffff 31%,#5bdff8 68%,#087bc1 100%)!important;box-shadow:0 2px 5px rgba(0,55,110,.38),inset 0 1px 2px #fff!important;pointer-events:none!important;transition:none!important; }
     .music-gadget .portos-volume-slider.dragging .portos-volume-knob { transform:translate(-50%,-50%) scale(1.08)!important; }
     .music-gadget .portos-volume-slider:focus-visible .portos-volume-knob { outline:2px solid rgba(255,255,255,.9)!important;outline-offset:2px!important; }
   `;
