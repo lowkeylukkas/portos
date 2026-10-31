@@ -1,4 +1,4 @@
-/* PortOS QOL fixes: reliable Values Ed icon + reworked volume control. */
+/* PortOS QOL fixes: reliable Values Ed icon + isolated volume slider. */
 (() => {
   const iconSrc = 'Values Ed..png?v=12';
 
@@ -25,29 +25,18 @@
     const gadget = document.querySelector('.music-gadget');
     const track = gadget?.querySelector('.volume-track');
     const audio = getMusicAudio();
-    if (!gadget || !track || !audio || track.dataset.qolReady === 'reworked') return;
-    track.dataset.qolReady = 'reworked';
+    if (!gadget || !track || !audio || track.dataset.qolReady === 'native') return;
+    track.dataset.qolReady = 'native';
 
-    track.innerHTML = `
-      <div class="portos-volume-visual" aria-hidden="true">
-        <div class="portos-volume-fill"></div>
-        <div class="portos-volume-knob"></div>
-      </div>
-      <input class="portos-volume-input" type="range" min="0" max="100" step="1" value="72" aria-label="Music volume">
-    `;
-
-    const input = track.querySelector('.portos-volume-input');
-    const visual = track.querySelector('.portos-volume-visual');
-    const fill = track.querySelector('.portos-volume-fill');
-    const knob = track.querySelector('.portos-volume-knob');
+    track.innerHTML = '<input class="portos-volume-native" type="range" min="0" max="100" step="1" value="72" aria-label="Music volume">';
+    const input = track.querySelector('.portos-volume-native');
     const label = gadget.querySelector('.volume-control > span:last-child');
 
     function render(value) {
       const n = Math.max(0, Math.min(100, Math.round(Number(value) || 0)));
       input.value = String(n);
-      visual.style.setProperty('--volume', `${n}%`);
-      fill.style.width = `${n}%`;
-      knob.style.left = `${n}%`;
+      input.style.setProperty('--volume', `${n}%`);
+      input.style.background = `linear-gradient(90deg, #cfffff 0%, #45dff8 ${n}%, rgba(0,79,136,.28) ${n}%, rgba(0,79,136,.28) 100%)`;
       if (label) label.textContent = `${n}%`;
     }
 
@@ -55,10 +44,6 @@
       const n = Math.max(0, Math.min(100, Math.round(Number(value) || 0)));
       audio.volume = n / 100;
       render(n);
-    }
-
-    function sync() {
-      render(audio.volume * 100);
     }
 
     input.addEventListener('input', () => setVolume(input.value));
@@ -72,26 +57,23 @@
       e.stopPropagation();
       setVolume(Number(input.value) + (e.deltaY < 0 ? 5 : -5));
     }, { passive:false });
+    audio.addEventListener('volumechange', () => render(audio.volume * 100));
 
-    audio.addEventListener('volumechange', sync);
     if (!Number.isFinite(audio.volume)) audio.volume = .72;
-    sync();
+    render(audio.volume * 100);
   }
 
   const style = document.createElement('style');
-  style.id = 'portos-qol-reworked-volume-style';
+  style.id = 'portos-qol-native-volume-style';
   style.textContent = `
     .icon-values .icon-orb { background-image:none!important; }
     .values-ed-real-icon { width:100%!important;height:100%!important;object-fit:contain!important;display:block!important;background:transparent!important;border:0!important;filter:none!important;mix-blend-mode:normal!important;box-shadow:none!important; }
-
-    .music-gadget .volume-control { position:relative!important;z-index:90!important;display:flex!important;align-items:center!important;gap:6px!important;pointer-events:auto!important; }
-    .music-gadget .volume-track { position:relative!important;flex:1!important;min-width:110px!important;height:24px!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important;pointer-events:auto!important; }
-    .portos-volume-visual { position:absolute!important;left:0!important;right:0!important;top:50%!important;height:8px!important;transform:translateY(-50%)!important;border-radius:999px!important;background:rgba(0,79,136,.28)!important;border:1px solid rgba(255,255,255,.9)!important;box-shadow:inset 0 2px 3px rgba(0,50,100,.22),0 1px 0 rgba(255,255,255,.7)!important;pointer-events:none!important;overflow:visible!important; }
-    .portos-volume-fill { position:absolute!important;left:0!important;top:0!important;height:100%!important;width:72%!important;border-radius:inherit!important;background:linear-gradient(90deg,#cfffff,#45dff8,#0a88cf)!important;box-shadow:0 0 6px rgba(133,245,255,.85)!important;pointer-events:none!important; }
-    .portos-volume-knob { position:absolute!important;top:50%!important;left:72%!important;width:20px!important;height:20px!important;transform:translate(-50%,-50%)!important;border:1px solid rgba(255,255,255,.98)!important;border-radius:50%!important;background:radial-gradient(circle at 35% 28%,#fff 0 18%,#d5ffff 31%,#5bdff8 68%,#087bc1 100%)!important;box-shadow:0 2px 5px rgba(0,55,110,.38),inset 0 1px 2px #fff!important;pointer-events:none!important;z-index:2!important; }
-    .portos-volume-input { position:absolute!important;inset:-8px 0!important;width:100%!important;height:40px!important;margin:0!important;padding:0!important;opacity:0!important;cursor:pointer!important;z-index:5!important;appearance:none!important;-webkit-appearance:none!important;touch-action:none!important; }
-    .portos-volume-input::-webkit-slider-thumb { width:40px!important;height:40px!important;cursor:pointer!important; }
-    .portos-volume-input::-moz-range-thumb { width:40px!important;height:40px!important;cursor:pointer!important; }
+    .music-gadget .volume-control { position:relative!important;z-index:999!important;display:flex!important;align-items:center!important;gap:6px!important;pointer-events:auto!important; }
+    .music-gadget .volume-track { position:relative!important;flex:1!important;min-width:110px!important;width:auto!important;height:24px!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important;pointer-events:auto!important; }
+    .portos-volume-native { position:absolute!important;left:0!important;top:2px!important;width:100%!important;height:20px!important;margin:0!important;padding:0!important;display:block!important;opacity:1!important;cursor:pointer!important;z-index:1000!important;appearance:none!important;-webkit-appearance:none!important;border:1px solid rgba(255,255,255,.9)!important;border-radius:999px!important;box-shadow:inset 0 2px 3px rgba(0,50,100,.22),0 1px 0 rgba(255,255,255,.7)!important;background:rgba(0,79,136,.28)!important;overflow:visible!important; }
+    .portos-volume-native::-webkit-slider-thumb { -webkit-appearance:none!important;appearance:none!important;width:18px!important;height:18px!important;border-radius:50%!important;border:1px solid rgba(255,255,255,.98)!important;background:radial-gradient(circle at 35% 28%,#fff 0 18%,#d5ffff 31%,#5bdff8 68%,#087bc1 100%)!important;box-shadow:0 2px 5px rgba(0,55,110,.38),inset 0 1px 2px #fff!important;cursor:pointer!important; }
+    .portos-volume-native::-moz-range-thumb { width:18px!important;height:18px!important;border-radius:50%!important;border:1px solid rgba(255,255,255,.98)!important;background:radial-gradient(circle at 35% 28%,#fff 0 18%,#d5ffff 31%,#5bdff8 68%,#087bc1 100%)!important;box-shadow:0 2px 5px rgba(0,55,110,.38),inset 0 1px 2px #fff!important;cursor:pointer!important; }
+    .portos-volume-native::-moz-range-track { height:18px!important;border:0!important;background:transparent!important; }
   `;
   document.head.appendChild(style);
 
