@@ -6,22 +6,15 @@
 .lock-vignette{background:radial-gradient(circle at 50% 40%,transparent 8%,rgba(0,42,72,.06) 55%,rgba(0,19,45,.48) 100%);pointer-events:none}
 .lock-content{padding-bottom:3vh;pointer-events:auto;gap:0!important;justify-content:center!important;align-items:center!important}
 .lock-clock-wrap,.lock-time,.lock-date{display:none!important}
-
-/* New PortOS branding: the uploaded glass-knot emblem replaces the old star everywhere. */
 .portos-logo-image{content:url("Iridescent Glass Orb Knot Emblem.png")!important}
-
-/* Vista-style translucent logon card */
-.user-card{position:relative;width:390px;height:375px;padding:34px 40px 28px;border-radius:34px;display:flex;flex-direction:column;align-items:center;background:linear-gradient(145deg,rgba(246,254,255,.56),rgba(92,210,239,.27) 42%,rgba(0,68,123,.42));border:1px solid rgba(255,255,255,.9);box-shadow:inset 0 2px 9px rgba(255,255,255,.95),inset 0 -20px 36px rgba(0,43,82,.22),0 25px 60px rgba(0,28,62,.42),0 0 48px rgba(102,231,255,.3);backdrop-filter:blur(17px) saturate(165%);overflow:hidden}
+.user-card{position:relative;width:390px;height:375px;padding:34px 40px 28px;border-radius:34px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(145deg,rgba(246,254,255,.56),rgba(92,210,239,.27) 42%,rgba(0,68,123,.42));border:1px solid rgba(255,255,255,.9);box-shadow:inset 0 2px 9px rgba(255,255,255,.95),inset 0 -20px 36px rgba(0,43,82,.22),0 25px 60px rgba(0,28,62,.42),0 0 48px rgba(102,231,255,.3);backdrop-filter:blur(17px) saturate(165%);overflow:hidden}
 .user-card::before{content:"";position:absolute;left:7%;right:7%;top:7px;height:42px;border-radius:50%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.82),transparent);filter:blur(5px);opacity:.82;pointer-events:none}
 .user-card::after{content:"PORTOS PERSONAL DESKTOP";position:absolute;left:0;right:0;bottom:14px;text-align:center;font-size:8px;letter-spacing:2.2px;font-weight:800;color:rgba(231,253,255,.72);text-shadow:0 1px 3px rgba(0,50,82,.6);pointer-events:none}
-
-/* Uploaded underwater PFP, framed like a glossy Vista account tile */
-.user-avatar{position:relative;width:158px;height:158px;flex:none;border:2px solid rgba(255,255,255,.92)!important;border-radius:50%;overflow:hidden;background:rgba(8,91,143,.38);box-shadow:inset 10px 11px 22px rgba(255,255,255,.7),inset -14px -17px 28px rgba(0,54,110,.42),0 0 0 7px rgba(110,235,255,.16),0 0 40px rgba(90,224,255,.5),0 14px 32px rgba(0,25,60,.35);transform:translateY(2px)}
+.user-avatar{position:relative;width:158px;height:158px;flex:none;border:2px solid rgba(255,255,255,.92)!important;border-radius:50%;overflow:hidden;background:rgba(8,91,143,.38);box-shadow:inset 10px 11px 22px rgba(255,255,255,.7),inset -14px -17px 28px rgba(0,54,110,.42),0 0 0 7px rgba(110,235,255,.16),0 0 40px rgba(90,224,255,.5),0 14px 32px rgba(0,25,60,.35);transform:none}
 .user-avatar .portos-lock-logo{content:url("mqdefault.jpg")!important;width:100%!important;height:100%!important;display:block!important;object-fit:cover!important;object-position:center!important;border:0!important;border-radius:50%!important;position:relative!important;z-index:1!important}
 .user-avatar .avatar-glass{position:absolute;inset:0;z-index:2;border-radius:50%;background:linear-gradient(145deg,rgba(255,255,255,.28),transparent 38%,rgba(0,40,95,.16) 100%);box-shadow:inset 9px 8px 17px rgba(255,255,255,.42),inset -8px -10px 18px rgba(0,40,90,.2);pointer-events:none}
 .user-avatar::before{content:"";position:absolute;inset:9px;z-index:3;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:linear-gradient(120deg,rgba(255,255,255,.22),transparent 42%,transparent 68%,rgba(255,255,255,.08));pointer-events:none}
 .user-avatar::after{content:"";position:absolute;width:120px;height:42px;top:9px;left:18px;z-index:4;border-radius:50%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.42),transparent);filter:blur(3px);transform:rotate(-10deg);pointer-events:none}
-
 .user-name{margin-top:17px;font-size:29px;font-weight:500;color:#fff;text-shadow:0 2px 9px rgba(0,35,60,.65)}
 .login-button{margin-top:16px;width:285px;height:58px;min-width:0;border-radius:31px;font-size:21px;font-weight:700;letter-spacing:.1px;cursor:pointer;position:relative;z-index:5;color:#fff;background:linear-gradient(180deg,rgba(255,255,255,.88),rgba(134,226,247,.62) 27%,rgba(21,129,180,.72) 62%,rgba(3,72,130,.84));border:1px solid rgba(255,255,255,.86);box-shadow:inset 0 2px 4px rgba(255,255,255,1),inset 0 -7px 11px rgba(0,45,90,.3),0 7px 20px rgba(0,30,63,.32),0 0 18px rgba(113,231,255,.4);transition:transform .16s ease,filter .16s ease,box-shadow .16s ease}
 .login-button::before{content:"";position:absolute;left:12%;right:12%;top:4px;height:13px;border-radius:50%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.76),transparent);filter:blur(2px);pointer-events:none}
