@@ -1,6 +1,6 @@
-/* PortOS QOL fixes: reliable Values Ed icon + rebuilt native volume slider. */
+/* PortOS QOL fixes: reliable Values Ed icon + reworked volume control. */
 (() => {
-  const iconSrc = 'Values Ed..png?v=11';
+  const iconSrc = 'Values Ed..png?v=12';
 
   function fixValuesIcon() {
     const icon = document.querySelector('.icon-values .icon-orb');
@@ -18,70 +18,80 @@
   }
 
   function getMusicAudio() {
-    return window.PortOSMusic?.audio || document.querySelector('audio');
+    return window.PortOSMusic?.audio || document.querySelector('.music-gadget audio') || document.querySelector('audio');
   }
 
   function improveVolume() {
     const gadget = document.querySelector('.music-gadget');
     const track = gadget?.querySelector('.volume-track');
     const audio = getMusicAudio();
-    if (!gadget || !track || !audio || track.dataset.qolReady === 'native') return;
-    track.dataset.qolReady = 'native';
+    if (!gadget || !track || !audio || track.dataset.qolReady === 'reworked') return;
+    track.dataset.qolReady = 'reworked';
 
-    // Throw away every previous custom slider implementation.
-    track.innerHTML = '<input class="portos-volume-native" type="range" min="0" max="100" step="1" value="72" aria-label="Music volume">';
-    const slider = track.querySelector('.portos-volume-native');
+    track.innerHTML = `
+      <div class="portos-volume-visual" aria-hidden="true">
+        <div class="portos-volume-fill"></div>
+        <div class="portos-volume-knob"></div>
+      </div>
+      <input class="portos-volume-input" type="range" min="0" max="100" step="1" value="72" aria-label="Music volume">
+    `;
+
+    const input = track.querySelector('.portos-volume-input');
+    const visual = track.querySelector('.portos-volume-visual');
+    const fill = track.querySelector('.portos-volume-fill');
+    const knob = track.querySelector('.portos-volume-knob');
     const label = gadget.querySelector('.volume-control > span:last-child');
 
-    function paint(value) {
-      const n = Math.max(0, Math.min(100, Math.round(Number(value))));
-      slider.value = String(n);
-      slider.style.setProperty('--volume-percent', n + '%');
-      if (audio.volume !== n / 100) audio.volume = n / 100;
-      if (label) label.textContent = n + '%';
+    function render(value) {
+      const n = Math.max(0, Math.min(100, Math.round(Number(value) || 0)));
+      input.value = String(n);
+      visual.style.setProperty('--volume', `${n}%`);
+      fill.style.width = `${n}%`;
+      knob.style.left = `${n}%`;
+      if (label) label.textContent = `${n}%`;
     }
 
-    function syncFromAudio() {
-      const n = Math.round(audio.volume * 100);
-      slider.value = String(n);
-      slider.style.setProperty('--volume-percent', n + '%');
-      if (label) label.textContent = n + '%';
+    function setVolume(value) {
+      const n = Math.max(0, Math.min(100, Math.round(Number(value) || 0)));
+      audio.volume = n / 100;
+      render(n);
     }
 
-    slider.addEventListener('input', () => paint(slider.value));
-    slider.addEventListener('change', () => paint(slider.value));
-    slider.addEventListener('pointerdown', e => e.stopPropagation(), true);
-    slider.addEventListener('pointermove', e => e.stopPropagation(), true);
-    slider.addEventListener('click', e => e.stopPropagation(), true);
-    slider.addEventListener('wheel', e => {
+    function sync() {
+      render(audio.volume * 100);
+    }
+
+    input.addEventListener('input', () => setVolume(input.value));
+    input.addEventListener('change', () => setVolume(input.value));
+    input.addEventListener('pointerdown', e => e.stopPropagation(), true);
+    input.addEventListener('pointermove', e => e.stopPropagation(), true);
+    input.addEventListener('pointerup', e => e.stopPropagation(), true);
+    input.addEventListener('click', e => e.stopPropagation(), true);
+    input.addEventListener('wheel', e => {
       e.preventDefault();
       e.stopPropagation();
-      paint(Number(slider.value) + (e.deltaY < 0 ? 5 : -5));
-    }, { passive: false });
+      setVolume(Number(input.value) + (e.deltaY < 0 ? 5 : -5));
+    }, { passive:false });
 
-    audio.addEventListener('volumechange', syncFromAudio);
-
-    // Start from the real audio value; do not turn 0 into 72.
-    if (!Number.isFinite(audio.volume)) audio.volume = 0.72;
-    syncFromAudio();
+    audio.addEventListener('volumechange', sync);
+    if (!Number.isFinite(audio.volume)) audio.volume = .72;
+    sync();
   }
 
   const style = document.createElement('style');
-  style.id = 'portos-qol-native-volume-style';
+  style.id = 'portos-qol-reworked-volume-style';
   style.textContent = `
     .icon-values .icon-orb { background-image:none!important; }
     .values-ed-real-icon { width:100%!important;height:100%!important;object-fit:contain!important;display:block!important;background:transparent!important;border:0!important;filter:none!important;mix-blend-mode:normal!important;box-shadow:none!important; }
 
-    /* Completely replace the old volume widget. The browser owns thumb positioning now. */
-    .music-gadget .volume-control { position:relative!important;z-index:50!important;display:flex!important;align-items:center!important;gap:6px!important;pointer-events:auto!important; }
-    .music-gadget .volume-track { flex:1!important;min-width:110px!important;height:22px!important;display:flex!important;align-items:center!important;padding:0!important;margin:0!important;background:transparent!important;border:0!important;box-shadow:none!important;overflow:visible!important;pointer-events:auto!important; }
-    .music-gadget .portos-volume-native { -webkit-appearance:none!important;appearance:none!important;width:100%!important;height:22px!important;margin:0!important;padding:0!important;border:0!important;outline:none!important;cursor:pointer!important;touch-action:none!important;user-select:none!important;background:linear-gradient(90deg,#cfffff 0%,#45dff8 var(--volume-percent,72%),rgba(0,74,135,.30) var(--volume-percent,72%),rgba(0,74,135,.30) 100%)!important;border-radius:999px!important;box-shadow:inset 0 2px 3px rgba(0,50,100,.20),0 1px 0 rgba(255,255,255,.55)!important;}
-    .music-gadget .portos-volume-native::-webkit-slider-runnable-track { height:7px!important;border:1px solid rgba(255,255,255,.82)!important;border-radius:999px!important;background:transparent!important;box-shadow:none!important; }
-    .music-gadget .portos-volume-native::-moz-range-track { height:7px!important;border:1px solid rgba(255,255,255,.82)!important;border-radius:999px!important;background:transparent!important;box-shadow:none!important; }
-    .music-gadget .portos-volume-native::-webkit-slider-thumb { -webkit-appearance:none!important;appearance:none!important;width:22px!important;height:22px!important;margin-top:-8px!important;border:1px solid rgba(255,255,255,.98)!important;border-radius:50%!important;background:radial-gradient(circle at 35% 28%,#fff 0 18%,#d5ffff 31%,#5bdff8 68%,#087bc1 100%)!important;box-shadow:0 2px 5px rgba(0,55,110,.38),inset 0 1px 2px #fff!important;cursor:grab!important;}
-    .music-gadget .portos-volume-native::-moz-range-thumb { width:22px!important;height:22px!important;border:1px solid rgba(255,255,255,.98)!important;border-radius:50%!important;background:radial-gradient(circle at 35% 28%,#fff 0 18%,#d5ffff 31%,#5bdff8 68%,#087bc1 100%)!important;box-shadow:0 2px 5px rgba(0,55,110,.38),inset 0 1px 2px #fff!important;cursor:grab!important;}
-    .music-gadget .portos-volume-native:active::-webkit-slider-thumb { cursor:grabbing!important;transform:scale(1.06); }
-    .music-gadget .portos-volume-native:active::-moz-range-thumb { cursor:grabbing!important;transform:scale(1.06); }
+    .music-gadget .volume-control { position:relative!important;z-index:90!important;display:flex!important;align-items:center!important;gap:6px!important;pointer-events:auto!important; }
+    .music-gadget .volume-track { position:relative!important;flex:1!important;min-width:110px!important;height:24px!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important;pointer-events:auto!important; }
+    .portos-volume-visual { position:absolute!important;left:0!important;right:0!important;top:50%!important;height:8px!important;transform:translateY(-50%)!important;border-radius:999px!important;background:rgba(0,79,136,.28)!important;border:1px solid rgba(255,255,255,.9)!important;box-shadow:inset 0 2px 3px rgba(0,50,100,.22),0 1px 0 rgba(255,255,255,.7)!important;pointer-events:none!important;overflow:visible!important; }
+    .portos-volume-fill { position:absolute!important;left:0!important;top:0!important;height:100%!important;width:72%!important;border-radius:inherit!important;background:linear-gradient(90deg,#cfffff,#45dff8,#0a88cf)!important;box-shadow:0 0 6px rgba(133,245,255,.85)!important;pointer-events:none!important; }
+    .portos-volume-knob { position:absolute!important;top:50%!important;left:72%!important;width:20px!important;height:20px!important;transform:translate(-50%,-50%)!important;border:1px solid rgba(255,255,255,.98)!important;border-radius:50%!important;background:radial-gradient(circle at 35% 28%,#fff 0 18%,#d5ffff 31%,#5bdff8 68%,#087bc1 100%)!important;box-shadow:0 2px 5px rgba(0,55,110,.38),inset 0 1px 2px #fff!important;pointer-events:none!important;z-index:2!important; }
+    .portos-volume-input { position:absolute!important;inset:-8px 0!important;width:100%!important;height:40px!important;margin:0!important;padding:0!important;opacity:0!important;cursor:pointer!important;z-index:5!important;appearance:none!important;-webkit-appearance:none!important;touch-action:none!important; }
+    .portos-volume-input::-webkit-slider-thumb { width:40px!important;height:40px!important;cursor:pointer!important; }
+    .portos-volume-input::-moz-range-thumb { width:40px!important;height:40px!important;cursor:pointer!important; }
   `;
   document.head.appendChild(style);
 
