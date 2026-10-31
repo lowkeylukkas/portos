@@ -77,7 +77,22 @@
   `;
   document.head.appendChild(style);
 
+  function fixStartProfile() {
+    const img = document.querySelector('.start-avatar .portos-start-logo');
+    if (!img) return;
+    img.src = 'mqdefault.jpg';
+    img.style.setProperty('content', 'url("mqdefault.jpg")', 'important');
+    img.style.setProperty('object-fit', 'cover', 'important');
+    img.style.setProperty('object-position', 'center', 'important');
+    img.style.setProperty('border-radius', '50%', 'important');
+  }
+
   fixValuesIcon();
   improveVolume();
-  new MutationObserver(() => { fixValuesIcon(); improveVolume(); }).observe(document.body, { childList:true, subtree:true });
+  fixStartProfile();
+  new MutationObserver(() => {
+    fixValuesIcon();
+    improveVolume();
+    fixStartProfile();
+  }).observe(document.body, { childList:true, subtree:true });
 })();
