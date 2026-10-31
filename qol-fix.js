@@ -1,6 +1,6 @@
-/* PortOS QOL fixes: reliable Values Ed icon + bulletproof custom volume slider. */
+/* PortOS QOL fixes: reliable Values Ed icon + working custom volume slider. */
 (() => {
-  const iconSrc = 'Values Ed..png?v=9';
+  const iconSrc = 'Values Ed..png?v=10';
 
   function fixValuesIcon() {
     const icon = document.querySelector('.icon-values .icon-orb');
@@ -14,118 +14,117 @@
       img.draggable = false;
       icon.appendChild(img);
     }
-    if (img.src !== new URL(iconSrc, document.baseURI).href) img.src = iconSrc;
+    img.src = iconSrc;
+  }
+
+  function getMusicAudio() {
+    return window.PortOSMusic?.audio || document.querySelector('.music-gadget audio') || document.querySelector('audio');
   }
 
   function improveVolume() {
     const gadget = document.querySelector('.music-gadget');
     const track = gadget?.querySelector('.volume-track');
-    const audio = gadget?.querySelector('audio');
-    if (!gadget || !track || !audio || track.dataset.qolReady) return;
+    const audio = getMusicAudio();
+    if (!gadget || !track || !audio || track.dataset.qolReady === 'true') return;
     track.dataset.qolReady = 'true';
 
-    track.innerHTML = '<div class="portos-volume-slider" role="slider" aria-label="Music volume" aria-valuemin="0" aria-valuemax="100" aria-valuenow="72" tabindex="0"><div class="portos-volume-fill"></div><div class="portos-volume-knob"></div></div>';
+    track.innerHTML = '<div class="portos-volume-slider" role="slider" aria-label="Music volume" aria-valuemin="0" aria-valuemax="100" tabindex="0"><div class="portos-volume-fill"></div><div class="portos-volume-knob"></div></div>';
     const slider = track.querySelector('.portos-volume-slider');
     const fill = slider.querySelector('.portos-volume-fill');
     const knob = slider.querySelector('.portos-volume-knob');
     const label = gadget.querySelector('.volume-control > span:last-child');
     let dragging = false;
-    let activePointerId = null;
+    let pointerId = null;
 
-    const paint = (value) => {
-      const n = Math.max(0, Math.min(100, Math.round(Number(value) || 0)));
+    function paint(value) {
+      const n = Math.max(0, Math.min(100, Number(value) || 0));
       audio.volume = n / 100;
-      fill.style.width = `${n}%`;
-      knob.style.left = `${n}%`;
-      slider.style.setProperty('--volume', `${n}%`);
-      slider.setAttribute('aria-valuenow', String(n));
-      if (label) label.textContent = `${n}%`;
-    };
+      fill.style.width = n + '%';
+      knob.style.left = n + '%';
+      slider.setAttribute('aria-valuenow', String(Math.round(n)));
+      if (label) label.textContent = Math.round(n) + '%';
+    }
 
-    const valueFromPointer = (event) => {
-      const rect = slider.getBoundingClientRect();
-      if (!rect.width) return 0;
-      return Math.max(0, Math.min(100, ((event.clientX - rect.left) / rect.width) * 100));
-    };
+    function valueFromEvent(e) {
+      const r = slider.getBoundingClientRect();
+      if (!r.width) return audio.volume * 100;
+      return ((e.clientX - r.left) / r.width) * 100;
+    }
 
-    const startDrag = (event) => {
-      const target = event.target?.closest?.('.portos-volume-slider');
-      if (!target || target !== slider || event.button !== 0) return;
-      event.preventDefault();
-      event.stopPropagation();
+    function begin(e) {
+      if (e.button !== undefined && e.button !== 0) return;
+      const hit = e.target.closest?.('.portos-volume-slider');
+      if (hit !== slider) return;
+      e.preventDefault();
+      e.stopPropagation();
       dragging = true;
-      activePointerId = event.pointerId ?? null;
+      pointerId = e.pointerId;
       slider.classList.add('dragging');
-      paint(valueFromPointer(event));
-      try { slider.setPointerCapture?.(event.pointerId); } catch (_) {}
-    };
+      paint(valueFromEvent(e));
+      try { slider.setPointerCapture(e.pointerId); } catch (_) {}
+    }
 
-    const moveDrag = (event) => {
-      if (!dragging) return;
-      if (activePointerId !== null && event.pointerId !== undefined && event.pointerId !== activePointerId) return;
-      event.preventDefault();
-      event.stopPropagation();
-      paint(valueFromPointer(event));
-    };
+    function move(e) {
+      if (!dragging || (pointerId !== null && e.pointerId !== pointerId)) return;
+      e.preventDefault();
+      e.stopPropagation();
+      paint(valueFromEvent(e));
+    }
 
-    const endDrag = (event) => {
+    function end(e) {
       if (!dragging) return;
       dragging = false;
-      activePointerId = null;
+      pointerId = null;
       slider.classList.remove('dragging');
-      try { slider.releasePointerCapture?.(event.pointerId); } catch (_) {}
-      event?.stopPropagation?.();
-    };
+      try { slider.releasePointerCapture(e.pointerId); } catch (_) {}
+    }
 
-    /* Capture on the document so the gadget's older pointer handlers cannot steal the drag. */
-    document.addEventListener('pointerdown', startDrag, {capture:true, passive:false});
-    document.addEventListener('pointermove', moveDrag, {capture:true, passive:false});
-    document.addEventListener('pointerup', endDrag, {capture:true, passive:false});
-    document.addEventListener('pointercancel', endDrag, {capture:true, passive:false});
-
-    slider.addEventListener('click', (event) => {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      paint(valueFromPointer(event));
+    slider.addEventListener('pointerdown', begin, {capture:true, passive:false});
+    slider.addEventListener('pointermove', move, {capture:true, passive:false});
+    slider.addEventListener('pointerup', end, {capture:true, passive:false});
+    slider.addEventListener('pointercancel', end, {capture:true, passive:false});
+    slider.addEventListener('click', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      paint(valueFromEvent(e));
     });
-    slider.addEventListener('wheel', (event) => {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      paint(audio.volume * 100 + (event.deltaY < 0 ? 5 : -5));
+    slider.addEventListener('wheel', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      paint(audio.volume * 100 + (e.deltaY < 0 ? 5 : -5));
     }, {passive:false});
-    slider.addEventListener('keydown', (event) => {
-      let value = audio.volume * 100;
-      if (event.key === 'ArrowRight' || event.key === 'ArrowUp') value += 5;
-      else if (event.key === 'ArrowLeft' || event.key === 'ArrowDown') value -= 5;
-      else if (event.key === 'Home') value = 0;
-      else if (event.key === 'End') value = 100;
+    slider.addEventListener('keydown', e => {
+      let v = audio.volume * 100;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowUp') v += 5;
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') v -= 5;
+      else if (e.key === 'Home') v = 0;
+      else if (e.key === 'End') v = 100;
       else return;
-      event.preventDefault();
-      paint(value);
+      e.preventDefault();
+      paint(v);
     });
 
     audio.addEventListener('volumechange', () => {
-      const value = Math.round(audio.volume * 100);
-      fill.style.width = `${value}%`;
-      knob.style.left = `${value}%`;
-      slider.style.setProperty('--volume', `${value}%`);
-      slider.setAttribute('aria-valuenow', String(value));
-      if (label) label.textContent = `${value}%`;
+      const v = audio.volume * 100;
+      fill.style.width = v + '%';
+      knob.style.left = v + '%';
+      slider.setAttribute('aria-valuenow', String(Math.round(v)));
+      if (label) label.textContent = Math.round(v) + '%';
     });
 
-    paint((audio.volume || 0.72) * 100);
+    paint(audio.volume * 100 || 72);
   }
 
   const style = document.createElement('style');
   style.textContent = `
     .icon-values .icon-orb { background-image:none!important; }
     .values-ed-real-icon { width:100%!important;height:100%!important;object-fit:contain!important;display:block!important;background:transparent!important;border:0!important;filter:none!important;mix-blend-mode:normal!important;box-shadow:none!important; }
-    .music-gadget .volume-control { position:relative!important;z-index:100!important;pointer-events:auto!important; }
-    .music-gadget .volume-track { flex:1!important;min-width:110px!important;height:30px!important;display:flex!important;align-items:center!important;background:transparent!important;border:0!important;box-shadow:none!important;overflow:visible!important;pointer-events:auto!important; }
-    .music-gadget .portos-volume-slider { position:relative!important;width:100%!important;min-width:110px!important;height:30px!important;cursor:pointer!important;touch-action:none!important;user-select:none!important;outline:none!important;background:transparent!important;border:0!important;box-shadow:none!important;pointer-events:auto!important; }
+    .music-gadget .volume-control { position:relative!important;z-index:9999!important;pointer-events:auto!important; }
+    .music-gadget .volume-track { flex:1!important;min-width:110px!important;height:30px!important;display:block!important;background:transparent!important;border:0!important;box-shadow:none!important;overflow:visible!important;pointer-events:auto!important; }
+    .music-gadget .portos-volume-slider { position:relative!important;width:100%!important;height:30px!important;cursor:pointer!important;touch-action:none!important;user-select:none!important;outline:none!important;background:transparent!important;border:0!important;box-shadow:none!important;pointer-events:auto!important; }
     .music-gadget .portos-volume-slider::before { content:"";position:absolute!important;left:0!important;right:0!important;top:50%!important;height:6px!important;transform:translateY(-50%)!important;border-radius:999px!important;background:rgba(0,78,140,.28)!important;box-shadow:inset 0 1px 2px rgba(0,40,90,.28)!important;pointer-events:none!important; }
-    .music-gadget .portos-volume-fill { position:absolute!important;left:0!important;top:50%!important;width:var(--volume,72%)!important;height:6px!important;transform:translateY(-50%)!important;border-radius:999px!important;background:linear-gradient(90deg,#d9ffff,#5ee7ff 58%,#20bce9)!important;box-shadow:0 0 6px rgba(132,245,255,.7),inset 0 1px 2px rgba(255,255,255,.9)!important;pointer-events:none!important; }
-    .music-gadget .portos-volume-knob { position:absolute!important;top:50%!important;left:var(--volume,72%)!important;width:22px!important;height:22px!important;transform:translate(-50%,-50%)!important;border:1px solid rgba(255,255,255,.98)!important;border-radius:50%!important;background:radial-gradient(circle at 35% 28%,#fff 0 18%,#d5ffff 31%,#5bdff8 68%,#087bc1 100%)!important;box-shadow:0 2px 5px rgba(0,55,110,.38),inset 0 1px 2px #fff!important;pointer-events:none!important;transition:none!important; }
+    .music-gadget .portos-volume-fill { position:absolute!important;left:0!important;top:50%!important;width:72%!important;height:6px!important;transform:translateY(-50%)!important;border-radius:999px!important;background:linear-gradient(90deg,#d9ffff,#5ee7ff 58%,#20bce9)!important;box-shadow:0 0 6px rgba(132,245,255,.7),inset 0 1px 2px rgba(255,255,255,.9)!important;pointer-events:none!important; }
+    .music-gadget .portos-volume-knob { position:absolute!important;top:50%!important;left:72%!important;width:22px!important;height:22px!important;transform:translate(-50%,-50%)!important;border:1px solid rgba(255,255,255,.98)!important;border-radius:50%!important;background:radial-gradient(circle at 35% 28%,#fff 0 18%,#d5ffff 31%,#5bdff8 68%,#087bc1 100%)!important;box-shadow:0 2px 5px rgba(0,55,110,.38),inset 0 1px 2px #fff!important;pointer-events:none!important;transition:none!important; }
     .music-gadget .portos-volume-slider.dragging .portos-volume-knob { transform:translate(-50%,-50%) scale(1.08)!important; }
     .music-gadget .portos-volume-slider:focus-visible .portos-volume-knob { outline:2px solid rgba(255,255,255,.9)!important;outline-offset:2px!important; }
   `;
