@@ -2,7 +2,7 @@
 (() => {
   const MEDIA = {
     'About Me': ['869470103_1148667690839274_8702733133473048812_n (1).jpg'],
-    'MAPEH': ['assets/outputs/mapeh-last-supper.jpg'],
+    'MAPEH': ['The-Last-Supper-Restored-Da-Vinci_32x16.jpg'],
     'Values Ed.': [
       '870242341_1637070778432647_2963982473672156395_n.jpg',
       '886031168_1822838208961416_1442996111883944173_n.jpg',
