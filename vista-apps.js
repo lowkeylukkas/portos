@@ -9,7 +9,15 @@
     'Science': 'Science.png',
     'Filipino': 'Filipino.png',
     'Mathematics': 'Mathematics.png',
-    'About Me': 'Blue Glass Profile Card with Star.png'
+    'About Me': 'Blue Glass Profile Card with Star.png',
+    'Music': 'Music.png',
+    'My Galleries': 'galleries.png',
+    'Integration': 'integration.png',
+    'Reflection': 'reflection.png',
+    'Credits & Sources': 'credits.png',
+    'Customize': 'Blue Glass Profile Card with Star.png',
+    'Files': 'credits.png',
+    'Help': 'reflection.png'
   };
   const DESCRIPTIONS = {
     'MAPEH': 'Music, Arts, Physical Education, and Health portfolio work.',
@@ -20,7 +28,15 @@
     'Science': 'Science lessons, investigations, experiments, and projects.',
     'Filipino': 'Filipino language, literature, and written activities.',
     'Mathematics': 'Mathematics lessons, problem solving, and activities.',
-    'About Me': 'A personal introduction to the creator of this digital portfolio.'
+    'About Me': 'A personal introduction to the creator of this digital portfolio.',
+    'Music': 'PortOS music player and audio library.',
+    'My Galleries': 'A gallery space for projects, artwork, photographs, and creations.',
+    'Integration': 'Integrated activities connecting ideas across different subjects.',
+    'Reflection': 'Personal reflections and learning takeaways.',
+    'Credits & Sources': 'References, sources, and portfolio credits.',
+    'Customize': 'PortOS appearance and personalization options.',
+    'Files': 'Portfolio files and supporting materials.',
+    'Help': 'PortOS help and guidance.'
   };
 
   const style = document.createElement('style');
@@ -58,7 +74,6 @@
     const body = win.querySelector('.portos-app-body');
     if (!body) return;
 
-    // About Me may already have the approved content injected. Preserve it.
     const old = document.createElement('div');
     old.innerHTML = body.innerHTML;
     const existingContent = old.querySelector('.portos-about-body') || old;
