@@ -54,27 +54,27 @@ function showDesktop() {
 let appWindowZ = 70;
 
 const appIconMap = {
-  'MAPEH': 'mapeh.png',
-  'TLE': 'tle.png',
-  'Values Ed.': 'values.png',
-  'English': 'english.png',
-  'Araling Panlipunan': 'araling-panlipunan.png',
+  'MAPEH': 'MAPEH.png',
+  'TLE': 'TLE.png',
+  'Values Ed.': 'Values Ed..png',
+  'English': 'English.png',
+  'Araling Panlipunan': 'Araling Panlipunan.png',
   'My Galleries': 'galleries.png',
   'Integration': 'integration.png',
   'Reflection': 'reflection.png',
   'Credits & Sources': 'credits.png',
-  'About Me': 'about-me.png',
-  'Science': 'science.png',
-  'Filipino': 'filipino.png',
-  'Mathematics': 'math.png',
-  'Music': 'music.png',
-  'Customize': 'about-me.png',
+  'About Me': 'Blue Glass Profile Card with Star.png',
+  'Science': 'Science.png',
+  'Filipino': 'Filipino.png',
+  'Mathematics': 'Mathematics.png',
+  'Music': 'Music.png',
+  'Customize': 'Blue Glass Profile Card with Star.png',
   'Files': 'credits.png',
   'Help': 'reflection.png'
 };
 
 function getAppIcon(title) {
-  return appIconMap[title] || 'about-me.png';
+  return appIconMap[title] || 'Blue Glass Profile Card with Star.png';
 }
 
 function getLiveAppWindows() {
