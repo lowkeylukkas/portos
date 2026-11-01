@@ -57,15 +57,9 @@
 
   function getTitle(win){ return win.querySelector('.portos-app-title')?.textContent?.trim() || ''; }
 
-  function addMedia(win, title){
-    const paths = MEDIA[title];
-    if (!paths?.length || win.querySelector('.po-output-media')) return;
-    const placeholder = win.querySelector('.po-photo-placeholder');
-    if (!placeholder) return;
-
+  function buildMedia(paths, title){
     const figure = document.createElement('figure');
     figure.className = 'po-output-media';
-
     if (paths.length === 1) {
       const img = document.createElement('img');
       img.src = paths[0];
@@ -92,8 +86,24 @@
       cap.textContent = title === 'Filipino' ? 'Tanka and Haiku — submitted outputs' : 'Photo evidence — submitted outputs';
       figure.append(gallery, cap);
     }
+    return figure;
+  }
 
-    placeholder.replaceWith(figure);
+  function addMedia(win, title){
+    const paths = MEDIA[title];
+    if (!paths?.length || win.querySelector('.po-output-media')) return;
+
+    if (title === 'Values Ed.') {
+      const photoGrid = win.querySelector('.po-photo-grid');
+      if (photoGrid) {
+        photoGrid.replaceWith(buildMedia(paths, title));
+        return;
+      }
+    }
+
+    const placeholder = win.querySelector('.po-photo-placeholder');
+    if (!placeholder) return;
+    placeholder.replaceWith(buildMedia(paths, title));
   }
 
   function addCredits(win, title){
