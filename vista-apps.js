@@ -55,14 +55,12 @@
     .portos-vista-hero-copy{position:relative;z-index:2;min-width:0;margin-left:24px;text-shadow:0 2px 4px rgba(0,49,73,.68)}
     .portos-vista-hero-title{margin:0 0 5px!important;font-family:'Segoe UI',Tahoma,Arial,sans-serif!important;font-size:42px!important;font-weight:300!important;line-height:1.04!important;letter-spacing:-1px!important;color:#fff!important;text-shadow:0 2px 5px rgba(0,48,72,.65)!important}
     .portos-vista-hero-desc{margin:0!important;max-width:650px;font-family:'Segoe UI',Tahoma,Arial,sans-serif!important;font-size:15px!important;font-style:italic!important;line-height:1.4!important;color:#fff!important;text-shadow:0 1px 3px rgba(0,47,70,.7)!important}
-    .portos-vista-details{position:absolute;z-index:3;right:24px;top:62px;display:flex;align-items:center;gap:7px;color:#fff;font:16px 'Segoe UI',Tahoma,Arial,sans-serif;text-shadow:0 2px 4px rgba(0,45,65,.72);white-space:nowrap}
-    .portos-vista-details-arrow{font-size:29px;font-weight:300;line-height:1;color:#65ff58;text-shadow:0 0 8px rgba(255,255,255,.8),0 2px 3px rgba(0,67,40,.72)}
     .portos-vista-content{position:relative;padding:20px 22px 28px;background:linear-gradient(180deg,#fff 0%,#f8fcff 62%,#e9f6fd 100%);min-height:220px;color:#17344c}
     .portos-vista-content:before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:rgba(80,154,208,.45)}
     .portos-vista-content>h2{margin:0 0 5px!important;color:#14539b!important;font:700 24px/1.2 'Segoe UI',Tahoma,Arial,sans-serif!important;text-shadow:0 1px 0 #fff!important}
     .portos-vista-content>p{margin:0 0 14px!important;color:#274b64!important;font:14px/1.45 'Segoe UI',Tahoma,Arial,sans-serif!important}
     .portos-vista-content .portos-app-hint{margin:14px 0 0!important;border-radius:10px!important;background:linear-gradient(180deg,#fff,#edf8ff)!important;border:1px solid #c8e8f8!important;color:#285473!important;box-shadow:inset 0 1px 2px #fff,0 3px 10px rgba(36,117,165,.1)!important}
-    @media(max-width:760px){.portos-vista-hero{padding-left:18px;padding-right:18px}.portos-vista-hero-icon{width:105px;height:105px;flex-basis:105px}.portos-vista-hero-title{font-size:32px!important}.portos-vista-details{right:14px;top:auto;bottom:13px;font-size:12px}.portos-vista-content{padding:16px}}
+    @media(max-width:760px){.portos-vista-hero{padding-left:18px;padding-right:18px}.portos-vista-hero-icon{width:105px;height:105px;flex-basis:105px}.portos-vista-hero-title{font-size:32px!important}.portos-vista-content{padding:16px}}
     @media(max-width:500px){.portos-vista-hero-icon{width:78px;height:78px;flex-basis:78px}.portos-vista-hero-copy{margin-left:12px}.portos-vista-hero-title{font-size:26px!important}.portos-vista-hero-desc{font-size:11px!important}}
   `;
   document.head.appendChild(style);
@@ -85,8 +83,7 @@
       <div class="portos-vista-hero-copy">
         <h1 class="portos-vista-hero-title">${title}</h1>
         <p class="portos-vista-hero-desc">${DESCRIPTIONS[title]}</p>
-      </div>
-      <div class="portos-vista-details"><span class="portos-vista-details-arrow">➜</span><span>Show more details</span></div>`;
+      </div>`;
 
     const content = document.createElement('div');
     content.className = 'portos-vista-content';
