@@ -101,7 +101,7 @@
   document.head.appendChild(style);
 
   function photoSection(section){
-    return `<section class="po-section"><h3>${section.title}</h3>${section.label ? `<div class="po-photo-label">${section.label}</div>` : ''}${section.body}</section>`;
+    return `<section class="po-section"><h3>${section.title}</h3>${section.type === 'photo' ? '' : (section.label ? `<div class="po-photo-label">${section.label}</div>` : '')}${section.body}</section>`;
   }
 
   function render(title, data){
